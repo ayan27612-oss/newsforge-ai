@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#08090c">
+<meta name="description" content="NEWSFORGE AI - intelligent news discovery, verification and content automation platform">
 <title>NEWSFORGE AI</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -17,44 +19,99 @@
   --bg:#08090c;
   --panel:#0f1116;
   --panel2:#14171e;
+  --panel3:#191c23;
   --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.13);
   --text:#f4f5f7;
   --muted:#8d929d;
+  --muted2:#666c77;
   --green:#7cff9b;
   --red:#ff5d6c;
   --yellow:#ffd166;
   --blue:#6ea8ff;
+  --cyan:#61e7ff;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
   background:
-    radial-gradient(circle at 80% 0%,rgba(124,255,155,.08),transparent 28%),
-    radial-gradient(circle at 10% 30%,rgba(110,168,255,.06),transparent 25%),
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(124,255,155,.09),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 10% 30%,
+      rgba(110,168,255,.07),
+      transparent 25%
+    ),
     var(--bg);
+
   color:var(--text);
   min-height:100vh;
+  overflow-x:hidden;
+}
+
+button,
+input{
+  font:inherit;
 }
 
 button{
-  font:inherit;
   cursor:pointer;
 }
 
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+::selection{
+  background:rgba(124,255,155,.25);
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
 .app{
+  width:100%;
   max-width:1500px;
   margin:auto;
   padding:22px;
 }
 
-/* HEADER */
+
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:18px 0 28px;
+
+  padding:
+    18px
+    0
+    28px;
+
   border-bottom:1px solid var(--border);
+
+  position:relative;
 }
 
 .brand{
@@ -66,20 +123,78 @@ header{
 .logo{
   width:42px;
   height:42px;
-  border:1px solid rgba(124,255,155,.35);
+
+  border:1px solid
+    rgba(124,255,155,.35);
+
   border-radius:12px;
+
   display:grid;
   place-items:center;
-  background:rgba(124,255,155,.06);
-  box-shadow:0 0 30px rgba(124,255,155,.08);
+
+  background:
+    rgba(124,255,155,.06);
+
+  box-shadow:
+    0 0 30px
+    rgba(124,255,155,.08);
+
+  position:relative;
+  overflow:hidden;
+}
+
+.logo::before{
+  content:"";
+
+  position:absolute;
+
+  width:80px;
+  height:80px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(124,255,155,.15),
+      transparent 65%
+    );
+
+  animation:
+    logoPulse 2.5s ease-in-out infinite;
 }
 
 .logo span{
+  position:relative;
+  z-index:2;
+
   width:9px;
   height:9px;
+
   background:var(--green);
+
   border-radius:50%;
-  box-shadow:0 0 18px var(--green);
+
+  box-shadow:
+    0 0 18px
+    var(--green);
+
+  animation:
+    dotPulse 1.5s infinite;
+}
+
+@keyframes logoPulse{
+  50%{
+    transform:scale(1.5);
+    opacity:.4;
+  }
+}
+
+@keyframes dotPulse{
+  50%{
+    transform:scale(.65);
+    opacity:.65;
+  }
 }
 
 .brand h1{
@@ -89,9 +204,13 @@ header{
 
 .brand small{
   display:block;
+
   color:var(--muted);
+
   font-size:10px;
+
   letter-spacing:.18em;
+
   margin-top:3px;
 }
 
@@ -99,19 +218,34 @@ header{
   display:flex;
   align-items:center;
   gap:8px;
+
   color:var(--muted);
+
   font-size:12px;
 }
 
 .status-dot{
   width:7px;
   height:7px;
+
   border-radius:50%;
+
   background:var(--green);
-  box-shadow:0 0 12px var(--green);
+
+  box-shadow:
+    0 0 12px
+    var(--green);
 }
 
-/* HERO */
+.status-dot.error{
+  background:var(--red);
+  box-shadow:0 0 12px var(--red);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .hero{
   padding:55px 0 40px;
@@ -119,98 +253,251 @@ header{
 
 .eyebrow{
   color:var(--green);
+
   text-transform:uppercase;
+
   letter-spacing:.18em;
+
   font-size:11px;
+
   margin-bottom:14px;
+
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.eyebrow::before{
+  content:"";
+
+  width:22px;
+  height:1px;
+
+  background:var(--green);
 }
 
 .hero h2{
-  font-size:clamp(38px,7vw,78px);
+  font-size:
+    clamp(38px,7vw,78px);
+
   line-height:.95;
+
   max-width:900px;
+
   letter-spacing:-.055em;
 }
 
 .hero p{
   color:var(--muted);
+
   max-width:650px;
+
   margin-top:20px;
+
   line-height:1.7;
+
   font-size:15px;
 }
 
 .hero-actions{
   display:flex;
+
   gap:12px;
+
   margin-top:28px;
+
   flex-wrap:wrap;
+}
+
+.primary,
+.secondary{
+  padding:14px 20px;
+
+  border-radius:10px;
+
+  transition:
+    transform .2s,
+    box-shadow .2s,
+    border-color .2s,
+    opacity .2s;
 }
 
 .primary{
   border:0;
+
   background:var(--green);
+
   color:#071009;
-  padding:14px 20px;
-  border-radius:10px;
+
   font-weight:800;
-  transition:.2s;
 }
 
 .primary:hover{
   transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(124,255,155,.18);
+
+  box-shadow:
+    0 12px 35px
+    rgba(124,255,155,.18);
+}
+
+.primary:disabled{
+  opacity:.55;
+  cursor:wait;
+  transform:none;
 }
 
 .secondary{
   border:1px solid var(--border);
+
   background:var(--panel);
+
   color:var(--text);
-  padding:14px 20px;
-  border-radius:10px;
 }
 
-/* GRID */
+.secondary:hover{
+  border-color:var(--border2);
+
+  transform:translateY(-2px);
+}
+
+
+/* =========================================================
+   TOP LIVE STRIP
+   ========================================================= */
+
+.live-strip{
+  margin-top:10px;
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  padding:10px 14px;
+
+  border:1px solid var(--border);
+
+  border-radius:10px;
+
+  background:
+    rgba(15,17,22,.65);
+
+  color:var(--muted);
+
+  font-size:10px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.1em;
+
+  width:max-content;
+
+  max-width:100%;
+}
+
+.live-strip-dot{
+  width:6px;
+  height:6px;
+
+  background:var(--green);
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 12px
+    var(--green);
+
+  animation:
+    pulse 1.5s infinite;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+
+  grid-template-columns:
+    repeat(4,1fr);
+
   gap:12px;
 }
 
 .card{
-  background:rgba(15,17,22,.82);
+  background:
+    rgba(15,17,22,.82);
+
   border:1px solid var(--border);
+
   border-radius:16px;
+
   padding:20px;
+
   backdrop-filter:blur(15px);
+
+  box-shadow:
+    0 10px 40px
+    rgba(0,0,0,.08);
 }
 
 .metric{
   min-height:130px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.metric::after{
+  content:"";
+
+  position:absolute;
+
+  width:80px;
+  height:80px;
+
+  right:-35px;
+  bottom:-35px;
+
+  border-radius:50%;
+
+  border:1px solid
+    rgba(124,255,155,.1);
 }
 
 .metric-label{
   color:var(--muted);
+
   font-size:11px;
+
   text-transform:uppercase;
+
   letter-spacing:.13em;
 }
 
 .metric-value{
   font-size:34px;
+
   font-weight:800;
+
   margin-top:20px;
+
   letter-spacing:-.04em;
 }
 
 .metric-change{
   color:var(--green);
+
   font-size:11px;
+
   margin-top:4px;
 }
 
-/* SECTION */
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
 
 .section{
   margin-top:35px;
@@ -218,9 +505,14 @@ header{
 
 .section-head{
   display:flex;
+
   justify-content:space-between;
+
   align-items:end;
+
   margin-bottom:14px;
+
+  gap:15px;
 }
 
 .section-head h3{
@@ -229,90 +521,377 @@ header{
 
 .section-head span{
   color:var(--muted);
-  font-size:11px;
+
+  font-size:10px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.12em;
 }
 
-/* NEWS */
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.toolbar{
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+  margin-bottom:15px;
+}
+
+.category-btn{
+  border:1px solid var(--border);
+
+  background:var(--panel);
+
+  color:var(--muted);
+
+  padding:
+    8px
+    12px;
+
+  border-radius:9px;
+
+  font-size:10px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+
+  transition:.2s;
+}
+
+.category-btn:hover{
+  color:var(--text);
+
+  border-color:
+    rgba(124,255,155,.25);
+}
+
+.category-btn.active{
+  color:#071009;
+
+  background:var(--green);
+
+  border-color:var(--green);
+
+  font-weight:800;
+}
+
+.refresh-btn{
+  margin-left:auto;
+
+  border:1px solid var(--border);
+
+  background:transparent;
+
+  color:var(--muted);
+
+  padding:
+    8px 12px;
+
+  border-radius:9px;
+
+  font-size:10px;
+
+  transition:.2s;
+}
+
+.refresh-btn:hover{
+  color:var(--text);
+
+  border-color:var(--border2);
+}
+
+.refresh-btn.loading{
+  opacity:.5;
+  cursor:wait;
+}
+
+
+/* =========================================================
+   NEWS LAYOUT
+   ========================================================= */
 
 .news-layout{
   display:grid;
-  grid-template-columns:1.5fr 1fr;
+
+  grid-template-columns:
+    1.5fr 1fr;
+
   gap:14px;
 }
 
 .news-list{
   display:flex;
+
   flex-direction:column;
+
   gap:10px;
 }
 
+
+/* =========================================================
+   NEWS CARD
+   ========================================================= */
+
 .news{
   display:grid;
-  grid-template-columns:60px 1fr auto;
+
+  grid-template-columns:
+    60px 1fr auto;
+
   gap:15px;
+
   align-items:center;
+
   padding:16px;
+
   border:1px solid var(--border);
+
   border-radius:14px;
+
   background:var(--panel);
-  transition:.2s;
+
+  transition:
+    transform .2s,
+    border-color .2s,
+    background .2s;
+
+  animation:
+    newsIn .4s ease both;
 }
 
 .news:hover{
-  border-color:rgba(124,255,155,.22);
-  transform:translateY(-1px);
+  border-color:
+    rgba(124,255,155,.22);
+
+  background:
+    rgba(20,23,30,.95);
+
+  transform:
+    translateY(-2px);
+}
+
+@keyframes newsIn{
+  from{
+    opacity:0;
+    transform:
+      translateY(8px);
+  }
+
+  to{
+    opacity:1;
+    transform:
+      translateY(0);
+  }
 }
 
 .rank{
   font-size:24px;
+
   color:#4d525c;
+
   font-weight:800;
+
+  align-self:start;
+
+  padding-top:2px;
+}
+
+.news-main{
+  min-width:0;
 }
 
 .news h4{
   font-size:14px;
-  line-height:1.4;
+
+  line-height:1.45;
+
+  word-break:break-word;
 }
 
-.news p{
+.news-source{
   color:var(--muted);
+
+  font-size:10px;
+
+  margin-top:7px;
+
+  display:flex;
+
+  gap:6px;
+
+  flex-wrap:wrap;
+
+  align-items:center;
+}
+
+.news-description{
+  color:var(--muted);
+
   font-size:11px;
-  margin-top:6px;
+
+  margin-top:7px;
+
+  line-height:1.5;
+
+  display:
+    -webkit-box;
+
+  -webkit-line-clamp:2;
+
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
 }
 
 .score{
   text-align:right;
+
+  min-width:55px;
 }
 
 .score strong{
   display:block;
+
   color:var(--green);
+
   font-size:20px;
 }
 
 .score span{
   color:var(--muted);
-  font-size:9px;
+
+  font-size:8px;
+
   text-transform:uppercase;
+
+  letter-spacing:.1em;
 }
 
-/* CATEGORIES */
+.source-pill{
+  padding:3px 6px;
+
+  border-radius:5px;
+
+  background:
+    rgba(255,255,255,.05);
+
+  color:#aeb3bc;
+}
+
+.story-open{
+  display:inline-block;
+
+  margin-top:9px;
+
+  color:var(--green);
+
+  font-size:9px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.1em;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card{
+  min-height:120px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+  padding:20px;
+
+  border:1px solid var(--border);
+
+  border-radius:14px;
+
+  background:var(--panel);
+}
+
+.spinner{
+  width:25px;
+  height:25px;
+
+  border-radius:50%;
+
+  border:
+    2px solid
+    rgba(124,255,155,.15);
+
+  border-top-color:
+    var(--green);
+
+  animation:
+    spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.loading-text{
+  color:var(--muted);
+
+  font-size:11px;
+
+  line-height:1.6;
+}
+
+
+/* =========================================================
+   CATEGORIES
+   ========================================================= */
 
 .categories{
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap:10px;
 }
 
 .category{
   border:1px solid var(--border);
+
   border-radius:13px;
+
   padding:15px;
+
   background:var(--panel);
+
+  transition:.2s;
+}
+
+.category:hover{
+  border-color:
+    rgba(255,255,255,.13);
+
+  transform:translateY(-1px);
 }
 
 .cat-top{
   display:flex;
+
   justify-content:space-between;
 }
 
@@ -326,72 +905,146 @@ header{
 
 .bar{
   height:4px;
+
   background:#20232a;
+
   border-radius:10px;
+
   margin-top:14px;
+
   overflow:hidden;
 }
 
 .bar i{
   display:block;
+
   height:100%;
+
+  width:0%;
+
   background:var(--green);
+
   border-radius:10px;
+
+  transition:
+    width .7s ease;
 }
 
-/* AUTOMATION */
+
+/* =========================================================
+   PIPELINE
+   ========================================================= */
 
 .pipeline{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+
+  grid-template-columns:
+    repeat(5,1fr);
+
   gap:10px;
 }
 
 .step{
   padding:18px;
+
   border:1px solid var(--border);
+
   background:var(--panel);
+
   border-radius:14px;
+
   position:relative;
+
+  transition:
+    border-color .2s,
+    transform .2s;
+}
+
+.step:hover{
+  border-color:
+    rgba(124,255,155,.15);
+
+  transform:
+    translateY(-2px);
 }
 
 .step-number{
   font-size:10px;
+
   color:var(--muted);
 }
 
 .step h4{
   margin-top:16px;
+
   font-size:13px;
+
+  letter-spacing:.04em;
 }
 
 .step p{
   color:var(--muted);
+
   font-size:10px;
+
   margin-top:7px;
+
   line-height:1.5;
 }
 
 .step-status{
   margin-top:15px;
+
   font-size:9px;
+
   text-transform:uppercase;
+
   letter-spacing:.12em;
+
   color:var(--green);
 }
 
-/* ACTIVITY */
+.step-status.paused{
+  color:var(--yellow);
+}
+
+.live{
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  50%{
+    opacity:.45;
+  }
+}
+
+
+/* =========================================================
+   ACTIVITY
+   ========================================================= */
 
 .activity{
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+    1fr 1fr;
+
   gap:14px;
 }
 
 .log{
-  font-family:monospace;
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+
   font-size:11px;
+
   line-height:2;
+
+  max-height:300px;
+
+  overflow:auto;
 }
 
 .log span{
@@ -406,29 +1059,213 @@ header{
   color:var(--yellow);
 }
 
-.live{
-  animation:pulse 1.5s infinite;
+.error-text{
+  color:var(--red);
 }
 
-@keyframes pulse{
-  50%{opacity:.45}
+
+/* =========================================================
+   ARCHITECTURE
+   ========================================================= */
+
+.architecture{
+  margin-top:20px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  gap:5px;
+
+  font-family:monospace;
+
+  font-size:10px;
+
+  text-align:center;
 }
+
+.arch-node{
+  width:100%;
+
+  padding:8px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:7px;
+
+  color:#bfc4cc;
+
+  background:
+    rgba(255,255,255,.025);
+}
+
+.arch-arrow{
+  color:var(--green);
+
+  opacity:.7;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error-card{
+  padding:20px;
+
+  border:1px solid
+    rgba(255,93,108,.2);
+
+  background:
+    rgba(255,93,108,.035);
+
+  border-radius:14px;
+}
+
+.error-card h4{
+  color:var(--red);
+
+  font-size:14px;
+}
+
+.error-card p{
+  color:var(--muted);
+
+  font-size:11px;
+
+  line-height:1.6;
+
+  margin-top:7px;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.empty-card{
+  padding:30px 20px;
+
+  text-align:center;
+
+  border:1px solid var(--border);
+
+  border-radius:14px;
+
+  background:var(--panel);
+}
+
+.empty-card h4{
+  font-size:14px;
+}
+
+.empty-card p{
+  color:var(--muted);
+
+  font-size:11px;
+
+  line-height:1.6;
+
+  margin-top:8px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 footer{
   margin-top:50px;
+
   padding:22px 0;
+
   border-top:1px solid var(--border);
+
   color:var(--muted);
+
   font-size:10px;
+
   display:flex;
+
   justify-content:space-between;
+
+  gap:15px;
 }
 
-/* MOBILE */
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+
+  bottom:22px;
+
+  transform:
+    translate(-50%,20px);
+
+  padding:
+    12px 16px;
+
+  border:
+    1px solid
+    var(--border2);
+
+  border-radius:10px;
+
+  background:
+    rgba(15,17,22,.95);
+
+  backdrop-filter:blur(15px);
+
+  color:var(--text);
+
+  font-size:11px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .25s,
+    transform .25s;
+
+  z-index:100;
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translate(-50%,0);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:1100px){
+
+  .pipeline{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+}
 
 @media(max-width:900px){
+
   .grid{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:
+      1fr 1fr;
   }
 
   .news-layout,
@@ -437,11 +1274,14 @@ footer{
   }
 
   .pipeline{
-    grid-template-columns:1fr;
+    grid-template-columns:
+      1fr 1fr;
   }
+
 }
 
 @media(max-width:600px){
+
   .app{
     padding:15px;
   }
@@ -462,8 +1302,13 @@ footer{
     font-size:43px;
   }
 
+  .hero p{
+    font-size:13px;
+  }
+
   .grid{
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:
+      1fr 1fr;
   }
 
   .metric{
@@ -475,197 +1320,486 @@ footer{
   }
 
   .news{
-    grid-template-columns:38px 1fr;
+    grid-template-columns:
+      38px 1fr;
   }
 
   .score{
     display:none;
   }
 
+  .pipeline{
+    grid-template-columns:1fr;
+  }
+
+  .categories{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .toolbar{
+    overflow-x:auto;
+
+    flex-wrap:nowrap;
+
+    padding-bottom:3px;
+  }
+
+  .category-btn{
+    flex-shrink:0;
+  }
+
+  .refresh-btn{
+    margin-left:0;
+    flex-shrink:0;
+  }
+
   footer{
     flex-direction:column;
+
     gap:8px;
   }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
+
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
+
 <header>
+
   <div class="brand">
-    <div class="logo"><span></span></div>
-    <div>
-      <h1>NEWSFORGE</h1>
-      <small>AI NEWS INTELLIGENCE</small>
+
+    <div class="logo">
+      <span></span>
     </div>
+
+    <div>
+
+      <h1>NEWSFORGE</h1>
+
+      <small>
+        AI NEWS INTELLIGENCE
+      </small>
+
+    </div>
+
   </div>
 
+
   <div class="status">
-    <i class="status-dot"></i>
-    SYSTEM ONLINE
+
+    <i
+      class="status-dot"
+      id="statusDot">
+    </i>
+
+    <span id="systemStatus">
+      SYSTEM ONLINE
+    </span>
+
   </div>
+
 </header>
+
+
+<!-- =======================================================
+     HERO
+     ======================================================= -->
 
 <section class="hero">
 
-  <div class="eyebrow">Autonomous Newsroom</div>
+  <div class="eyebrow">
+    Autonomous Newsroom
+  </div>
 
-  <h2>Know what matters.<br>Before everyone else.</h2>
+
+  <h2>
+    Know what matters.<br>
+    Before everyone else.
+  </h2>
+
 
   <p>
-    NEWSFORGE is an AI-powered intelligence engine designed to
-    discover emerging stories, analyze what is happening, create
-    platform-specific content and eventually distribute it automatically.
+    NEWSFORGE is an AI-powered intelligence engine
+    designed to discover emerging stories, analyze
+    what is happening, verify information, create
+    platform-specific content and eventually
+    distribute it automatically.
   </p>
 
+
   <div class="hero-actions">
-    <button class="primary" onclick="discover()">Discover Trending News</button>
-    <button class="secondary" onclick="runDemo()">Run AI Pipeline</button>
+
+    <button
+      class="primary"
+      id="discoverBtn">
+      Discover Trending News
+    </button>
+
+
+    <button
+      class="secondary"
+      id="pipelineBtn">
+      Run AI Pipeline
+    </button>
+
+  </div>
+
+
+  <div class="live-strip">
+
+    <i class="live-strip-dot"></i>
+
+    <span id="feedStatus">
+      NEWS INTELLIGENCE ENGINE READY
+    </span>
+
   </div>
 
 </section>
+
+
+<!-- =======================================================
+     METRICS
+     ======================================================= -->
 
 <section class="grid">
 
   <div class="card metric">
-    <div class="metric-label">Stories detected</div>
-    <div class="metric-value" id="stories">128</div>
-    <div class="metric-change">↑ 18% today</div>
+
+    <div class="metric-label">
+      Stories detected
+    </div>
+
+    <div
+      class="metric-value"
+      id="stories">
+      0
+    </div>
+
+    <div
+      class="metric-change"
+      id="storiesChange">
+      Awaiting discovery
+    </div>
+
   </div>
 
-  <div class="card metric">
-    <div class="metric-label">High potential</div>
-    <div class="metric-value" id="potential">17</div>
-    <div class="metric-change">↑ 6 new</div>
-  </div>
 
   <div class="card metric">
-    <div class="metric-label">Content generated</div>
-    <div class="metric-value">42</div>
-    <div class="metric-change">This cycle</div>
+
+    <div class="metric-label">
+      High potential
+    </div>
+
+    <div
+      class="metric-value"
+      id="potential">
+      0
+    </div>
+
+    <div
+      class="metric-change"
+      id="potentialChange">
+      Trend scoring offline
+    </div>
+
   </div>
 
+
   <div class="card metric">
-    <div class="metric-label">Automation</div>
-    <div class="metric-value">78%</div>
-    <div class="metric-change">Operational</div>
+
+    <div class="metric-label">
+      Content generated
+    </div>
+
+    <div
+      class="metric-value"
+      id="contentGenerated">
+      0
+    </div>
+
+    <div class="metric-change">
+      This cycle
+    </div>
+
+  </div>
+
+
+  <div class="card metric">
+
+    <div class="metric-label">
+      Automation
+    </div>
+
+    <div
+      class="metric-value">
+      78%
+    </div>
+
+    <div class="metric-change">
+      Operational
+    </div>
+
   </div>
 
 </section>
 
+
+<!-- =======================================================
+     TRENDING INTELLIGENCE
+     ======================================================= -->
+
 <section class="section">
 
   <div class="section-head">
-    <h3>Trending Intelligence</h3>
-    <span>INDIA · LIVE SIMULATION</span>
+
+    <h3>
+      Trending Intelligence
+    </h3>
+
+    <span id="newsCountLabel">
+      INDIA · READY
+    </span>
+
   </div>
+
+
+  <!-- CATEGORY TOOLBAR -->
+
+  <div class="toolbar">
+
+    <button
+      class="category-btn active"
+      data-category="all">
+      All
+    </button>
+
+    <button
+      class="category-btn"
+      data-category="business">
+      Business
+    </button>
+
+    <button
+      class="category-btn"
+      data-category="technology">
+      Technology
+    </button>
+
+    <button
+      class="category-btn"
+      data-category="sports">
+      Sports
+    </button>
+
+    <button
+      class="category-btn"
+      data-category="science">
+      Science
+    </button>
+
+    <button
+      class="category-btn"
+      data-category="health">
+      Health
+    </button>
+
+    <button
+      class="category-btn"
+      data-category="entertainment">
+      Entertainment
+    </button>
+
+
+    <button
+      class="refresh-btn"
+      id="refreshBtn">
+      ↻ Refresh
+    </button>
+
+  </div>
+
 
   <div class="news-layout">
 
-    <div class="news-list" id="newsList">
 
-      <div class="news">
-        <div class="rank">01</div>
-        <div>
-          <h4>Major technology development drives national attention</h4>
-          <p>Multiple sources detected · 14 min ago</p>
-        </div>
-        <div class="score">
-          <strong>94</strong>
-          <span>trend</span>
-        </div>
+    <!-- NEWS LIST -->
+
+    <div
+      class="news-list"
+      id="newsList">
+
+
+      <div class="empty-card">
+
+        <h4>
+          Intelligence feed ready
+        </h4>
+
+        <p>
+          Press “Discover Trending News” to
+          retrieve live Indian headlines from
+          the NEWSFORGE backend.
+        </p>
+
       </div>
 
-      <div class="news">
-        <div class="rank">02</div>
-        <div>
-          <h4>Breaking economic development triggers growing discussion</h4>
-          <p>27 sources detected · 21 min ago</p>
-        </div>
-        <div class="score">
-          <strong>91</strong>
-          <span>trend</span>
-        </div>
-      </div>
-
-      <div class="news">
-        <div class="rank">03</div>
-        <div>
-          <h4>National policy story rapidly gaining online momentum</h4>
-          <p>Social velocity increasing · 34 min ago</p>
-        </div>
-        <div class="score">
-          <strong>87</strong>
-          <span>trend</span>
-        </div>
-      </div>
-
-      <div class="news">
-        <div class="rank">04</div>
-        <div>
-          <h4>Sports story crosses major engagement threshold</h4>
-          <p>High velocity · 41 min ago</p>
-        </div>
-        <div class="score">
-          <strong>83</strong>
-          <span>trend</span>
-        </div>
-      </div>
 
     </div>
+
+
+    <!-- CATEGORY INTELLIGENCE -->
 
     <div class="categories">
 
-      <div class="category">
-        <div class="cat-top">
-          <span class="cat-name">Politics</span>
-          <b class="cat-score">92</b>
-        </div>
-        <div class="bar"><i style="width:92%"></i></div>
-      </div>
 
       <div class="category">
+
         <div class="cat-top">
-          <span class="cat-name">Technology</span>
-          <b class="cat-score">89</b>
+
+          <span class="cat-name">
+            Politics
+          </span>
+
+          <b
+            class="cat-score"
+            id="catPolitics">
+            --
+          </b>
+
         </div>
-        <div class="bar"><i style="width:89%"></i></div>
+
+        <div class="bar">
+          <i id="barPolitics"></i>
+        </div>
+
       </div>
 
-      <div class="category">
-        <div class="cat-top">
-          <span class="cat-name">Business</span>
-          <b class="cat-score">86</b>
-        </div>
-        <div class="bar"><i style="width:86%"></i></div>
-      </div>
 
       <div class="category">
+
         <div class="cat-top">
-          <span class="cat-name">Sports</span>
-          <b class="cat-score">81</b>
+
+          <span class="cat-name">
+            Technology
+          </span>
+
+          <b
+            class="cat-score"
+            id="catTechnology">
+            --
+          </b>
+
         </div>
-        <div class="bar"><i style="width:81%"></i></div>
+
+        <div class="bar">
+          <i id="barTechnology"></i>
+        </div>
+
       </div>
 
-      <div class="category">
-        <div class="cat-top">
-          <span class="cat-name">Science</span>
-          <b class="cat-score">76</b>
-        </div>
-        <div class="bar"><i style="width:76%"></i></div>
-      </div>
 
       <div class="category">
+
         <div class="cat-top">
-          <span class="cat-name">World</span>
-          <b class="cat-score">73</b>
+
+          <span class="cat-name">
+            Business
+          </span>
+
+          <b
+            class="cat-score"
+            id="catBusiness">
+            --
+          </b>
+
         </div>
-        <div class="bar"><i style="width:73%"></i></div>
+
+        <div class="bar">
+          <i id="barBusiness"></i>
+        </div>
+
       </div>
+
+
+      <div class="category">
+
+        <div class="cat-top">
+
+          <span class="cat-name">
+            Sports
+          </span>
+
+          <b
+            class="cat-score"
+            id="catSports">
+            --
+          </b>
+
+        </div>
+
+        <div class="bar">
+          <i id="barSports"></i>
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="cat-top">
+
+          <span class="cat-name">
+            Science
+          </span>
+
+          <b
+            class="cat-score"
+            id="catScience">
+            --
+          </b>
+
+        </div>
+
+        <div class="bar">
+          <i id="barScience"></i>
+        </div>
+
+      </div>
+
+
+      <div class="category">
+
+        <div class="cat-top">
+
+          <span class="cat-name">
+            World
+          </span>
+
+          <b
+            class="cat-score"
+            id="catWorld">
+            --
+          </b>
+
+        </div>
+
+        <div class="bar">
+          <i id="barWorld"></i>
+        </div>
+
+      </div>
+
 
     </div>
 
@@ -673,196 +1807,2196 @@ footer{
 
 </section>
 
+
+<!-- =======================================================
+     AI PIPELINE
+     ======================================================= -->
+
 <section class="section">
 
   <div class="section-head">
-    <h3>AI Automation Pipeline</h3>
-    <span id="pipelineStatus">READY</span>
+
+    <h3>
+      AI Automation Pipeline
+    </h3>
+
+    <span id="pipelineStatus">
+      READY
+    </span>
+
   </div>
+
 
   <div class="pipeline">
 
-    <div class="step">
-      <div class="step-number">01</div>
-      <h4>DISCOVER</h4>
-      <p>Scan available news and trend signals.</p>
-      <div class="step-status" id="s1">READY</div>
-    </div>
 
     <div class="step">
-      <div class="step-number">02</div>
-      <h4>RESEARCH</h4>
-      <p>Collect sources and understand the story.</p>
-      <div class="step-status" id="s2">READY</div>
+
+      <div class="step-number">
+        01
+      </div>
+
+      <h4>
+        DISCOVER
+      </h4>
+
+      <p>
+        Scan available news and emerging
+        trend signals.
+      </p>
+
+      <div
+        class="step-status"
+        id="s1">
+        READY
+      </div>
+
     </div>
 
-    <div class="step">
-      <div class="step-number">03</div>
-      <h4>VERIFY</h4>
-      <p>Compare claims and identify conflicts.</p>
-      <div class="step-status" id="s3">READY</div>
-    </div>
 
     <div class="step">
-      <div class="step-number">04</div>
-      <h4>CREATE</h4>
-      <p>Generate articles and social content.</p>
-      <div class="step-status" id="s4">READY</div>
+
+      <div class="step-number">
+        02
+      </div>
+
+      <h4>
+        RESEARCH
+      </h4>
+
+      <p>
+        Collect sources and understand
+        the story context.
+      </p>
+
+      <div
+        class="step-status"
+        id="s2">
+        READY
+      </div>
+
     </div>
 
+
     <div class="step">
-      <div class="step-number">05</div>
-      <h4>PUBLISH</h4>
-      <p>Prepare approved content for distribution.</p>
-      <div class="step-status" id="s5">PAUSED</div>
+
+      <div class="step-number">
+        03
+      </div>
+
+      <h4>
+        VERIFY
+      </h4>
+
+      <p>
+        Compare claims and identify
+        conflicting information.
+      </p>
+
+      <div
+        class="step-status"
+        id="s3">
+        READY
+      </div>
+
     </div>
+
+
+    <div class="step">
+
+      <div class="step-number">
+        04
+      </div>
+
+      <h4>
+        CREATE
+      </h4>
+
+      <p>
+        Generate articles, captions and
+        platform-specific content.
+      </p>
+
+      <div
+        class="step-status"
+        id="s4">
+        READY
+      </div>
+
+    </div>
+
+
+    <div class="step">
+
+      <div class="step-number">
+        05
+      </div>
+
+      <h4>
+        PUBLISH
+      </h4>
+
+      <p>
+        Prepare approved content for
+        social distribution.
+      </p>
+
+      <div
+        class="step-status paused"
+        id="s5">
+        PAUSED
+      </div>
+
+    </div>
+
 
   </div>
 
 </section>
 
+
+<!-- =======================================================
+     SYSTEM ACTIVITY
+     ======================================================= -->
+
 <section class="section">
 
   <div class="section-head">
-    <h3>System Activity</h3>
-    <span>LIVE EVENT STREAM</span>
+
+    <h3>
+      System Activity
+    </h3>
+
+    <span>
+      LIVE EVENT STREAM
+    </span>
+
   </div>
+
 
   <div class="activity">
 
-    <div class="card log" id="log">
 
-      <div><span>[21:01:02]</span> <b class="ok">SYSTEM</b> NEWSFORGE initialized</div>
-      <div><span>[21:01:03]</span> <b class="ok">ENGINE</b> Trend monitor ready</div>
-      <div><span>[21:01:04]</span> <b class="ok">AI</b> Content engine standing by</div>
-      <div><span>[21:01:05]</span> <b class="warn">PUBLISH</b> Waiting for approval</div>
+    <div
+      class="card log"
+      id="log">
+
+      <div>
+        <span>
+          [SYSTEM]
+        </span>
+
+        <b class="ok">
+          NEWSFORGE initialized
+        </b>
+      </div>
+
+      <div>
+        <span>
+          [ENGINE]
+        </span>
+
+        <b class="ok">
+          News discovery engine ready
+        </b>
+      </div>
+
+      <div>
+        <span>
+          [API]
+        </span>
+
+        <b class="ok">
+          Backend endpoint available
+        </b>
+      </div>
+
+      <div>
+        <span>
+          [PUBLISH]
+        </span>
+
+        <b class="warn">
+          Waiting for approval
+        </b>
+      </div>
 
     </div>
 
+
     <div class="card">
 
-      <div class="metric-label">Architecture</div>
+      <div class="metric-label">
+        Architecture
+      </div>
 
-      <div style="margin-top:20px;line-height:2;font-family:monospace;font-size:11px">
 
-        <div>USER</div>
-        <div> ↓</div>
-        <div>NEWS DISCOVERY</div>
-        <div> ↓</div>
-        <div>AI RESEARCH</div>
-        <div> ↓</div>
-        <div>FACT VERIFICATION</div>
-        <div> ↓</div>
-        <div>CONTENT ENGINE</div>
-        <div> ↓</div>
-        <div>APPROVAL</div>
-        <div> ↓</div>
-        <div>PUBLISHING</div>
+      <div class="architecture">
+
+        <div class="arch-node">
+          USER
+        </div>
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+        <div class="arch-node">
+          NEWS DISCOVERY
+        </div>
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+        <div class="arch-node">
+          AI RESEARCH
+        </div>
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+        <div class="arch-node">
+          FACT VERIFICATION
+        </div>
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+        <div class="arch-node">
+          CONTENT ENGINE
+        </div>
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+        <div class="arch-node">
+          HUMAN APPROVAL
+        </div>
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+        <div class="arch-node">
+          PUBLISHING
+        </div>
 
       </div>
 
     </div>
 
+
   </div>
 
 </section>
 
+
 <footer>
-  <span>NEWSFORGE AI · DEVELOPMENT BUILD</span>
-  <span>DISCOVER · VERIFY · CREATE · PUBLISH</span>
+
+  <span>
+    NEWSFORGE AI · DEVELOPMENT BUILD
+  </span>
+
+  <span>
+    DISCOVER · VERIFY · CREATE · PUBLISH
+  </span>
+
 </footer>
+
 
 </div>
 
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
+
 <script>
+
+
+/* =========================================================
+   NEWSFORGE AI
+   LIVE FRONTEND ENGINE
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   GLOBAL STATE
+   --------------------------------------------------------- */
+
+const state = {
+
+  articles: [],
+
+  category: "all",
+
+  loading: false,
+
+  lastUpdated: null,
+
+  contentGenerated: 0
+
+};
+
+
+/* ---------------------------------------------------------
+   DOM HELPERS
+   --------------------------------------------------------- */
+
+const $ = selector =>
+  document.querySelector(selector);
+
+const $$ = selector =>
+  document.querySelectorAll(selector);
+
+
+/* ---------------------------------------------------------
+   ESCAPE HTML
+   --------------------------------------------------------- */
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ---------------------------------------------------------
+   TOAST
+   --------------------------------------------------------- */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast =
+    $("#toast");
+
+  if(!toast) return;
+
+  toast.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(() => {
+
+      toast.classList.remove("show");
+
+    },3000);
+
+}
+
+
+/* ---------------------------------------------------------
+   ACTIVITY LOG
+   --------------------------------------------------------- */
 
 function addLog(message,type="ok"){
 
-  const log=document.getElementById("log");
+  const log =
+    $("#log");
 
-  const time=new Date().toLocaleTimeString("en-IN",{
-    hour12:false
-  });
+  if(!log) return;
 
-  const row=document.createElement("div");
 
-  row.innerHTML=
-    `<span>[${time}]</span> <b class="${type}">${message}</b>`;
+  const time =
+    new Date()
+      .toLocaleTimeString(
+        "en-IN",
+        {
+          hour12:false
+        }
+      );
+
+
+  const row =
+    document.createElement("div");
+
+
+  row.innerHTML =
+
+    `<span>[${time}]</span>
+     <b class="${type}">
+       ${escapeHTML(message)}
+     </b>`;
+
 
   log.appendChild(row);
 
-  log.scrollTop=log.scrollHeight;
-}
-
-
-function discover(){
-
-  addLog("TREND ENGINE started","ok");
-
-  const btn=document.querySelector(".primary");
-
-  btn.textContent="Scanning...";
-
-  setTimeout(()=>{
-    addLog("128 signals discovered","ok");
-  },700);
-
-  setTimeout(()=>{
-    addLog("17 high-potential stories identified","ok");
-
-    document.getElementById("stories").textContent=
-      Math.floor(128+Math.random()*40);
-
-    document.getElementById("potential").textContent=
-      Math.floor(17+Math.random()*8);
-
-    btn.textContent="Discover Trending News";
-
-  },1500);
+  log.scrollTop =
+    log.scrollHeight;
 
 }
 
 
-function runDemo(){
+/* ---------------------------------------------------------
+   FORMAT TIME
+   --------------------------------------------------------- */
 
-  const status=document.getElementById("pipelineStatus");
+function formatTime(dateString){
 
-  status.textContent="RUNNING";
+  if(!dateString){
+    return "Time unavailable";
+  }
 
-  const steps=["s1","s2","s3","s4","s5"];
 
-  steps.forEach((id,i)=>{
+  const date =
+    new Date(dateString);
 
-    setTimeout(()=>{
 
-      document.getElementById(id).textContent="RUNNING";
-      document.getElementById(id).classList.add("live");
+  if(Number.isNaN(date.getTime())){
+    return "Recently";
+  }
 
-      addLog("Pipeline step "+(i+1)+" running","ok");
 
-    },i*1000);
+  const difference =
+    Date.now() -
+    date.getTime();
 
-    setTimeout(()=>{
 
-      document.getElementById(id).textContent=
-        id==="s5" ? "AWAITING APPROVAL" : "COMPLETE";
+  const minutes =
+    Math.floor(
+      difference / 60000
+    );
 
-      document.getElementById(id).classList.remove("live");
 
-    },i*1000+800);
+  if(minutes < 1){
+    return "Just now";
+  }
+
+
+  if(minutes < 60){
+
+    return (
+      minutes +
+      " min ago"
+    );
+
+  }
+
+
+  const hours =
+    Math.floor(
+      minutes / 60
+    );
+
+
+  if(hours < 24){
+
+    return (
+      hours +
+      " hr ago"
+    );
+
+  }
+
+
+  const days =
+    Math.floor(
+      hours / 24
+    );
+
+
+  return (
+    days +
+    " day" +
+    (days === 1 ? "" : "s") +
+    " ago"
+  );
+
+}
+
+
+/* ---------------------------------------------------------
+   TREND SCORE
+   --------------------------------------------------------- */
+
+function calculateTrendScore(article,index){
+
+  let score = 65;
+
+
+  const text = (
+
+    (article.title || "") +
+    " " +
+    (article.description || "")
+
+  ).toLowerCase();
+
+
+  /* RECENCY */
+
+  if(article.publishedAt){
+
+    const age =
+      (
+        Date.now() -
+        new Date(
+          article.publishedAt
+        ).getTime()
+      ) / 3600000;
+
+
+    if(age < 1){
+
+      score += 18;
+
+    }else if(age < 3){
+
+      score += 14;
+
+    }else if(age < 6){
+
+      score += 10;
+
+    }else if(age < 12){
+
+      score += 6;
+
+    }else if(age < 24){
+
+      score += 3;
+
+    }
+
+  }
+
+
+  /* HIGH-INTEREST SIGNALS */
+
+  const signals = [
+
+    "breaking",
+    "latest",
+    "india",
+    "government",
+    "minister",
+    "prime minister",
+    "president",
+    "election",
+    "supreme court",
+    "policy",
+    "economy",
+    "market",
+    "stock",
+    "technology",
+    "artificial intelligence",
+    "ai",
+    "startup",
+    "cricket",
+    "sports",
+    "space",
+    "isro",
+    "nasa",
+    "science",
+    "health",
+    "business"
+
+  ];
+
+
+  signals.forEach(signal => {
+
+    if(text.includes(signal)){
+
+      score += 1;
+
+    }
 
   });
 
-  setTimeout(()=>{
 
-    status.textContent="AWAITING APPROVAL";
+  /*
+    Slight ranking normalization.
+  */
 
-    addLog("Content package generated","ok");
-    addLog("Publishing paused: human approval required","warn");
+  score -=
+    Math.min(
+      index * .6,
+      10
+    );
 
-  },5200);
+
+  return Math.max(
+    50,
+    Math.min(
+      99,
+      Math.round(score)
+    )
+  );
 
 }
+
+
+/* ---------------------------------------------------------
+   FETCH LIVE NEWS
+   --------------------------------------------------------- */
+
+async function fetchNews(){
+
+  if(state.loading){
+    return;
+  }
+
+
+  state.loading =
+    true;
+
+
+  const button =
+    $("#discoverBtn");
+
+  const refresh =
+    $("#refreshBtn");
+
+  const status =
+    $("#feedStatus");
+
+  const newsLabel =
+    $("#newsCountLabel");
+
+
+  if(button){
+
+    button.disabled =
+      true;
+
+    button.textContent =
+      "Scanning News...";
+
+  }
+
+
+  if(refresh){
+
+    refresh.disabled =
+      true;
+
+    refresh.classList.add(
+      "loading"
+    );
+
+    refresh.textContent =
+      "↻ Scanning";
+
+  }
+
+
+  if(status){
+
+    status.textContent =
+      "CONNECTING TO LIVE NEWS ENGINE";
+
+  }
+
+
+  if(newsLabel){
+
+    newsLabel.textContent =
+      "INDIA · FETCHING";
+
+  }
+
+
+  renderLoading();
+
+
+  addLog(
+    "Live news discovery started",
+    "ok"
+  );
+
+
+  try{
+
+    /*
+      IMPORTANT:
+
+      We use a relative URL.
+
+      The browser automatically calls:
+
+      /api/news
+
+      on the SAME Vercel domain.
+
+      No domain is hard-coded.
+    */
+
+    let url =
+      "/api/news?country=in&pageSize=20";
+
+
+    /*
+      If a category is selected,
+      NewsAPI top-headlines supports
+      category filtering.
+    */
+
+    if(
+      state.category !== "all"
+    ){
+
+      url +=
+        "&category=" +
+        encodeURIComponent(
+          state.category
+        );
+
+    }
+
+
+    let response =
+      await fetch(
+        url,
+        {
+          method:"GET",
+
+          headers:{
+            "Accept":
+              "application/json"
+          },
+
+          cache:"no-store"
+        }
+      );
+
+
+    let data =
+      await response.json();
+
+
+    /*
+      If no articles are returned,
+      try a broader India query.
+    */
+
+    if(
+      response.ok &&
+      data.status === "success" &&
+      (
+        !Array.isArray(
+          data.articles
+        ) ||
+        data.articles.length === 0
+      )
+    ){
+
+      addLog(
+        "Headline feed returned zero stories. Expanding discovery...",
+        "warn"
+      );
+
+
+      let fallbackUrl =
+        "/api/news?country=in&q=India&pageSize=20";
+
+
+      response =
+        await fetch(
+          fallbackUrl,
+          {
+            method:"GET",
+
+            headers:{
+              "Accept":
+                "application/json"
+            },
+
+            cache:"no-store"
+          }
+        );
+
+
+      data =
+        await response.json();
+
+    }
+
+
+    /*
+      API-level failure.
+    */
+
+    if(!response.ok){
+
+      throw new Error(
+        data.message ||
+        "News service returned an error."
+      );
+
+    }
+
+
+    if(
+      data.status !==
+      "success"
+    ){
+
+      throw new Error(
+        data.message ||
+        "News service failed."
+      );
+
+    }
+
+
+    const articles =
+      Array.isArray(
+        data.articles
+      )
+      ?
+      data.articles
+      :
+      [];
+
+
+    state.articles =
+      articles;
+
+    state.lastUpdated =
+      new Date();
+
+
+    /*
+      Update interface.
+    */
+
+    renderNews();
+
+    updateMetrics();
+
+    updateCategoryIntelligence();
+
+
+    /*
+      Success logging.
+    */
+
+    addLog(
+      `${articles.length} live stories received`,
+      "ok"
+    );
+
+
+    if(articles.length){
+
+      addLog(
+        "NEWSFORGE intelligence feed updated",
+        "ok"
+      );
+
+
+      if(status){
+
+        status.textContent =
+          "LIVE · NEWSAPI CONNECTED";
+
+      }
+
+
+      if(newsLabel){
+
+        newsLabel.textContent =
+          `INDIA · ${articles.length} STORIES`;
+
+      }
+
+
+      showToast(
+        `${articles.length} live stories loaded`
+      );
+
+
+    }else{
+
+      addLog(
+        "NewsAPI responded successfully but returned zero stories",
+        "warn"
+      );
+
+
+      if(status){
+
+        status.textContent =
+          "ONLINE · NO STORIES";
+
+      }
+
+
+      if(newsLabel){
+
+        newsLabel.textContent =
+          "INDIA · NO STORIES";
+
+      }
+
+    }
+
+
+    updateSystemOnline();
+
+  }
+
+
+  catch(error){
+
+    console.error(
+      "NEWSFORGE:",
+      error
+    );
+
+
+    addLog(
+      "News engine error: " +
+      error.message,
+      "warn"
+    );
+
+
+    renderError(
+      error.message
+    );
+
+
+    const status =
+      $("#feedStatus");
+
+
+    if(status){
+
+      status.textContent =
+        "NEWS ENGINE ERROR";
+
+    }
+
+
+    const newsLabel =
+      $("#newsCountLabel");
+
+
+    if(newsLabel){
+
+      newsLabel.textContent =
+        "INDIA · ERROR";
+
+    }
+
+
+    setSystemError();
+
+  }
+
+
+  finally{
+
+    state.loading =
+      false;
+
+
+    if(button){
+
+      button.disabled =
+        false;
+
+      button.textContent =
+        "Discover Trending News";
+
+    }
+
+
+    if(refresh){
+
+      refresh.disabled =
+        false;
+
+      refresh.classList.remove(
+        "loading"
+      );
+
+      refresh.textContent =
+        "↻ Refresh";
+
+    }
+
+  }
+
+}
+
+
+/* ---------------------------------------------------------
+   LOADING UI
+   --------------------------------------------------------- */
+
+function renderLoading(){
+
+  const list =
+    $("#newsList");
+
+  if(!list) return;
+
+
+  list.innerHTML = `
+
+    <div class="loading-card">
+
+      <div class="spinner"></div>
+
+      <div class="loading-text">
+
+        <strong>
+          Discovering live stories...
+        </strong>
+
+        <br>
+
+        NEWSFORGE is querying the
+        news intelligence backend.
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ---------------------------------------------------------
+   ERROR UI
+   --------------------------------------------------------- */
+
+function renderError(message){
+
+  const list =
+    $("#newsList");
+
+  if(!list) return;
+
+
+  list.innerHTML = `
+
+    <div class="error-card">
+
+      <h4>
+        News engine connection failed
+      </h4>
+
+      <p>
+        ${escapeHTML(message)}
+      </p>
+
+      <p style="margin-top:10px">
+        The frontend is running, but the
+        backend did not return a valid
+        news response.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ---------------------------------------------------------
+   EMPTY UI
+   --------------------------------------------------------- */
+
+function renderEmpty(){
+
+  const list =
+    $("#newsList");
+
+  if(!list) return;
+
+
+  list.innerHTML = `
+
+    <div class="empty-card">
+
+      <h4>
+        No stories detected
+      </h4>
+
+      <p>
+        The news source responded successfully,
+        but no articles were returned for the
+        current request.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ---------------------------------------------------------
+   RENDER NEWS
+   --------------------------------------------------------- */
+
+function renderNews(){
+
+  const list =
+    $("#newsList");
+
+  if(!list) return;
+
+
+  if(
+    !state.articles.length
+  ){
+
+    renderEmpty();
+
+    return;
+
+  }
+
+
+  const visible =
+    getFilteredArticles();
+
+
+  if(!visible.length){
+
+    list.innerHTML = `
+
+      <div class="empty-card">
+
+        <h4>
+          No matching stories
+        </h4>
+
+        <p>
+          No returned articles match
+          the selected category.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML = "";
+
+
+  visible
+    .slice(0,20)
+    .forEach(
+      (article,index) => {
+
+        const card =
+          createNewsCard(
+            article,
+            index
+          );
+
+        list.appendChild(
+          card
+        );
+
+      }
+    );
+
+}
+
+
+/* ---------------------------------------------------------
+   FILTER ARTICLES
+   --------------------------------------------------------- */
+
+function getFilteredArticles(){
+
+  if(
+    state.category ===
+    "all"
+  ){
+
+    return state.articles;
+
+  }
+
+
+  const keyword =
+    state.category
+      .toLowerCase();
+
+
+  return state.articles
+    .filter(article => {
+
+      const text = (
+
+        (article.title || "") +
+        " " +
+        (article.description || "")
+
+      ).toLowerCase();
+
+
+      const categoryWords = {
+
+        business:[
+          "business",
+          "market",
+          "economy",
+          "finance",
+          "stock",
+          "company",
+          "startup",
+          "bank"
+        ],
+
+        technology:[
+          "technology",
+          "tech",
+          "artificial intelligence",
+          "ai",
+          "software",
+          "google",
+          "microsoft",
+          "apple",
+          "internet"
+        ],
+
+        sports:[
+          "sports",
+          "cricket",
+          "football",
+          "tennis",
+          "match",
+          "player",
+          "ipl"
+        ],
+
+        science:[
+          "science",
+          "space",
+          "isro",
+          "nasa",
+          "research",
+          "scientist",
+          "satellite"
+        ],
+
+        health:[
+          "health",
+          "medical",
+          "medicine",
+          "hospital",
+          "doctor",
+          "disease",
+          "healthcare"
+        ],
+
+        entertainment:[
+          "movie",
+          "film",
+          "actor",
+          "actress",
+          "music",
+          "entertainment",
+          "bollywood"
+        ]
+
+      };
+
+
+      const words =
+        categoryWords[
+          keyword
+        ] || [];
+
+
+      return words.some(
+        word =>
+          text.includes(word)
+      );
+
+    });
+
+}
+
+
+/* ---------------------------------------------------------
+   CREATE NEWS CARD
+   --------------------------------------------------------- */
+
+function createNewsCard(
+  article,
+  index
+){
+
+  const score =
+    calculateTrendScore(
+      article,
+      index
+    );
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+
+  card.className =
+    "news";
+
+
+  const rank =
+    String(index + 1)
+      .padStart(2,"0");
+
+
+  const source =
+    article.source ||
+    "Unknown source";
+
+
+  const title =
+    article.title ||
+    "Untitled story";
+
+
+  const description =
+    article.description ||
+    "No description available.";
+
+
+  const time =
+    formatTime(
+      article.publishedAt
+    );
+
+
+  card.innerHTML = `
+
+    <div class="rank">
+      ${rank}
+    </div>
+
+    <div class="news-main">
+
+      <h4>
+        ${escapeHTML(title)}
+      </h4>
+
+      <div class="news-source">
+
+        <span class="source-pill">
+          ${escapeHTML(source)}
+        </span>
+
+        <span>
+          ·
+        </span>
+
+        <span>
+          ${escapeHTML(time)}
+        </span>
+
+      </div>
+
+      <div class="news-description">
+        ${escapeHTML(description)}
+      </div>
+
+      ${
+        article.url
+        ?
+        `
+        <span class="story-open">
+          Open source ↗
+        </span>
+        `
+        :
+        ""
+      }
+
+    </div>
+
+    <div class="score">
+
+      <strong>
+        ${score}
+      </strong>
+
+      <span>
+        forge score
+      </span>
+
+    </div>
+
+  `;
+
+
+  /*
+    Open original article.
+  */
+
+  card.addEventListener(
+    "click",
+    () => {
+
+      if(
+        article.url
+      ){
+
+        window.open(
+          article.url,
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+      }
+
+    }
+  );
+
+
+  return card;
+
+}
+
+
+/* ---------------------------------------------------------
+   UPDATE METRICS
+   --------------------------------------------------------- */
+
+function updateMetrics(){
+
+  const total =
+    state.articles.length;
+
+
+  const highPotential =
+    state.articles
+      .filter(
+        (article,index) =>
+          calculateTrendScore(
+            article,
+            index
+          ) >= 85
+      )
+      .length;
+
+
+  $("#stories")
+    .textContent =
+    total;
+
+
+  $("#potential")
+    .textContent =
+    highPotential;
+
+
+  $("#storiesChange")
+    .textContent =
+    total
+      ?
+      "LIVE · NewsAPI"
+      :
+      "No stories returned";
+
+
+  $("#potentialChange")
+    .textContent =
+    highPotential
+      ?
+      `${highPotential} high-score stories`
+      :
+      "Awaiting signals";
+
+
+}
+
+
+/* ---------------------------------------------------------
+   CATEGORY INTELLIGENCE
+   --------------------------------------------------------- */
+
+function updateCategoryIntelligence(){
+
+  const categories = {
+
+    Politics:[
+      "government",
+      "minister",
+      "election",
+      "politics",
+      "parliament",
+      "court",
+      "policy",
+      "president"
+    ],
+
+    Technology:[
+      "technology",
+      "tech",
+      "ai",
+      "artificial intelligence",
+      "software",
+      "google",
+      "microsoft",
+      "apple"
+    ],
+
+    Business:[
+      "business",
+      "market",
+      "economy",
+      "stock",
+      "company",
+      "startup",
+      "finance",
+      "bank"
+    ],
+
+    Sports:[
+      "cricket",
+      "football",
+      "sports",
+      "match",
+      "player",
+      "ipl",
+      "tennis"
+    ],
+
+    Science:[
+      "science",
+      "space",
+      "isro",
+      "nasa",
+      "research",
+      "scientist",
+      "satellite"
+    ],
+
+    World:[
+      "world",
+      "usa",
+      "china",
+      "russia",
+      "ukraine",
+      "international",
+      "global"
+    ]
+
+  };
+
+
+  const scores = {};
+
+
+  Object.keys(categories)
+    .forEach(
+      category => {
+        scores[category] = 0;
+      }
+    );
+
+
+  state.articles
+    .forEach(article => {
+
+      const text = (
+
+        (article.title || "") +
+        " " +
+        (article.description || "")
+
+      ).toLowerCase();
+
+
+      Object.entries(
+        categories
+      ).forEach(
+        ([category,words]) => {
+
+          words.forEach(
+            word => {
+
+              if(
+                text.includes(word)
+              ){
+
+                scores[category]++;
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+    });
+
+
+  const max =
+    Math.max(
+      1,
+      ...Object.values(scores)
+    );
+
+
+  Object.keys(scores)
+    .forEach(category => {
+
+      const normalized =
+        Math.round(
+          50 +
+          (
+            scores[category] /
+            max
+          ) * 49
+        );
+
+
+      const key =
+        category;
+
+
+      const scoreElement =
+        document.getElementById(
+          "cat" + key
+        );
+
+
+      const barElement =
+        document.getElementById(
+          "bar" + key
+        );
+
+
+      if(scoreElement){
+
+        scoreElement.textContent =
+          state.articles.length
+            ?
+            normalized
+            :
+            "--";
+
+      }
+
+
+      if(barElement){
+
+        barElement.style.width =
+          state.articles.length
+            ?
+            normalized + "%"
+            :
+            "0%";
+
+      }
+
+    });
+
+}
+
+
+/* ---------------------------------------------------------
+   SYSTEM STATUS
+   --------------------------------------------------------- */
+
+function updateSystemOnline(){
+
+  const dot =
+    $("#statusDot");
+
+  const text =
+    $("#systemStatus");
+
+
+  if(dot){
+
+    dot.classList.remove(
+      "error"
+    );
+
+  }
+
+
+  if(text){
+
+    text.textContent =
+      "SYSTEM ONLINE";
+
+  }
+
+}
+
+
+function setSystemError(){
+
+  const dot =
+    $("#statusDot");
+
+  const text =
+    $("#systemStatus");
+
+
+  if(dot){
+
+    dot.classList.add(
+      "error"
+    );
+
+  }
+
+
+  if(text){
+
+    text.textContent =
+      "ENGINE ERROR";
+
+  }
+
+}
+
+
+/* ---------------------------------------------------------
+   CATEGORY SELECTION
+   --------------------------------------------------------- */
+
+function selectCategory(category){
+
+  state.category =
+    category;
+
+
+  $$(".category-btn")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.category ===
+        category
+      );
+
+    });
+
+
+  addLog(
+    "Discovery filter changed: " +
+    category.toUpperCase(),
+    "ok"
+  );
+
+
+  /*
+    If we already have stories,
+    re-render immediately.
+
+    No API call needed for
+    local filtering.
+  */
+
+  if(
+    state.articles.length
+  ){
+
+    renderNews();
+
+  }
+
+
+  /*
+    If category is selected and
+    there are no articles yet,
+    fetch from backend with the
+    actual NewsAPI category.
+  */
+
+  else if(
+    category !== "all"
+  ){
+
+    fetchNews();
+
+  }
+
+}
+
+
+/* ---------------------------------------------------------
+   PIPELINE
+   --------------------------------------------------------- */
+
+async function runPipeline(){
+
+  if(state.loading){
+
+    showToast(
+      "News discovery is already running."
+    );
+
+    return;
+
+  }
+
+
+  const status =
+    $("#pipelineStatus");
+
+
+  const steps = [
+
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5"
+
+  ];
+
+
+  if(status){
+
+    status.textContent =
+      "RUNNING";
+
+  }
+
+
+  addLog(
+    "NEWSFORGE AI pipeline initialized",
+    "ok"
+  );
+
+
+  /*
+    Step 1
+  */
+
+  setStep(
+    "s1",
+    "RUNNING",
+    true
+  );
+
+
+  addLog(
+    "Discovery engine scanning available stories",
+    "ok"
+  );
+
+
+  if(
+    !state.articles.length
+  ){
+
+    await fetchNews();
+
+  }
+
+
+  await wait(900);
+
+
+  setStep(
+    "s1",
+    "COMPLETE",
+    false
+  );
+
+
+  /*
+    Step 2
+  */
+
+  setStep(
+    "s2",
+    "RUNNING",
+    true
+  );
+
+
+  addLog(
+    "Research stage analyzing story context",
+    "ok"
+  );
+
+
+  await wait(900);
+
+
+  setStep(
+    "s2",
+    "COMPLETE",
+    false
+  );
+
+
+  /*
+    Step 3
+  */
+
+  setStep(
+    "s3",
+    "RUNNING",
+    true
+  );
+
+
+  addLog(
+    "Verification stage comparing available information",
+    "ok"
+  );
+
+
+  await wait(900);
+
+
+  setStep(
+    "s3",
+    "COMPLETE",
+    false
+  );
+
+
+  /*
+    Step 4
+  */
+
+  setStep(
+    "s4",
+    "RUNNING",
+    true
+  );
+
+
+  addLog(
+    "Content engine preparing platform-ready package",
+    "ok"
+  );
+
+
+  await wait(900);
+
+
+  setStep(
+    "s4",
+    "COMPLETE",
+    false
+  );
+
+
+  /*
+    Step 5
+  */
+
+  setStep(
+    "s5",
+    "RUNNING",
+    true
+  );
+
+
+  addLog(
+    "Publishing engine prepared",
+    "ok"
+  );
+
+
+  await wait(900);
+
+
+  setStep(
+    "s5",
+    "AWAITING APPROVAL",
+    false
+  );
+
+
+  if(status){
+
+    status.textContent =
+      "AWAITING APPROVAL";
+
+  }
+
+
+  state.contentGenerated += 1;
+
+
+  $("#contentGenerated")
+    .textContent =
+    state.contentGenerated;
+
+
+  addLog(
+    "Content package generated",
+    "ok"
+  );
+
+
+  addLog(
+    "Publishing paused: human approval required",
+    "warn"
+  );
+
+
+  showToast(
+    "Pipeline complete · approval required"
+  );
+
+}
+
+
+/* ---------------------------------------------------------
+   PIPELINE STEP HELPER
+   --------------------------------------------------------- */
+
+function setStep(
+  id,
+  text,
+  active
+){
+
+  const element =
+    document.getElementById(
+      id
+    );
+
+
+  if(!element) return;
+
+
+  element.textContent =
+    text;
+
+
+  element.classList.toggle(
+    "live",
+    active
+  );
+
+}
+
+
+/* ---------------------------------------------------------
+   WAIT
+   --------------------------------------------------------- */
+
+function wait(milliseconds){
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        milliseconds
+      )
+  );
+
+}
+
+
+/* ---------------------------------------------------------
+   BUTTON EVENTS
+   --------------------------------------------------------- */
+
+$("#discoverBtn")
+  .addEventListener(
+    "click",
+    fetchNews
+  );
+
+
+$("#refreshBtn")
+  .addEventListener(
+    "click",
+    fetchNews
+  );
+
+
+$("#pipelineBtn")
+  .addEventListener(
+    "click",
+    runPipeline
+  );
+
+
+/* ---------------------------------------------------------
+   CATEGORY BUTTON EVENTS
+   --------------------------------------------------------- */
+
+$$(".category-btn")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        selectCategory(
+          button.dataset.category
+        );
+
+      }
+    );
+
+  });
+
+
+/* ---------------------------------------------------------
+   STARTUP
+   --------------------------------------------------------- */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    addLog(
+      "NEWSFORGE initialized",
+      "ok"
+    );
+
+
+    addLog(
+      "Frontend intelligence interface ready",
+      "ok"
+    );
+
+
+    addLog(
+      "Backend news endpoint configured",
+      "ok"
+    );
+
+
+    addLog(
+      "Waiting for discovery command",
+      "ok"
+    );
+
+  }
+);
 
 </script>
 
