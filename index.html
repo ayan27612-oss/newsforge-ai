@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#08090c">
+<title>NEWSFORGE AI</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#08090c;
+  --panel:#0f1116;
+  --panel2:#14171e;
+  --border:rgba(255,255,255,.08);
+  --text:#f4f5f7;
+  --muted:#8d929d;
+  --green:#7cff9b;
+  --red:#ff5d6c;
+  --yellow:#ffd166;
+  --blue:#6ea8ff;
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 80% 0%,rgba(124,255,155,.08),transparent 28%),
+    radial-gradient(circle at 10% 30%,rgba(110,168,255,.06),transparent 25%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+.app{
+  max-width:1500px;
+  margin:auto;
+  padding:22px;
+}
+
+/* HEADER */
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 0 28px;
+  border-bottom:1px solid var(--border);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:42px;
+  height:42px;
+  border:1px solid rgba(124,255,155,.35);
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:rgba(124,255,155,.06);
+  box-shadow:0 0 30px rgba(124,255,155,.08);
+}
+
+.logo span{
+  width:9px;
+  height:9px;
+  background:var(--green);
+  border-radius:50%;
+  box-shadow:0 0 18px var(--green);
+}
+
+.brand h1{
+  font-size:18px;
+  letter-spacing:.14em;
+}
+
+.brand small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:.18em;
+  margin-top:3px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px var(--green);
+}
+
+/* HERO */
+
+.hero{
+  padding:55px 0 40px;
+}
+
+.eyebrow{
+  color:var(--green);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-size:11px;
+  margin-bottom:14px;
+}
+
+.hero h2{
+  font-size:clamp(38px,7vw,78px);
+  line-height:.95;
+  max-width:900px;
+  letter-spacing:-.055em;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:650px;
+  margin-top:20px;
+  line-height:1.7;
+  font-size:15px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:12px;
+  margin-top:28px;
+  flex-wrap:wrap;
+}
+
+.primary{
+  border:0;
+  background:var(--green);
+  color:#071009;
+  padding:14px 20px;
+  border-radius:10px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 35px rgba(124,255,155,.18);
+}
+
+.secondary{
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--text);
+  padding:14px 20px;
+  border-radius:10px;
+}
+
+/* GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.card{
+  background:rgba(15,17,22,.82);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  backdrop-filter:blur(15px);
+}
+
+.metric{
+  min-height:130px;
+}
+
+.metric-label{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.13em;
+}
+
+.metric-value{
+  font-size:34px;
+  font-weight:800;
+  margin-top:20px;
+  letter-spacing:-.04em;
+}
+
+.metric-change{
+  color:var(--green);
+  font-size:11px;
+  margin-top:4px;
+}
+
+/* SECTION */
+
+.section{
+  margin-top:35px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:14px;
+}
+
+.section-head h3{
+  font-size:20px;
+}
+
+.section-head span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* NEWS */
+
+.news-layout{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:14px;
+}
+
+.news-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.news{
+  display:grid;
+  grid-template-columns:60px 1fr auto;
+  gap:15px;
+  align-items:center;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--panel);
+  transition:.2s;
+}
+
+.news:hover{
+  border-color:rgba(124,255,155,.22);
+  transform:translateY(-1px);
+}
+
+.rank{
+  font-size:24px;
+  color:#4d525c;
+  font-weight:800;
+}
+
+.news h4{
+  font-size:14px;
+  line-height:1.4;
+}
+
+.news p{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:6px;
+}
+
+.score{
+  text-align:right;
+}
+
+.score strong{
+  display:block;
+  color:var(--green);
+  font-size:20px;
+}
+
+.score span{
+  color:var(--muted);
+  font-size:9px;
+  text-transform:uppercase;
+}
+
+/* CATEGORIES */
+
+.categories{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.category{
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:15px;
+  background:var(--panel);
+}
+
+.cat-top{
+  display:flex;
+  justify-content:space-between;
+}
+
+.cat-name{
+  font-size:12px;
+}
+
+.cat-score{
+  font-weight:800;
+}
+
+.bar{
+  height:4px;
+  background:#20232a;
+  border-radius:10px;
+  margin-top:14px;
+  overflow:hidden;
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  background:var(--green);
+  border-radius:10px;
+}
+
+/* AUTOMATION */
+
+.pipeline{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+
+.step{
+  padding:18px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  border-radius:14px;
+  position:relative;
+}
+
+.step-number{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.step h4{
+  margin-top:16px;
+  font-size:13px;
+}
+
+.step p{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:7px;
+  line-height:1.5;
+}
+
+.step-status{
+  margin-top:15px;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--green);
+}
+
+/* ACTIVITY */
+
+.activity{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.log{
+  font-family:monospace;
+  font-size:11px;
+  line-height:2;
+}
+
+.log span{
+  color:var(--muted);
+}
+
+.ok{
+  color:var(--green);
+}
+
+.warn{
+  color:var(--yellow);
+}
+
+.live{
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.45}
+}
+
+footer{
+  margin-top:50px;
+  padding:22px 0;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:10px;
+  display:flex;
+  justify-content:space-between;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .news-layout,
+  .activity{
+    grid-template-columns:1fr;
+  }
+
+  .pipeline{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  .app{
+    padding:15px;
+  }
+
+  header{
+    padding-bottom:18px;
+  }
+
+  .status{
+    display:none;
+  }
+
+  .hero{
+    padding:40px 0 30px;
+  }
+
+  .hero h2{
+    font-size:43px;
+  }
+
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .metric{
+    min-height:115px;
+  }
+
+  .metric-value{
+    font-size:27px;
+  }
+
+  .news{
+    grid-template-columns:38px 1fr;
+  }
+
+  .score{
+    display:none;
+  }
+
+  footer{
+    flex-direction:column;
+    gap:8px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div class="brand">
+    <div class="logo"><span></span></div>
+    <div>
+      <h1>NEWSFORGE</h1>
+      <small>AI NEWS INTELLIGENCE</small>
+    </div>
+  </div>
+
+  <div class="status">
+    <i class="status-dot"></i>
+    SYSTEM ONLINE
+  </div>
+</header>
+
+<section class="hero">
+
+  <div class="eyebrow">Autonomous Newsroom</div>
+
+  <h2>Know what matters.<br>Before everyone else.</h2>
+
+  <p>
+    NEWSFORGE is an AI-powered intelligence engine designed to
+    discover emerging stories, analyze what is happening, create
+    platform-specific content and eventually distribute it automatically.
+  </p>
+
+  <div class="hero-actions">
+    <button class="primary" onclick="discover()">Discover Trending News</button>
+    <button class="secondary" onclick="runDemo()">Run AI Pipeline</button>
+  </div>
+
+</section>
+
+<section class="grid">
+
+  <div class="card metric">
+    <div class="metric-label">Stories detected</div>
+    <div class="metric-value" id="stories">128</div>
+    <div class="metric-change">↑ 18% today</div>
+  </div>
+
+  <div class="card metric">
+    <div class="metric-label">High potential</div>
+    <div class="metric-value" id="potential">17</div>
+    <div class="metric-change">↑ 6 new</div>
+  </div>
+
+  <div class="card metric">
+    <div class="metric-label">Content generated</div>
+    <div class="metric-value">42</div>
+    <div class="metric-change">This cycle</div>
+  </div>
+
+  <div class="card metric">
+    <div class="metric-label">Automation</div>
+    <div class="metric-value">78%</div>
+    <div class="metric-change">Operational</div>
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-head">
+    <h3>Trending Intelligence</h3>
+    <span>INDIA · LIVE SIMULATION</span>
+  </div>
+
+  <div class="news-layout">
+
+    <div class="news-list" id="newsList">
+
+      <div class="news">
+        <div class="rank">01</div>
+        <div>
+          <h4>Major technology development drives national attention</h4>
+          <p>Multiple sources detected · 14 min ago</p>
+        </div>
+        <div class="score">
+          <strong>94</strong>
+          <span>trend</span>
+        </div>
+      </div>
+
+      <div class="news">
+        <div class="rank">02</div>
+        <div>
+          <h4>Breaking economic development triggers growing discussion</h4>
+          <p>27 sources detected · 21 min ago</p>
+        </div>
+        <div class="score">
+          <strong>91</strong>
+          <span>trend</span>
+        </div>
+      </div>
+
+      <div class="news">
+        <div class="rank">03</div>
+        <div>
+          <h4>National policy story rapidly gaining online momentum</h4>
+          <p>Social velocity increasing · 34 min ago</p>
+        </div>
+        <div class="score">
+          <strong>87</strong>
+          <span>trend</span>
+        </div>
+      </div>
+
+      <div class="news">
+        <div class="rank">04</div>
+        <div>
+          <h4>Sports story crosses major engagement threshold</h4>
+          <p>High velocity · 41 min ago</p>
+        </div>
+        <div class="score">
+          <strong>83</strong>
+          <span>trend</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="categories">
+
+      <div class="category">
+        <div class="cat-top">
+          <span class="cat-name">Politics</span>
+          <b class="cat-score">92</b>
+        </div>
+        <div class="bar"><i style="width:92%"></i></div>
+      </div>
+
+      <div class="category">
+        <div class="cat-top">
+          <span class="cat-name">Technology</span>
+          <b class="cat-score">89</b>
+        </div>
+        <div class="bar"><i style="width:89%"></i></div>
+      </div>
+
+      <div class="category">
+        <div class="cat-top">
+          <span class="cat-name">Business</span>
+          <b class="cat-score">86</b>
+        </div>
+        <div class="bar"><i style="width:86%"></i></div>
+      </div>
+
+      <div class="category">
+        <div class="cat-top">
+          <span class="cat-name">Sports</span>
+          <b class="cat-score">81</b>
+        </div>
+        <div class="bar"><i style="width:81%"></i></div>
+      </div>
+
+      <div class="category">
+        <div class="cat-top">
+          <span class="cat-name">Science</span>
+          <b class="cat-score">76</b>
+        </div>
+        <div class="bar"><i style="width:76%"></i></div>
+      </div>
+
+      <div class="category">
+        <div class="cat-top">
+          <span class="cat-name">World</span>
+          <b class="cat-score">73</b>
+        </div>
+        <div class="bar"><i style="width:73%"></i></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-head">
+    <h3>AI Automation Pipeline</h3>
+    <span id="pipelineStatus">READY</span>
+  </div>
+
+  <div class="pipeline">
+
+    <div class="step">
+      <div class="step-number">01</div>
+      <h4>DISCOVER</h4>
+      <p>Scan available news and trend signals.</p>
+      <div class="step-status" id="s1">READY</div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">02</div>
+      <h4>RESEARCH</h4>
+      <p>Collect sources and understand the story.</p>
+      <div class="step-status" id="s2">READY</div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">03</div>
+      <h4>VERIFY</h4>
+      <p>Compare claims and identify conflicts.</p>
+      <div class="step-status" id="s3">READY</div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">04</div>
+      <h4>CREATE</h4>
+      <p>Generate articles and social content.</p>
+      <div class="step-status" id="s4">READY</div>
+    </div>
+
+    <div class="step">
+      <div class="step-number">05</div>
+      <h4>PUBLISH</h4>
+      <p>Prepare approved content for distribution.</p>
+      <div class="step-status" id="s5">PAUSED</div>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-head">
+    <h3>System Activity</h3>
+    <span>LIVE EVENT STREAM</span>
+  </div>
+
+  <div class="activity">
+
+    <div class="card log" id="log">
+
+      <div><span>[21:01:02]</span> <b class="ok">SYSTEM</b> NEWSFORGE initialized</div>
+      <div><span>[21:01:03]</span> <b class="ok">ENGINE</b> Trend monitor ready</div>
+      <div><span>[21:01:04]</span> <b class="ok">AI</b> Content engine standing by</div>
+      <div><span>[21:01:05]</span> <b class="warn">PUBLISH</b> Waiting for approval</div>
+
+    </div>
+
+    <div class="card">
+
+      <div class="metric-label">Architecture</div>
+
+      <div style="margin-top:20px;line-height:2;font-family:monospace;font-size:11px">
+
+        <div>USER</div>
+        <div> ↓</div>
+        <div>NEWS DISCOVERY</div>
+        <div> ↓</div>
+        <div>AI RESEARCH</div>
+        <div> ↓</div>
+        <div>FACT VERIFICATION</div>
+        <div> ↓</div>
+        <div>CONTENT ENGINE</div>
+        <div> ↓</div>
+        <div>APPROVAL</div>
+        <div> ↓</div>
+        <div>PUBLISHING</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<footer>
+  <span>NEWSFORGE AI · DEVELOPMENT BUILD</span>
+  <span>DISCOVER · VERIFY · CREATE · PUBLISH</span>
+</footer>
+
+</div>
+
+<script>
+
+function addLog(message,type="ok"){
+
+  const log=document.getElementById("log");
+
+  const time=new Date().toLocaleTimeString("en-IN",{
+    hour12:false
+  });
+
+  const row=document.createElement("div");
+
+  row.innerHTML=
+    `<span>[${time}]</span> <b class="${type}">${message}</b>`;
+
+  log.appendChild(row);
+
+  log.scrollTop=log.scrollHeight;
+}
+
+
+function discover(){
+
+  addLog("TREND ENGINE started","ok");
+
+  const btn=document.querySelector(".primary");
+
+  btn.textContent="Scanning...";
+
+  setTimeout(()=>{
+    addLog("128 signals discovered","ok");
+  },700);
+
+  setTimeout(()=>{
+    addLog("17 high-potential stories identified","ok");
+
+    document.getElementById("stories").textContent=
+      Math.floor(128+Math.random()*40);
+
+    document.getElementById("potential").textContent=
+      Math.floor(17+Math.random()*8);
+
+    btn.textContent="Discover Trending News";
+
+  },1500);
+
+}
+
+
+function runDemo(){
+
+  const status=document.getElementById("pipelineStatus");
+
+  status.textContent="RUNNING";
+
+  const steps=["s1","s2","s3","s4","s5"];
+
+  steps.forEach((id,i)=>{
+
+    setTimeout(()=>{
+
+      document.getElementById(id).textContent="RUNNING";
+      document.getElementById(id).classList.add("live");
+
+      addLog("Pipeline step "+(i+1)+" running","ok");
+
+    },i*1000);
+
+    setTimeout(()=>{
+
+      document.getElementById(id).textContent=
+        id==="s5" ? "AWAITING APPROVAL" : "COMPLETE";
+
+      document.getElementById(id).classList.remove("live");
+
+    },i*1000+800);
+
+  });
+
+  setTimeout(()=>{
+
+    status.textContent="AWAITING APPROVAL";
+
+    addLog("Content package generated","ok");
+    addLog("Publishing paused: human approval required","warn");
+
+  },5200);
+
+}
+
+</script>
+
+</body>
+</html>
