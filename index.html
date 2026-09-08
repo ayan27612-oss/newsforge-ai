@@ -2,54 +2,116 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090612">
-<meta name="description" content="NEWSFORGE AI — AI-powered news discovery, research and editorial intelligence.">
-<title>NEWSFORGE AI</title>
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
+<meta
+  name="theme-color"
+  content="#07060b"
+>
+
+<meta
+  name="description"
+  content="NEWSFORGE AI — Editorial intelligence, news discovery and research."
+>
+
+<title>NEWSFORGE AI — Intelligence Workspace</title>
 
 <style>
+
+/* ============================================================
+   NEWSFORGE AI
+   DESIGN SYSTEM
+   ============================================================ */
+
 :root{
-  --bg:#07040d;
-  --bg2:#0c0716;
-  --panel:#100a1b;
-  --panel2:#150d23;
-  --panel3:#1b1030;
-  --line:rgba(164,91,255,.18);
-  --line2:rgba(164,91,255,.32);
-  --purple:#9147ff;
-  --purple2:#b46cff;
-  --violet:#7c3aed;
-  --blue:#6d7cff;
-  --green:#35e08a;
-  --yellow:#f5c451;
-  --red:#ff5577;
-  --text:#f7f3ff;
-  --soft:#d7cde6;
-  --muted:#9186a2;
-  --muted2:#655b75;
-  --shadow:0 24px 80px rgba(0,0,0,.42);
-  --radius:22px;
-  --radius2:16px;
+
+  --bg:#07060b;
+  --bg-soft:#0b0911;
+  --surface:#0e0c14;
+  --surface-2:#12101a;
+  --surface-3:#17131f;
+  --surface-4:#1c1726;
+
+  --line:rgba(255,255,255,.075);
+  --line-soft:rgba(255,255,255,.045);
+  --line-purple:rgba(153,92,255,.22);
+  --line-purple-strong:rgba(168,105,255,.48);
+
+  --white:#f7f5fa;
+  --text:#e8e3ed;
+  --muted:#96909f;
+  --muted-2:#66616e;
+
+  --purple:#8b5cf6;
+  --purple-light:#b98cff;
+  --purple-bright:#c8a5ff;
+
+  --violet:#6d3ed7;
+  --blue:#7286ff;
+
+  --green:#42d995;
+  --yellow:#e8bb57;
+  --red:#ff5f7b;
+
+  --shadow:
+    0 25px 80px rgba(0,0,0,.42);
+
+  --shadow-purple:
+    0 20px 70px rgba(126,66,221,.14);
+
+  --radius-xl:28px;
+  --radius-lg:22px;
+  --radius-md:16px;
+  --radius-sm:11px;
+
+  --ease:
+    cubic-bezier(.2,.8,.2,1);
+
+  --ease-spring:
+    cubic-bezier(.16,1,.3,1);
+
 }
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
 
 *{
   box-sizing:border-box;
 }
 
 html{
+  margin:0;
+  padding:0;
   scroll-behavior:smooth;
 }
 
 body{
   margin:0;
+  padding:0;
   min-height:100vh;
   overflow-x:hidden;
-  color:var(--text);
+
   background:
-    radial-gradient(circle at 80% -10%,rgba(145,71,255,.20),transparent 32%),
-    radial-gradient(circle at 5% 30%,rgba(124,58,237,.10),transparent 30%),
-    radial-gradient(circle at 90% 75%,rgba(109,124,255,.07),transparent 25%),
+    radial-gradient(
+      circle at 75% -10%,
+      rgba(139,92,246,.13),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at -10% 45%,
+      rgba(109,62,215,.08),
+      transparent 27%
+    ),
     var(--bg);
+
+  color:var(--text);
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -58,17 +120,19 @@ body{
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 
 button,
 input,
-textarea,
 select{
   font:inherit;
 }
 
 button{
-  cursor:pointer;
+  border:0;
 }
 
 a{
@@ -77,61 +141,201 @@ a{
 }
 
 img{
+  display:block;
   max-width:100%;
 }
 
 ::selection{
-  background:rgba(145,71,255,.35);
+  color:white;
+  background:rgba(139,92,246,.42);
 }
 
 ::-webkit-scrollbar{
   width:7px;
+  height:7px;
 }
 
 ::-webkit-scrollbar-track{
-  background:var(--bg);
+  background:#08070c;
 }
 
 ::-webkit-scrollbar-thumb{
-  background:#39204f;
+  background:#30283b;
   border-radius:20px;
 }
 
-/* =========================================================
-   APP SHELL
-========================================================= */
+::-webkit-scrollbar-thumb:hover{
+  background:#4b3a61;
+}
+
+
+/* ============================================================
+   BACKGROUND SYSTEM
+   ============================================================ */
+
+.background{
+  position:fixed;
+  inset:0;
+  z-index:-5;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.background-grid{
+  position:absolute;
+  inset:-30%;
+  opacity:.19;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    55px 55px;
+
+  transform:
+    perspective(700px)
+    rotateX(58deg)
+    translateY(-80px);
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 25%,
+      black 65%,
+      transparent
+    );
+
+  animation:
+    gridDrift 28s linear infinite;
+}
+
+@keyframes gridDrift{
+
+  from{
+    transform:
+      perspective(700px)
+      rotateX(58deg)
+      translateY(-80px);
+  }
+
+  to{
+    transform:
+      perspective(700px)
+      rotateX(58deg)
+      translateY(40px);
+  }
+
+}
+
+.ambient{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.13;
+}
+
+.ambient.one{
+  width:420px;
+  height:420px;
+  background:#7c3aed;
+  right:-180px;
+  top:80px;
+  animation:
+    ambientFloatOne 12s ease-in-out infinite;
+}
+
+.ambient.two{
+  width:300px;
+  height:300px;
+  background:#4f46e5;
+  left:-180px;
+  top:45%;
+  animation:
+    ambientFloatTwo 15s ease-in-out infinite;
+}
+
+@keyframes ambientFloatOne{
+
+  0%,100%{
+    transform:translate(0,0) scale(1);
+  }
+
+  50%{
+    transform:translate(-50px,30px) scale(1.08);
+  }
+
+}
+
+@keyframes ambientFloatTwo{
+
+  0%,100%{
+    transform:translate(0,0);
+  }
+
+  50%{
+    transform:translate(45px,-35px);
+  }
+
+}
+
+
+/* ============================================================
+   APP
+   ============================================================ */
 
 .app{
-  width:100%;
   min-height:100vh;
 }
 
-.container{
-  width:min(1180px,calc(100% - 32px));
-  margin:0 auto;
-}
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* ============================================================
+   TOP BAR
+   ============================================================ */
 
-.header{
+.topbar{
   position:sticky;
   top:0;
-  z-index:50;
-  height:76px;
-  border-bottom:1px solid rgba(164,91,255,.13);
-  background:rgba(7,4,13,.82);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
+  z-index:100;
+
+  height:72px;
+
+  border-bottom:
+    1px solid var(--line);
+
+  background:
+    rgba(7,6,11,.78);
+
+  backdrop-filter:
+    blur(22px)
+    saturate(140%);
+
+  -webkit-backdrop-filter:
+    blur(22px)
+    saturate(140%);
 }
 
-.header-inner{
+.topbar-inner{
+  width:min(
+    1380px,
+    calc(100% - 40px)
+  );
+
   height:100%;
+  margin:auto;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:18px;
+  gap:20px;
 }
 
 .brand{
@@ -141,19 +345,74 @@ img{
   min-width:0;
 }
 
-.brand-mark{
-  width:42px;
-  height:42px;
-  flex:0 0 42px;
+.brand-symbol{
+  width:38px;
+  height:38px;
+
   display:grid;
   place-items:center;
-  border-radius:13px;
-  background:linear-gradient(135deg,#7c3aed,#b46cff);
+
+  border:
+    1px solid
+    rgba(190,143,255,.38);
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(139,92,246,.34),
+      rgba(139,92,246,.07)
+    );
+
   box-shadow:
-    0 10px 35px rgba(145,71,255,.30),
-    inset 0 1px rgba(255,255,255,.25);
-  font-size:20px;
-  font-weight:900;
+    inset 0 1px rgba(255,255,255,.08),
+    0 0 35px rgba(139,92,246,.12);
+
+  color:white;
+  font-weight:950;
+  font-size:15px;
+
+  position:relative;
+  overflow:hidden;
+}
+
+.brand-symbol::after{
+  content:"";
+
+  position:absolute;
+  inset:-50%;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 35%,
+      rgba(255,255,255,.25),
+      transparent 65%
+    );
+
+  transform:
+    translateX(-100%)
+    rotate(15deg);
+
+  animation:
+    logoSweep 4.5s ease-in-out infinite;
+}
+
+@keyframes logoSweep{
+
+  0%,55%{
+    transform:
+      translateX(-100%)
+      rotate(15deg);
+  }
+
+  75%,100%{
+    transform:
+      translateX(100%)
+      rotate(15deg);
+  }
+
 }
 
 .brand-copy{
@@ -161,449 +420,1189 @@ img{
 }
 
 .brand-name{
-  font-size:15px;
-  line-height:1;
-  font-weight:900;
-  letter-spacing:.16em;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.19em;
   white-space:nowrap;
 }
 
 .brand-sub{
-  margin-top:5px;
-  color:var(--muted);
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:.18em;
+  margin-top:4px;
+
+  color:var(--muted-2);
+
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.14em;
+
   white-space:nowrap;
 }
 
-.engine{
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.engine-status{
   display:flex;
   align-items:center;
   gap:8px;
-  padding:9px 12px;
-  border:1px solid rgba(53,224,138,.16);
+
+  padding:
+    8px 11px;
+
+  border:
+    1px solid
+    rgba(66,217,149,.16);
+
   border-radius:999px;
-  background:rgba(53,224,138,.04);
-  color:#a8eac6;
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.13em;
-  white-space:nowrap;
+
+  color:#9ee8c3;
+
+  background:
+    rgba(66,217,149,.035);
+
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.12em;
 }
 
 .engine-dot{
-  width:7px;
-  height:7px;
+  width:6px;
+  height:6px;
   border-radius:50%;
+
   background:var(--green);
-  box-shadow:0 0 14px rgba(53,224,138,.8);
+
+  box-shadow:
+    0 0 0 0 rgba(66,217,149,.4);
+
+  animation:
+    enginePulse 2s infinite;
 }
 
-.engine.offline{
-  color:#ffb3c2;
-  border-color:rgba(255,85,119,.2);
-  background:rgba(255,85,119,.04);
+@keyframes enginePulse{
+
+  0%{
+    box-shadow:
+      0 0 0 0
+      rgba(66,217,149,.35);
+  }
+
+  70%{
+    box-shadow:
+      0 0 0 7px
+      rgba(66,217,149,0);
+  }
+
+  100%{
+    box-shadow:
+      0 0 0 0
+      rgba(66,217,149,0);
+  }
+
 }
 
-.engine.offline .engine-dot{
+.engine-status.offline{
+  color:#ff9fb0;
+  border-color:rgba(255,95,123,.2);
+  background:rgba(255,95,123,.035);
+}
+
+.engine-status.offline .engine-dot{
   background:var(--red);
-  box-shadow:0 0 14px rgba(255,85,119,.8);
 }
 
-/* =========================================================
-   HERO
-========================================================= */
 
-.hero-wrap{
-  padding:42px 0 20px;
-}
+/* ============================================================
+   MAIN SHELL
+   ============================================================ */
 
-.hero{
-  position:relative;
-  overflow:hidden;
-  padding:58px;
-  min-height:430px;
-  border:1px solid var(--line);
-  border-radius:30px;
-  background:
-    radial-gradient(circle at 88% 0%,rgba(145,71,255,.19),transparent 35%),
-    linear-gradient(145deg,rgba(31,17,52,.95),rgba(9,5,17,.98));
-  box-shadow:var(--shadow);
-}
-
-.hero:before{
-  content:"";
-  position:absolute;
-  width:520px;
-  height:520px;
-  right:-260px;
-  top:-300px;
-  border:1px solid rgba(180,108,255,.16);
-  border-radius:50%;
-  pointer-events:none;
-}
-
-.hero:after{
-  content:"";
-  position:absolute;
-  width:350px;
-  height:350px;
-  right:-170px;
-  top:-210px;
-  border:1px solid rgba(180,108,255,.10);
-  border-radius:50%;
-  pointer-events:none;
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-  max-width:780px;
-}
-
-.eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 12px;
-  border:1px solid rgba(180,108,255,.24);
-  border-radius:999px;
-  color:#d8baff;
-  background:rgba(145,71,255,.06);
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.15em;
-}
-
-.eyebrow-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--purple2);
-  box-shadow:0 0 14px rgba(180,108,255,.9);
-}
-
-.hero h1{
-  margin:28px 0 20px;
-  max-width:850px;
-  font-size:clamp(42px,7vw,76px);
-  line-height:.94;
-  letter-spacing:-.055em;
-  font-weight:900;
-}
-
-.gradient-text{
-  background:linear-gradient(
-    90deg,
-    #fff,
-    #dcbcff 48%,
-    #9f5cff
+.shell{
+  width:min(
+    1380px,
+    calc(100% - 40px)
   );
+
+  margin:
+    0 auto;
+
+  padding:
+    34px 0 90px;
+}
+
+
+/* ============================================================
+   COMMAND HEADER
+   ============================================================ */
+
+.command-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:30px;
+
+  padding:
+    20px 0 34px;
+
+  animation:
+    revealDown .65s var(--ease-spring) both;
+}
+
+@keyframes revealDown{
+
+  from{
+    opacity:0;
+    transform:translateY(-18px);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+
+}
+
+.command-left{
+  min-width:0;
+}
+
+.command-kicker{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  color:
+    var(--purple-light);
+
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.2em;
+}
+
+.kicker-line{
+  width:24px;
+  height:1px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--purple),
+      transparent
+    );
+}
+
+.command-title{
+  margin:
+    12px 0 9px;
+
+  font-size:
+    clamp(34px,5vw,58px);
+
+  line-height:.98;
+  letter-spacing:-.055em;
+  font-weight:950;
+
+  color:var(--white);
+}
+
+.command-title span{
+  background:
+    linear-gradient(
+      100deg,
+      #fff 5%,
+      #d8c2ff 48%,
+      #9e6aff 100%
+    );
+
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
 }
 
-.hero p{
-  max-width:720px;
+.command-description{
+  max-width:690px;
+
   margin:0;
+
   color:var(--muted);
-  font-size:16px;
+
+  font-size:12px;
   line-height:1.7;
 }
 
-.hero-actions{
+.command-actions{
   display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:32px;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:9px;
 }
 
-.btn{
-  min-height:48px;
+.clock{
+  color:var(--muted-2);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+
+.shortcut-hint{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.key{
+  min-width:25px;
+  height:23px;
+
+  display:grid;
+  place-items:center;
+
+  padding:0 6px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:6px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color:var(--muted);
+
+  font-size:8px;
+  font-weight:800;
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+   ============================================================ */
+
+.primary-btn{
+  position:relative;
+  overflow:hidden;
+
+  min-height:45px;
+
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:9px;
-  padding:0 18px;
-  border:1px solid var(--line2);
-  border-radius:14px;
-  color:var(--text);
-  background:rgba(255,255,255,.025);
-  font-size:11px;
-  font-weight:900;
-  letter-spacing:.07em;
+
+  padding:
+    0 17px;
+
+  border:
+    1px solid
+    rgba(187,143,255,.25);
+
+  border-radius:12px;
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7540d8,
+      #9a5cff
+    );
+
+  box-shadow:
+    0 12px 35px
+    rgba(122,65,220,.2);
+
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.1em;
+
   transition:
-    transform .18s ease,
-    border-color .18s ease,
-    background .18s ease,
-    box-shadow .18s ease;
+    transform .2s var(--ease),
+    box-shadow .2s var(--ease),
+    filter .2s ease;
 }
 
-.btn:hover{
+.primary-btn::before{
+  content:"";
+
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:-100%;
+  width:65%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.16),
+      transparent
+    );
+
+  transform:skewX(-18deg);
+
+  animation:
+    buttonSweep 4s ease-in-out infinite;
+}
+
+@keyframes buttonSweep{
+
+  0%,55%{
+    left:-100%;
+  }
+
+  75%,100%{
+    left:130%;
+  }
+
+}
+
+.primary-btn:hover{
   transform:translateY(-2px);
-  border-color:rgba(180,108,255,.55);
-  background:rgba(145,71,255,.08);
+
+  box-shadow:
+    0 18px 45px
+    rgba(122,65,220,.3);
+
+  filter:brightness(1.08);
 }
 
-.btn:active{
-  transform:translateY(0) scale(.98);
+.primary-btn:active{
+  transform:scale(.98);
 }
 
-.btn-primary{
-  border-color:transparent;
-  background:linear-gradient(135deg,#7c3aed,#b46cff);
-  box-shadow:0 12px 30px rgba(145,71,255,.25);
-}
-
-.btn-primary:hover{
-  border-color:transparent;
-  background:linear-gradient(135deg,#8b46f5,#c17aff);
-  box-shadow:0 16px 38px rgba(145,71,255,.34);
-}
-
-.btn-danger{
-  border-color:rgba(255,85,119,.22);
-  color:#ffb1c0;
-}
-
-.btn:disabled{
-  opacity:.55;
+.primary-btn:disabled{
   cursor:not-allowed;
+  opacity:.6;
   transform:none;
 }
 
 .btn-spinner{
-  width:13px;
-  height:13px;
-  border:2px solid rgba(255,255,255,.25);
-  border-top-color:#fff;
+  width:12px;
+  height:12px;
+
+  border:
+    2px solid
+    rgba(255,255,255,.28);
+
+  border-top-color:white;
   border-radius:50%;
-  animation:spin .7s linear infinite;
+
+  animation:
+    spin .65s linear infinite;
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to{
+    transform:rotate(360deg);
+  }
 }
 
-/* =========================================================
-   METRICS
-========================================================= */
 
-.metrics{
+/* ============================================================
+   OVERVIEW CARDS
+   ============================================================ */
+
+.overview{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-top:12px;
+  grid-template-columns:
+    1.4fr
+    repeat(3,1fr);
+
+  gap:10px;
+
+  margin-bottom:28px;
 }
 
-.metric{
-  min-width:0;
-  padding:24px;
-  border:1px solid var(--line);
-  border-radius:20px;
+.overview-card{
+  position:relative;
+  overflow:hidden;
+
+  min-height:128px;
+
+  padding:20px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-md);
+
   background:
     linear-gradient(
       145deg,
-      rgba(24,13,39,.95),
-      rgba(12,7,21,.98)
+      rgba(24,19,32,.85),
+      rgba(12,10,17,.92)
+    );
+
+  box-shadow:
+    0 15px 50px
+    rgba(0,0,0,.16);
+
+  animation:
+    cardEntrance .7s var(--ease-spring) both;
+
+  transition:
+    transform .3s var(--ease),
+    border-color .3s ease,
+    background .3s ease;
+}
+
+.overview-card:nth-child(1){
+  animation-delay:.08s;
+}
+
+.overview-card:nth-child(2){
+  animation-delay:.13s;
+}
+
+.overview-card:nth-child(3){
+  animation-delay:.18s;
+}
+
+.overview-card:nth-child(4){
+  animation-delay:.23s;
+}
+
+@keyframes cardEntrance{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(22px)
+      scale(.985);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+
+}
+
+.overview-card:hover{
+  transform:translateY(-3px);
+
+  border-color:
+    rgba(180,130,255,.23);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(29,22,40,.9),
+      rgba(13,10,19,.96)
     );
 }
 
-.metric-label{
-  color:var(--muted2);
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.16em;
+.overview-card.primary{
+  border-color:
+    rgba(155,100,255,.2);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(139,92,246,.15),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(27,19,42,.9),
+      rgba(12,9,18,.95)
+    );
 }
 
-.metric-value{
-  margin-top:10px;
-  font-size:32px;
-  line-height:1;
+.overview-label{
+  color:var(--muted-2);
+
+  font-size:8px;
   font-weight:900;
-  letter-spacing:-.04em;
+  letter-spacing:.14em;
 }
 
-.metric-detail{
-  margin-top:9px;
+.overview-value{
+  margin-top:11px;
+
+  color:#fff;
+
+  font-size:30px;
+  font-weight:950;
+  letter-spacing:-.045em;
+}
+
+.overview-detail{
+  margin-top:8px;
+
   color:var(--muted);
-  font-size:10px;
+
+  font-size:9px;
+  line-height:1.4;
 }
 
-/* =========================================================
-   SECTIONS
-========================================================= */
+.overview-glow{
+  position:absolute;
+  width:120px;
+  height:120px;
 
-.section{
-  padding:70px 0 0;
+  right:-55px;
+  bottom:-55px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(139,92,246,.18),
+      transparent 65%
+    );
+
+  pointer-events:none;
 }
 
-.section-head{
-  margin-bottom:24px;
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+
+.section-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+
+  margin:
+    62px 0 18px;
 }
 
-.section-index{
-  color:#b36cff;
-  font-size:10px;
+.section-heading{
+  min-width:0;
+}
+
+.section-number{
+  color:
+    var(--purple-light);
+
+  font-size:8px;
   font-weight:900;
-  letter-spacing:.22em;
+  letter-spacing:.2em;
 }
 
 .section-title{
-  margin:8px 0 8px;
-  font-size:32px;
+  margin:
+    7px 0 5px;
+
+  color:#f5f1f8;
+
+  font-size:25px;
+  line-height:1.05;
   letter-spacing:-.04em;
+  font-weight:950;
 }
 
-.section-description{
+.section-subtitle{
   margin:0;
+
   color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
+
+  font-size:10px;
+  line-height:1.5;
 }
 
-/* =========================================================
-   DISCOVERY TOOLBAR
-========================================================= */
 
-.discovery-toolbar{
+/* ============================================================
+   DISCOVERY WORKSPACE
+   ============================================================ */
+
+.workspace{
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-xl);
+
+  background:
+    rgba(11,9,16,.68);
+
+  box-shadow:
+    var(--shadow);
+
+  overflow:hidden;
+}
+
+.workspace-top{
+  position:relative;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:14px;
-  margin-bottom:18px;
+
+  gap:15px;
+
+  padding:14px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  background:
+    rgba(255,255,255,.012);
 }
 
-.categories{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  padding:2px;
-}
-
-.categories::-webkit-scrollbar{
-  display:none;
-}
-
-.category{
-  flex:0 0 auto;
-  min-height:38px;
-  padding:0 14px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background:rgba(255,255,255,.018);
-  color:var(--muted);
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.09em;
-}
-
-.category.active{
-  color:#fff;
-  border-color:rgba(180,108,255,.55);
-  background:rgba(145,71,255,.12);
-  box-shadow:0 0 20px rgba(145,71,255,.08);
-}
-
-.status-strip{
+.workspace-top-left{
   display:flex;
   align-items:center;
   gap:9px;
-  min-height:48px;
-  padding:0 14px;
-  margin-bottom:18px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  background:rgba(145,71,255,.035);
-  color:var(--muted);
-  font-size:10px;
+  min-width:0;
 }
 
-.status-dot{
+.workspace-signal{
   width:7px;
   height:7px;
   flex:0 0 7px;
+
   border-radius:50%;
-  background:var(--purple2);
-  box-shadow:0 0 13px rgba(180,108,255,.75);
+
+  background:
+    var(--purple-light);
+
+  box-shadow:
+    0 0 16px
+    rgba(185,140,255,.8);
 }
 
-.status-strip.success .status-dot{
-  background:var(--green);
-  box-shadow:0 0 13px rgba(53,224,138,.7);
+.workspace-signal.scanning{
+  animation:
+    scanPulse .8s ease-in-out infinite;
 }
 
-.status-strip.error .status-dot{
-  background:var(--red);
-  box-shadow:0 0 13px rgba(255,85,119,.7);
+@keyframes scanPulse{
+
+  0%,100%{
+    transform:scale(1);
+    opacity:.65;
+  }
+
+  50%{
+    transform:scale(1.6);
+    opacity:1;
+  }
+
 }
 
-/* =========================================================
+.workspace-status{
+  color:var(--muted);
+
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.07em;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.workspace-top-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.tool-btn{
+  min-height:34px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:9px;
+
+  background:
+    rgba(255,255,255,.018);
+
+  color:#cfc8d7;
+
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.06em;
+
+  transition:
+    .18s var(--ease);
+}
+
+.tool-btn:hover{
+  border-color:
+    rgba(180,130,255,.35);
+
+  background:
+    rgba(139,92,246,.06);
+
+  color:#fff;
+}
+
+.tool-btn:active{
+  transform:scale(.97);
+}
+
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+
+.filters{
+  display:grid;
+
+  grid-template-columns:
+    minmax(220px,1fr)
+    auto
+    auto
+    auto;
+
+  gap:8px;
+
+  padding:12px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+.search{
+  position:relative;
+}
+
+.search-icon{
+  position:absolute;
+
+  left:12px;
+  top:50%;
+
+  transform:
+    translateY(-50%);
+
+  color:var(--muted-2);
+
+  font-size:11px;
+
+  pointer-events:none;
+}
+
+.search input{
+  width:100%;
+  height:38px;
+
+  padding:
+    0 12px 0 34px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:10px;
+
+  outline:none;
+
+  background:
+    rgba(255,255,255,.018);
+
+  color:#eeeaf2;
+
+  font-size:9px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.search input::placeholder{
+  color:#625d68;
+}
+
+.search input:focus{
+  border-color:
+    rgba(160,108,255,.45);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(139,92,246,.06);
+}
+
+.filter-select{
+  height:38px;
+
+  padding:
+    0 11px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:10px;
+
+  outline:none;
+
+  background:
+    #110e17;
+
+  color:#c8c1cf;
+
+  font-size:8px;
+  font-weight:800;
+}
+
+.filter-select:focus{
+  border-color:
+    rgba(160,108,255,.4);
+}
+
+.view-switch{
+  display:flex;
+  align-items:center;
+
+  height:38px;
+
+  padding:3px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.015);
+}
+
+.view-btn{
+  width:34px;
+  height:30px;
+
+  border-radius:7px;
+
+  color:var(--muted-2);
+
+  background:transparent;
+
+  font-size:10px;
+}
+
+.view-btn.active{
+  color:#fff;
+
+  background:
+    rgba(139,92,246,.14);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(139,92,246,.12);
+}
+
+
+/* ============================================================
+   SCAN BAR
+   ============================================================ */
+
+.scan-line{
+  position:relative;
+
+  height:2px;
+
+  overflow:hidden;
+
+  background:
+    rgba(139,92,246,.035);
+}
+
+.scan-line::after{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  bottom:0;
+
+  left:-25%;
+
+  width:25%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(180,130,255,.85),
+      transparent
+    );
+
+  animation:
+    scanLine 2.8s linear infinite;
+}
+
+@keyframes scanLine{
+
+  from{
+    left:-25%;
+  }
+
+  to{
+    left:125%;
+  }
+
+}
+
+
+/* ============================================================
    NEWS GRID
-========================================================= */
+   ============================================================ */
+
+.news-area{
+  padding:14px;
+}
 
 .news-grid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:16px;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:12px;
+}
+
+.news-grid.list{
+  grid-template-columns:1fr;
 }
 
 .news-card{
+  position:relative;
+
   min-width:0;
+
   overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:22px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-lg);
+
   background:
     linear-gradient(
       145deg,
-      rgba(22,12,36,.96),
-      rgba(8,5,14,.98)
+      rgba(21,17,28,.9),
+      rgba(11,9,15,.96)
     );
+
+  animation:
+    newsEnter .65s var(--ease-spring) both;
+
   transition:
-    transform .2s ease,
-    border-color .2s ease;
+    transform .32s var(--ease),
+    border-color .25s ease,
+    box-shadow .3s ease;
+}
+
+@keyframes newsEnter{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(20px)
+      scale(.985);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+
 }
 
 .news-card:hover{
-  transform:translateY(-3px);
-  border-color:rgba(180,108,255,.38);
+  transform:
+    translateY(-4px);
+
+  border-color:
+    rgba(170,118,255,.28);
+
+  box-shadow:
+    0 22px 65px
+    rgba(0,0,0,.28),
+    0 0 40px
+    rgba(139,92,246,.045);
 }
 
-.news-image-wrap{
+.news-card::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255,255,255,.025),
+      transparent 35%
+    );
+}
+
+
+/* ============================================================
+   NEWS IMAGE
+   ============================================================ */
+
+.news-visual{
   position:relative;
-  aspect-ratio:16/8;
+
+  aspect-ratio:
+    16 / 8;
+
   overflow:hidden;
-  background:#0d0816;
+
+  background:
+    linear-gradient(
+      145deg,
+      #191122,
+      #0c0910
+    );
 }
 
 .news-image{
   width:100%;
   height:100%;
-  display:block;
+
   object-fit:cover;
-  transition:transform .45s ease;
+
+  opacity:.86;
+
+  transition:
+    transform .7s var(--ease),
+    opacity .35s ease;
 }
 
 .news-card:hover .news-image{
-  transform:scale(1.025);
+  transform:scale(1.045);
+  opacity:.94;
 }
 
-.news-image-overlay{
+.news-gradient{
   position:absolute;
   inset:0;
+
   background:
     linear-gradient(
       to bottom,
-      transparent 45%,
-      rgba(7,4,13,.72)
+      transparent 35%,
+      rgba(7,6,11,.92) 100%
     );
 }
 
-.news-content{
-  padding:20px;
+.news-top-label{
+  position:absolute;
+
+  top:12px;
+  left:12px;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  padding:
+    6px 8px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.09);
+
+  border-radius:999px;
+
+  background:
+    rgba(7,6,11,.64);
+
+  backdrop-filter:
+    blur(10px);
+
+  color:#e6dcef;
+
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.09em;
+}
+
+.news-top-dot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+
+  background:
+    var(--purple-light);
+
+  box-shadow:
+    0 0 10px
+    rgba(185,140,255,.8);
+}
+
+.news-score{
+  position:absolute;
+
+  right:12px;
+  top:12px;
+
+  min-width:47px;
+
+  padding:
+    7px 8px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius:10px;
+
+  background:
+    rgba(7,6,11,.7);
+
+  backdrop-filter:
+    blur(10px);
+
+  text-align:center;
+}
+
+.news-score-number{
+  color:#fff;
+
+  font-size:13px;
+  font-weight:950;
+}
+
+.news-score-label{
+  margin-top:2px;
+
+  color:#81798a;
+
+  font-size:6px;
+  font-weight:900;
+  letter-spacing:.09em;
+}
+
+
+/* ============================================================
+   NEWS CONTENT
+   ============================================================ */
+
+.news-body{
+  padding:17px;
 }
 
 .news-meta{
@@ -611,351 +1610,798 @@ img{
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  color:var(--muted2);
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.06em;
+
+  color:
+    var(--muted-2);
+
+  font-size:7px;
+  font-weight:850;
+  letter-spacing:.05em;
+}
+
+.news-source{
+  max-width:60%;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.news-date{
+  white-space:nowrap;
 }
 
 .news-title{
-  margin:13px 0 10px;
-  font-size:21px;
-  line-height:1.18;
+  margin:
+    11px 0 8px;
+
+  color:#f1edf4;
+
+  font-size:17px;
+  line-height:1.24;
+
   letter-spacing:-.025em;
+  font-weight:900;
 }
 
 .news-description{
   margin:0;
-  color:var(--muted);
-  font-size:12px;
+
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+
+  color:
+    var(--muted);
+
+  font-size:10px;
   line-height:1.65;
 }
 
 .badges{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
-  margin-top:16px;
+  gap:5px;
+
+  margin-top:13px;
 }
 
 .badge{
   display:inline-flex;
   align-items:center;
-  min-height:25px;
-  padding:0 8px;
-  border:1px solid var(--line);
+
+  min-height:23px;
+
+  padding:
+    0 7px;
+
+  border:
+    1px solid
+    var(--line);
+
   border-radius:999px;
-  color:#bdb1ce;
-  background:rgba(255,255,255,.018);
-  font-size:8px;
+
+  color:#aaa2b2;
+
+  background:
+    rgba(255,255,255,.014);
+
+  font-size:6.5px;
   font-weight:900;
   letter-spacing:.07em;
 }
 
 .badge-purple{
-  color:#d6b7ff;
-  border-color:rgba(180,108,255,.28);
-  background:rgba(145,71,255,.08);
+  color:#c8a5ff;
+
+  border-color:
+    rgba(168,105,255,.22);
+
+  background:
+    rgba(139,92,246,.065);
 }
 
 .badge-green{
-  color:#9ff0c3;
-  border-color:rgba(53,224,138,.24);
-  background:rgba(53,224,138,.05);
+  color:#8ce4b8;
+
+  border-color:
+    rgba(66,217,149,.18);
+
+  background:
+    rgba(66,217,149,.035);
 }
 
 .badge-yellow{
-  color:#f6d981;
-  border-color:rgba(245,196,81,.24);
-  background:rgba(245,196,81,.05);
+  color:#ebcc7d;
+
+  border-color:
+    rgba(232,187,87,.19);
+
+  background:
+    rgba(232,187,87,.035);
 }
 
 .badge-red{
-  color:#ffabbc;
-  border-color:rgba(255,85,119,.24);
-  background:rgba(255,85,119,.05);
+  color:#ff9aad;
+
+  border-color:
+    rgba(255,95,123,.2);
+
+  background:
+    rgba(255,95,123,.035);
 }
 
-.ai-signal{
-  margin-top:16px;
-  padding:14px;
-  border:1px solid rgba(145,71,255,.17);
-  border-left:2px solid var(--purple2);
-  border-radius:13px;
-  background:rgba(145,71,255,.035);
+
+/* ============================================================
+   AI SIGNAL
+   ============================================================ */
+
+.ai-panel{
+  margin-top:13px;
+
+  padding:
+    12px;
+
+  border:
+    1px solid
+    rgba(139,92,246,.13);
+
+  border-radius:12px;
+
+  background:
+    rgba(139,92,246,.025);
 }
 
-.ai-signal-label{
-  color:#c6a0ef;
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:.14em;
-}
-
-.ai-signal-text{
-  margin-top:5px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-}
-
-.news-actions{
+.ai-header{
   display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:16px;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 }
 
-.small-btn{
-  min-height:38px;
-  padding:0 12px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  background:rgba(255,255,255,.018);
-  color:#d6cce1;
-  font-size:8px;
+.ai-title{
+  color:#b99bda;
+
+  font-size:6.5px;
+  font-weight:950;
+  letter-spacing:.13em;
+}
+
+.ai-status{
+  color:
+    var(--muted-2);
+
+  font-size:6px;
   font-weight:900;
-  letter-spacing:.06em;
 }
 
-.small-btn:hover{
-  border-color:rgba(180,108,255,.45);
-  background:rgba(145,71,255,.07);
+.ai-text{
+  margin-top:6px;
+
+  color:
+    #90879a;
+
+  font-size:8.5px;
+  line-height:1.55;
 }
 
-.small-btn.primary{
-  color:#fff;
-  border-color:rgba(180,108,255,.35);
-  background:rgba(145,71,255,.10);
+.ai-bars{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:5px;
+
+  margin-top:10px;
 }
 
-/* =========================================================
-   LOADING
-========================================================= */
+.ai-bar{
+  min-width:0;
+}
 
-.skeleton{
+.ai-bar-label{
+  display:flex;
+  justify-content:space-between;
+
+  color:#68616f;
+
+  font-size:5.5px;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+
+.ai-track{
+  height:3px;
+
+  margin-top:4px;
+
   overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:var(--panel);
+
+  border-radius:99px;
+
+  background:
+    #211a29;
 }
 
-.skeleton-image{
-  aspect-ratio:16/8;
+.ai-fill{
+  width:0;
+
+  height:100%;
+
+  border-radius:99px;
+
   background:
     linear-gradient(
       90deg,
-      #11091b 20%,
-      #1b1029 38%,
-      #11091b 60%
+      #6840bd,
+      #b486ff
     );
-  background-size:200% 100%;
-  animation:shimmer 1.4s infinite;
+
+  transition:
+    width 1s var(--ease-spring);
 }
 
-.skeleton-body{
+
+/* ============================================================
+   CARD ACTIONS
+   ============================================================ */
+
+.card-actions{
+  display:flex;
+  gap:7px;
+
+  margin-top:13px;
+}
+
+.card-btn{
+  min-height:35px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:9px;
+
+  background:
+    rgba(255,255,255,.018);
+
+  color:#aaa2b1;
+
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.06em;
+
+  transition:
+    .18s var(--ease);
+}
+
+.card-btn:hover{
+  color:#fff;
+
+  border-color:
+    rgba(170,118,255,.35);
+
+  background:
+    rgba(139,92,246,.07);
+}
+
+.card-btn.primary{
+  color:#ded0f0;
+
+  border-color:
+    rgba(168,105,255,.2);
+
+  background:
+    rgba(139,92,246,.065);
+}
+
+.card-btn:active{
+  transform:scale(.97);
+}
+
+
+/* ============================================================
+   LIST MODE
+   ============================================================ */
+
+.news-grid.list .news-card{
+  display:grid;
+
+  grid-template-columns:
+    240px 1fr;
+}
+
+.news-grid.list .news-visual{
+  height:100%;
+  min-height:230px;
+  aspect-ratio:auto;
+}
+
+.news-grid.list .news-body{
   padding:20px;
 }
 
-.skeleton-line{
-  height:12px;
-  margin-bottom:10px;
-  border-radius:8px;
-  background:#1a1027;
+.news-grid.list .news-title{
+  font-size:21px;
 }
 
-.skeleton-line.big{
-  height:22px;
-  width:85%;
+.news-grid.list .news-description{
+  -webkit-line-clamp:4;
 }
 
-.skeleton-line.medium{
-  width:65%;
-}
 
-@keyframes shimmer{
-  from{background-position:200% 0}
-  to{background-position:-200% 0}
-}
+/* ============================================================
+   EMPTY
+   ============================================================ */
 
-/* =========================================================
-   EMPTY / ERROR
-========================================================= */
+.empty-state{
+  padding:
+    65px 20px;
 
-.empty{
-  padding:50px 20px;
-  border:1px dashed var(--line2);
-  border-radius:22px;
+  border:
+    1px dashed
+    rgba(170,118,255,.2);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    rgba(139,92,246,.018);
+
   text-align:center;
-  background:rgba(145,71,255,.025);
 }
 
-.empty-icon{
-  width:50px;
-  height:50px;
-  margin:0 auto 15px;
+.empty-orb{
+  width:55px;
+  height:55px;
+
+  margin:
+    0 auto 15px;
+
   display:grid;
   place-items:center;
-  border-radius:15px;
-  background:rgba(145,71,255,.10);
-  color:#c99aff;
-  font-weight:900;
+
+  border:
+    1px solid
+    rgba(180,130,255,.2);
+
+  border-radius:17px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(139,92,246,.16),
+      rgba(139,92,246,.035)
+    );
+
+  color:#c3a1ef;
+
+  box-shadow:
+    0 0 40px
+    rgba(139,92,246,.08);
+
+  animation:
+    orbFloat 3.2s ease-in-out infinite;
+}
+
+@keyframes orbFloat{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+
 }
 
 .empty-title{
+  color:#eee9f2;
+
+  font-size:16px;
   font-weight:900;
-  font-size:17px;
 }
 
 .empty-text{
-  max-width:520px;
-  margin:8px auto 20px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
+  max-width:500px;
+
+  margin:
+    7px auto 18px;
+
+  color:
+    var(--muted);
+
+  font-size:9px;
+  line-height:1.65;
 }
 
-/* =========================================================
+
+/* ============================================================
    PIPELINE
-========================================================= */
+   ============================================================ */
+
+.pipeline-shell{
+  position:relative;
+
+  padding:
+    22px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-xl);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,14,25,.82),
+      rgba(9,8,13,.92)
+    );
+
+  overflow:hidden;
+}
+
+.pipeline-shell::before{
+  content:"";
+
+  position:absolute;
+
+  top:50%;
+  left:7%;
+  right:7%;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(139,92,246,.22),
+      transparent
+    );
+
+  pointer-events:none;
+}
 
 .pipeline{
+  position:relative;
+  z-index:2;
+
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:9px;
 }
 
 .pipeline-node{
   position:relative;
-  padding:22px 15px;
-  min-height:145px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(17,9,28,.85);
+
+  min-height:150px;
+
+  padding:
+    18px 15px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-md);
+
+  background:
+    rgba(13,10,18,.82);
+
+  overflow:hidden;
+
+  transition:
+    border-color .3s ease,
+    background .3s ease,
+    transform .3s var(--ease);
 }
 
-.pipeline-number{
-  color:#8250ad;
-  font-size:9px;
-  font-weight:900;
+.pipeline-node:hover{
+  transform:translateY(-3px);
+
+  border-color:
+    rgba(170,118,255,.25);
+}
+
+.pipeline-node.active{
+  border-color:
+    rgba(170,118,255,.5);
+
+  background:
+    rgba(139,92,246,.07);
+
+  box-shadow:
+    0 0 35px
+    rgba(139,92,246,.07);
+}
+
+.pipeline-node.complete{
+  border-color:
+    rgba(66,217,149,.18);
+}
+
+.pipeline-node::after{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255,255,255,.035),
+      transparent 65%
+    );
+
+  transform:
+    translateX(-100%);
+
+  transition:
+    transform .7s ease;
+}
+
+.pipeline-node:hover::after{
+  transform:
+    translateX(100%);
+}
+
+.pipeline-index{
+  color:
+    #6f627c;
+
+  font-size:7px;
+  font-weight:950;
   letter-spacing:.15em;
 }
 
+.pipeline-node.active .pipeline-index{
+  color:
+    var(--purple-light);
+}
+
 .pipeline-icon{
-  margin:16px 0 10px;
-  font-size:20px;
+  width:35px;
+  height:35px;
+
+  margin:
+    17px 0 13px;
+
+  display:grid;
+  place-items:center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.018);
+
+  color:#a28ab9;
+
+  font-size:13px;
+
+  transition:
+    transform .4s var(--ease),
+    border-color .3s ease;
+}
+
+.pipeline-node.active .pipeline-icon{
+  color:#d0b3f6;
+
+  border-color:
+    rgba(170,118,255,.35);
+
+  box-shadow:
+    0 0 25px
+    rgba(139,92,246,.12);
+
+  animation:
+    iconPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes iconPulse{
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.07);
+  }
+
+}
+
+.pipeline-node.complete .pipeline-icon{
+  color:#8de3b8;
+  border-color:rgba(66,217,149,.2);
 }
 
 .pipeline-title{
-  font-size:12px;
-  font-weight:900;
+  color:#e5dfe9;
+
+  font-size:10px;
+  font-weight:950;
 }
 
 .pipeline-text{
   margin-top:6px;
-  color:var(--muted);
-  font-size:9px;
-  line-height:1.5;
+
+  color:
+    var(--muted);
+
+  font-size:8px;
+  line-height:1.55;
 }
 
-.pipeline-node.active{
-  border-color:rgba(180,108,255,.55);
-  background:rgba(145,71,255,.09);
-  box-shadow:0 0 28px rgba(145,71,255,.10);
+
+/* ============================================================
+   SYSTEM INFO
+   ============================================================ */
+
+.system-grid{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:12px;
 }
 
-.pipeline-node.complete{
-  border-color:rgba(53,224,138,.25);
-}
+.system-card{
+  padding:
+    20px;
 
-.pipeline-node.complete .pipeline-number{
-  color:var(--green);
-}
+  border:
+    1px solid
+    var(--line);
 
-/* =========================================================
-   ARCHITECTURE
-========================================================= */
+  border-radius:
+    var(--radius-lg);
 
-.architecture{
-  padding:26px;
-  border:1px solid var(--line);
-  border-radius:22px;
   background:
-    linear-gradient(
-      145deg,
-      rgba(21,11,35,.95),
-      rgba(8,5,14,.95)
-    );
+    rgba(14,11,19,.76);
 }
 
-.arch-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px;
-}
+.system-card-title{
+  color:#dcd4e3;
 
-.arch-box{
-  min-width:130px;
-  padding:15px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  text-align:center;
-  background:rgba(145,71,255,.035);
-}
-
-.arch-box strong{
-  display:block;
   font-size:10px;
+  font-weight:950;
 }
 
-.arch-box span{
+.system-card-text{
+  margin-top:7px;
+
+  color:
+    var(--muted);
+
+  font-size:9px;
+  line-height:1.65;
+}
+
+.system-list{
+  margin-top:15px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:7px;
+}
+
+.system-item{
+  padding:
+    11px;
+
+  border:
+    1px solid
+    var(--line-soft);
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(255,255,255,.012);
+}
+
+.system-item strong{
   display:block;
-  margin-top:5px;
-  color:var(--muted);
+
+  color:#cfc6d6;
+
   font-size:8px;
 }
 
-.arch-arrow{
-  color:#8c55ba;
-  font-weight:900;
+.system-item span{
+  display:block;
+
+  margin-top:4px;
+
+  color:
+    var(--muted-2);
+
+  font-size:7px;
 }
 
-/* =========================================================
+
+/* ============================================================
    FOOTER
-========================================================= */
+   ============================================================ */
 
 .footer{
-  padding:80px 0 35px;
+  padding:
+    30px 0 0;
 }
 
 .footer-inner{
-  padding-top:22px;
-  border-top:1px solid var(--line);
   display:flex;
   justify-content:space-between;
   gap:20px;
-  color:var(--muted2);
-  font-size:9px;
-  letter-spacing:.08em;
+
+  padding:
+    20px 0;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  color:
+    var(--muted-2);
+
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.1em;
 }
 
-/* =========================================================
-   MODAL
-========================================================= */
+
+/* ============================================================
+   RESEARCH MODAL
+   ============================================================ */
 
 .modal{
   position:fixed;
   inset:0;
-  z-index:100;
+
+  z-index:500;
+
   display:none;
+
   align-items:center;
   justify-content:center;
+
   padding:20px;
-  background:rgba(3,2,7,.78);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+
+  background:
+    rgba(2,1,5,.76);
+
+  backdrop-filter:
+    blur(16px)
+    saturate(120%);
+
+  -webkit-backdrop-filter:
+    blur(16px);
 }
 
 .modal.open{
@@ -963,407 +2409,1101 @@ img{
 }
 
 .modal-card{
-  width:min(900px,100%);
-  max-height:min(900px,calc(100vh - 40px));
+  position:relative;
+
+  width:
+    min(960px,100%);
+
+  max-height:
+    min(900px,calc(100vh - 40px));
+
   overflow:auto;
-  border:1px solid rgba(180,108,255,.32);
-  border-radius:24px;
+
+  border:
+    1px solid
+    rgba(170,118,255,.27);
+
+  border-radius:
+    25px;
+
   background:
     linear-gradient(
       145deg,
-      #150b24,
-      #09050f
+      #171021,
+      #09070d
     );
-  box-shadow:0 35px 100px rgba(0,0,0,.65);
-  animation:modalIn .22s ease;
+
+  box-shadow:
+    0 40px 120px
+    rgba(0,0,0,.7),
+    0 0 70px
+    rgba(139,92,246,.07);
+
+  animation:
+    modalEnter .35s var(--ease-spring) both;
 }
 
-@keyframes modalIn{
+@keyframes modalEnter{
+
   from{
     opacity:0;
-    transform:translateY(12px) scale(.985);
+    transform:
+      translateY(20px)
+      scale(.975);
   }
+
   to{
     opacity:1;
     transform:none;
   }
+
 }
 
 .modal-header{
   position:sticky;
+
   top:0;
-  z-index:2;
+
+  z-index:5;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   gap:15px;
-  padding:20px;
-  border-bottom:1px solid var(--line);
-  background:rgba(15,8,24,.94);
-  backdrop-filter:blur(15px);
+
+  padding:
+    19px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  background:
+    rgba(19,13,28,.9);
+
+  backdrop-filter:
+    blur(18px);
 }
 
 .modal-kicker{
-  color:#bd83f5;
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:.17em;
+  color:
+    var(--purple-light);
+
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.18em;
 }
 
 .modal-title{
   margin-top:6px;
-  font-size:19px;
-  font-weight:900;
+
+  color:#f4eff7;
+
+  font-size:18px;
+  font-weight:950;
 }
 
-.close-btn{
-  width:42px;
-  height:42px;
-  flex:0 0 42px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:rgba(255,255,255,.02);
-  color:#ddd3e8;
-  font-size:18px;
+.close{
+  width:39px;
+  height:39px;
+
+  display:grid;
+  place-items:center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.018);
+
+  color:#c7bfce;
+
+  font-size:17px;
+
+  transition:
+    .18s ease;
+}
+
+.close:hover{
+  color:#fff;
+
+  border-color:
+    rgba(170,118,255,.35);
+
+  transform:
+    rotate(4deg);
 }
 
 .modal-body{
-  padding:20px;
+  padding:18px;
 }
 
-.research-story{
-  padding:20px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(145,71,255,.035);
+
+/* ============================================================
+   RESEARCH HERO
+   ============================================================ */
+
+.research-hero{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:
+    21px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(139,92,246,.12),
+      transparent 42%
+    ),
+    rgba(255,255,255,.012);
 }
 
 .research-source{
-  color:var(--muted2);
-  font-size:8px;
+  color:
+    var(--muted-2);
+
+  font-size:7px;
   font-weight:900;
   letter-spacing:.08em;
 }
 
-.research-story-title{
-  margin:10px 0;
-  font-size:20px;
-  line-height:1.25;
+.research-title{
+  margin:
+    9px 0 8px;
+
+  color:#f0ebf3;
+
+  font-size:
+    clamp(19px,3vw,27px);
+
+  line-height:1.2;
+
+  letter-spacing:-.035em;
+  font-weight:950;
 }
 
-.research-story-description{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
+.research-description{
+  color:
+    var(--muted);
+
+  font-size:9px;
+  line-height:1.65;
 }
+
+
+/* ============================================================
+   RESEARCH GRID
+   ============================================================ */
 
 .research-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:12px;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:9px;
+
+  margin-top:9px;
 }
 
 .research-box{
   min-width:0;
-  padding:18px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,255,255,.014);
+
+  padding:
+    16px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    var(--radius-md);
+
+  background:
+    rgba(255,255,255,.012);
 }
 
 .research-box.full{
-  grid-column:1/-1;
+  grid-column:
+    1 / -1;
 }
 
 .research-label{
-  color:var(--muted2);
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:.15em;
+  color:
+    var(--muted-2);
+
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.14em;
 }
 
 .research-value{
-  margin-top:9px;
-  color:#ddd4e6;
-  font-size:11px;
-  line-height:1.65;
-}
+  margin-top:8px;
 
-.research-list{
-  margin:9px 0 0;
-  padding-left:17px;
-  color:#d6ccdf;
-  font-size:10px;
+  color:#cfc7d6;
+
+  font-size:9px;
   line-height:1.7;
 }
 
-.research-list li{
-  margin-bottom:6px;
+.research-list{
+  margin:
+    9px 0 0;
+
+  padding-left:17px;
+
+  color:
+    #c8bfce;
+
+  font-size:9px;
+  line-height:1.65;
 }
 
-.confidence{
+.research-list li{
+  margin-bottom:5px;
+}
+
+.confidence-row{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:9px;
+
   margin-top:10px;
 }
 
 .confidence-track{
   flex:1;
-  height:7px;
+
+  height:5px;
+
   overflow:hidden;
-  border-radius:999px;
-  background:#241632;
+
+  border-radius:99px;
+
+  background:
+    #241c2d;
 }
 
 .confidence-fill{
-  height:100%;
   width:0;
-  border-radius:999px;
-  background:linear-gradient(90deg,#7c3aed,#c084fc);
-  transition:width .5s ease;
+
+  height:100%;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #6840bd,
+      #c29bff
+    );
+
+  transition:
+    width 1s var(--ease-spring);
 }
 
-.source-list{
+.confidence-number{
+  min-width:40px;
+
+  color:#d4c2ec;
+
+  font-size:8px;
+  font-weight:950;
+}
+
+
+/* ============================================================
+   SOURCES
+   ============================================================ */
+
+.sources{
   display:flex;
   flex-direction:column;
-  gap:8px;
-  margin-top:10px;
+
+  gap:6px;
+
+  margin-top:9px;
 }
 
-.source-link{
+.source{
   display:block;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  background:rgba(255,255,255,.015);
+
+  padding:
+    10px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(255,255,255,.012);
+
+  transition:
+    .18s ease;
 }
 
-.source-link strong{
-  display:block;
-  color:#ded3e9;
-  font-size:10px;
+.source:hover{
+  border-color:
+    rgba(170,118,255,.28);
+
+  background:
+    rgba(139,92,246,.04);
 }
 
-.source-link span{
+.source strong{
   display:block;
-  margin-top:4px;
-  color:var(--muted2);
+
+  color:#d8d0de;
+
   font-size:8px;
+}
+
+.source span{
+  display:block;
+
+  margin-top:4px;
+
+  color:
+    var(--muted-2);
+
+  font-size:7px;
+
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 
+
+/* ============================================================
+   MODAL ACTIONS
+   ============================================================ */
+
 .modal-actions{
   display:flex;
-  gap:10px;
-  margin-top:14px;
+
+  gap:8px;
+
+  margin-top:10px;
 }
 
-.modal-actions .btn{
+.modal-actions > *{
   flex:1;
 }
 
-/* =========================================================
+
+/* ============================================================
+   RESEARCH PROCESS
+   ============================================================ */
+
+.research-process{
+  padding:
+    25px 10px;
+}
+
+.process-orb{
+  position:relative;
+
+  width:80px;
+  height:80px;
+
+  margin:
+    5px auto 20px;
+
+  display:grid;
+  place-items:center;
+
+  border:
+    1px solid
+    rgba(170,118,255,.28);
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(139,92,246,.17),
+      rgba(139,92,246,.02)
+    );
+
+  box-shadow:
+    0 0 50px
+    rgba(139,92,246,.1);
+}
+
+.process-orb::before,
+.process-orb::after{
+  content:"";
+
+  position:absolute;
+
+  border:
+    1px solid
+    rgba(170,118,255,.13);
+
+  border-radius:50%;
+}
+
+.process-orb::before{
+  inset:-10px;
+
+  animation:
+    orbRing 2.3s linear infinite;
+}
+
+.process-orb::after{
+  inset:-20px;
+
+  animation:
+    orbRing 3.2s linear infinite reverse;
+}
+
+@keyframes orbRing{
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+.process-core{
+  width:22px;
+  height:22px;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #c49dff
+    );
+
+  box-shadow:
+    0 0 28px
+    rgba(180,130,255,.65);
+
+  animation:
+    corePulse 1.2s ease-in-out infinite;
+}
+
+@keyframes corePulse{
+
+  0%,100%{
+    transform:scale(.9);
+  }
+
+  50%{
+    transform:scale(1.15);
+  }
+
+}
+
+.process-title{
+  text-align:center;
+
+  color:#e9e2ef;
+
+  font-size:15px;
+  font-weight:950;
+}
+
+.process-text{
+  max-width:430px;
+
+  margin:
+    7px auto 20px;
+
+  text-align:center;
+
+  color:
+    var(--muted);
+
+  font-size:9px;
+  line-height:1.6;
+}
+
+.process-steps{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:7px;
+}
+
+.process-step{
+  padding:
+    10px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(255,255,255,.012);
+
+  text-align:center;
+}
+
+.process-step.active{
+  border-color:
+    rgba(170,118,255,.34);
+
+  background:
+    rgba(139,92,246,.05);
+}
+
+.process-step.done{
+  border-color:
+    rgba(66,217,149,.2);
+}
+
+.process-step-number{
+  color:
+    var(--muted-2);
+
+  font-size:6px;
+  font-weight:950;
+}
+
+.process-step.active .process-step-number{
+  color:
+    var(--purple-light);
+}
+
+.process-step-title{
+  margin-top:5px;
+
+  color:#aaa1b3;
+
+  font-size:7px;
+  font-weight:900;
+}
+
+
+/* ============================================================
    TOAST
-========================================================= */
+   ============================================================ */
 
 .toast{
   position:fixed;
+
   right:18px;
   bottom:18px;
-  z-index:200;
-  width:min(360px,calc(100% - 36px));
-  padding:15px;
-  border:1px solid var(--line2);
-  border-radius:15px;
-  background:rgba(17,8,27,.95);
-  box-shadow:var(--shadow);
-  transform:translateY(20px);
+
+  z-index:700;
+
+  width:
+    min(360px,calc(100% - 36px));
+
+  padding:
+    14px 15px;
+
+  border:
+    1px solid
+    rgba(170,118,255,.28);
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(18,12,27,.95);
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 20px 70px
+    rgba(0,0,0,.5);
+
   opacity:0;
+
+  transform:
+    translateY(18px)
+    scale(.98);
+
   pointer-events:none;
-  transition:.22s ease;
+
+  transition:
+    opacity .25s ease,
+    transform .25s var(--ease);
 }
 
 .toast.show{
   opacity:1;
-  transform:none;
+
+  transform:
+    translateY(0)
+    scale(1);
 }
 
 .toast-title{
-  font-size:10px;
-  font-weight:900;
+  color:#f1ebf6;
+
+  font-size:9px;
+  font-weight:950;
 }
 
 .toast-text{
   margin-top:4px;
-  color:var(--muted);
-  font-size:9px;
+
+  color:
+    var(--muted);
+
+  font-size:8px;
   line-height:1.5;
 }
 
-/* =========================================================
+
+/* ============================================================
+   COMMAND PALETTE
+   ============================================================ */
+
+.command-palette{
+  position:fixed;
+
+  inset:0;
+
+  z-index:800;
+
+  display:none;
+
+  align-items:flex-start;
+  justify-content:center;
+
+  padding:
+    12vh 20px 20px;
+
+  background:
+    rgba(3,2,6,.72);
+
+  backdrop-filter:
+    blur(15px);
+}
+
+.command-palette.open{
+  display:flex;
+}
+
+.command-box{
+  width:
+    min(650px,100%);
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(170,118,255,.3);
+
+  border-radius:
+    19px;
+
+  background:
+    #100c16;
+
+  box-shadow:
+    0 40px 120px
+    rgba(0,0,0,.7);
+
+  animation:
+    paletteIn .25s var(--ease-spring) both;
+}
+
+@keyframes paletteIn{
+
+  from{
+    opacity:0;
+    transform:
+      translateY(-15px)
+      scale(.98);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+
+}
+
+.command-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:
+    14px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+.command-search span{
+  color:
+    var(--muted-2);
+
+  font-size:11px;
+}
+
+.command-search input{
+  flex:1;
+
+  border:0;
+  outline:0;
+
+  background:transparent;
+
+  color:#eee9f3;
+
+  font-size:12px;
+}
+
+.command-search input::placeholder{
+  color:#5d5763;
+}
+
+.command-options{
+  padding:8px;
+}
+
+.command-option{
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  padding:
+    12px;
+
+  border-radius:10px;
+
+  background:transparent;
+
+  color:#aaa1b2;
+
+  text-align:left;
+
+  font-size:9px;
+  font-weight:800;
+}
+
+.command-option:hover{
+  background:
+    rgba(139,92,246,.07);
+
+  color:#fff;
+}
+
+.command-option-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.command-option-icon{
+  width:27px;
+  height:27px;
+
+  display:grid;
+  place-items:center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:7px;
+
+  color:#a78bc5;
+}
+
+
+/* ============================================================
+   MOBILE NAV
+   ============================================================ */
+
+.mobile-bar{
+  display:none;
+}
+
+
+/* ============================================================
    RESPONSIVE
-========================================================= */
+   ============================================================ */
 
-@media(max-width:900px){
+@media(max-width:1050px){
 
-  .container{
-    width:min(100% - 24px,680px);
-  }
-
-  .hero{
-    padding:34px 24px;
-    min-height:0;
-    border-radius:24px;
-  }
-
-  .hero h1{
-    font-size:clamp(38px,12vw,58px);
-  }
-
-  .hero p{
-    font-size:13px;
-  }
-
-  .metrics{
-    grid-template-columns:repeat(2,1fr);
+  .overview{
+    grid-template-columns:
+      repeat(2,1fr);
   }
 
   .pipeline{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      repeat(3,1fr);
   }
 
-  .pipeline-node:last-child{
-    grid-column:1/-1;
+  .pipeline-shell::before{
+    display:none;
+  }
+
+  .filters{
+    grid-template-columns:
+      1fr
+      auto
+      auto;
+  }
+
+  .search{
+    grid-column:
+      1 / -1;
+  }
+
+}
+
+
+@media(max-width:800px){
+
+  .topbar-inner,
+  .shell{
+    width:
+      calc(100% - 24px);
+  }
+
+  .command-header{
+    flex-direction:column;
+  }
+
+  .command-actions{
+    width:100%;
+    align-items:stretch;
+  }
+
+  .command-actions .primary-btn{
+    width:100%;
+  }
+
+  .clock,
+  .shortcut-hint{
+    display:none;
   }
 
   .news-grid{
     grid-template-columns:1fr;
   }
 
+  .pipeline{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .system-grid{
+    grid-template-columns:1fr;
+  }
+
 }
+
 
 @media(max-width:600px){
 
-  .header{
-    height:68px;
+  .topbar{
+    height:64px;
   }
 
-  .brand-mark{
-    width:38px;
-    height:38px;
-    flex-basis:38px;
+  .brand-symbol{
+    width:34px;
+    height:34px;
   }
 
   .brand-name{
-    font-size:13px;
+    font-size:11px;
   }
 
   .brand-sub{
-    font-size:7px;
+    font-size:6px;
   }
 
-  .engine{
-    padding:8px 9px;
-    font-size:7px;
+  .engine-status{
+    padding:7px 8px;
+    font-size:6.5px;
   }
 
-  .hero-wrap{
+  .shell{
     padding-top:20px;
   }
 
-  .hero{
-    padding:30px 20px;
+  .command-title{
+    font-size:39px;
   }
 
-  .hero h1{
-    margin-top:22px;
-    font-size:43px;
+  .command-description{
+    font-size:10px;
   }
 
-  .hero-actions{
-    flex-direction:column;
+  .overview{
+    grid-template-columns:
+      repeat(2,1fr);
+
+    gap:7px;
   }
 
-  .hero-actions .btn{
-    width:100%;
+  .overview-card{
+    min-height:110px;
+    padding:15px;
+    border-radius:14px;
   }
 
-  .metrics{
-    gap:8px;
+  .overview-value{
+    font-size:25px;
   }
 
-  .metric{
-    padding:17px 15px;
-    border-radius:16px;
+  .overview-label{
+    font-size:6.5px;
   }
 
-  .metric-value{
-    font-size:27px;
-  }
-
-  .metric-label{
+  .overview-detail{
     font-size:7px;
   }
 
-  .metric-detail{
-    font-size:8px;
-  }
-
-  .section{
-    padding-top:48px;
+  .section-header{
+    margin-top:45px;
   }
 
   .section-title{
-    font-size:28px;
+    font-size:22px;
   }
 
-  .discovery-toolbar{
-    display:block;
-  }
-
-  .discovery-toolbar > .btn{
-    width:100%;
-    margin-top:12px;
-  }
-
-  .news-card{
+  .workspace{
     border-radius:18px;
   }
 
-  .news-content{
-    padding:17px;
+  .workspace-top{
+    align-items:flex-start;
+  }
+
+  .workspace-top-right{
+    flex:0 0 auto;
+  }
+
+  .workspace-top-right .tool-btn span{
+    display:none;
+  }
+
+  .filters{
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .search{
+    grid-column:
+      1 / -1;
+  }
+
+  .filter-select{
+    width:100%;
+  }
+
+  .view-switch{
+    justify-content:center;
+  }
+
+  .news-area{
+    padding:8px;
+  }
+
+  .news-card{
+    border-radius:16px;
   }
 
   .news-title{
-    font-size:19px;
+    font-size:17px;
   }
 
-  .news-description{
-    font-size:11px;
+  .news-body{
+    padding:15px;
+  }
+
+  .ai-bars{
+    grid-template-columns:1fr;
+  }
+
+  .news-grid.list .news-card{
+    display:block;
+  }
+
+  .news-grid.list .news-visual{
+    min-height:0;
+    aspect-ratio:16/8;
+  }
+
+  .news-grid.list .news-title{
+    font-size:17px;
+  }
+
+  .pipeline-shell{
+    padding:9px;
+    border-radius:18px;
   }
 
   .pipeline{
     grid-template-columns:1fr;
   }
 
-  .pipeline-node:last-child{
-    grid-column:auto;
+  .pipeline-node{
+    min-height:120px;
   }
 
-  .architecture{
-    padding:18px;
+  .pipeline-icon{
+    margin-top:13px;
   }
 
-  .arch-row{
+  .system-list{
+    grid-template-columns:1fr;
+  }
+
+  .footer-inner{
     flex-direction:column;
+    gap:7px;
   }
 
-  .arch-arrow{
-    transform:rotate(90deg);
+  .modal{
+    padding:
+      8px;
+
+    align-items:flex-end;
+  }
+
+  .modal-card{
+    max-height:
+      calc(100vh - 8px);
+
+    border-radius:
+      20px 20px 0 0;
+  }
+
+  .modal-body{
+    padding:10px;
   }
 
   .research-grid{
@@ -1374,476 +3514,901 @@ img{
     grid-column:auto;
   }
 
-  .modal{
-    padding:8px;
-    align-items:flex-end;
-  }
-
-  .modal-card{
-    max-height:calc(100vh - 16px);
-    border-radius:22px 22px 0 0;
-  }
-
-  .modal-body{
-    padding:14px;
+  .process-steps{
+    grid-template-columns:
+      repeat(2,1fr);
   }
 
   .modal-actions{
-    position:sticky;
-    bottom:0;
-    padding-top:10px;
-    background:linear-gradient(
-      transparent,
-      #09050f 25%
-    );
-  }
-
-  .footer-inner{
     flex-direction:column;
   }
+
 }
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
 
 @media(prefers-reduced-motion:reduce){
 
   *,
-  *:before,
-  *:after{
-    scroll-behavior:auto!important;
+  *::before,
+  *::after{
     animation-duration:.001ms!important;
     animation-iteration-count:1!important;
     transition-duration:.001ms!important;
+    scroll-behavior:auto!important;
   }
+
 }
+
+
+/* ============================================================
+   TOUCH DEVICES
+   ============================================================ */
+
+@media(hover:none){
+
+  .news-card:hover{
+    transform:none;
+    box-shadow:none;
+  }
+
+  .overview-card:hover{
+    transform:none;
+  }
+
+}
+
+
+/* ============================================================
+   FORCE MOBILE SAFETY
+   ============================================================ */
+
+html.force-mobile .news-grid{
+  grid-template-columns:1fr;
+}
+
+html.force-mobile .pipeline{
+  grid-template-columns:1fr 1fr;
+}
+
+html.force-mobile .system-grid{
+  grid-template-columns:1fr;
+}
+
+html.force-mobile .command-header{
+  flex-direction:column;
+}
+
 </style>
 </head>
 
+
 <body>
 
-<div class="app">
+<!-- ============================================================
+     BACKGROUND
+     ============================================================ -->
 
-<header class="header">
-  <div class="container header-inner">
+<div class="background" aria-hidden="true">
 
-    <div class="brand">
-      <div class="brand-mark">N</div>
+  <div class="background-grid"></div>
 
-      <div class="brand-copy">
-        <div class="brand-name">NEWSFORGE</div>
-        <div class="brand-sub">AI NEWS INTELLIGENCE</div>
-      </div>
-    </div>
+  <div class="ambient one"></div>
 
-    <div id="engineStatus" class="engine">
-      <span class="engine-dot"></span>
-      <span id="engineText">ENGINE ONLINE</span>
-    </div>
-
-  </div>
-</header>
-
-<main>
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section class="hero-wrap">
-  <div class="container">
-
-    <div class="hero">
-
-      <div class="hero-content">
-
-        <div class="eyebrow">
-          <span class="eyebrow-dot"></span>
-          AI-POWERED NEWS OPERATIONS
-        </div>
-
-        <h1>
-          Know what matters.<br>
-          <span class="gradient-text">
-            Before everyone else.
-          </span>
-        </h1>
-
-        <p>
-          NEWSFORGE discovers emerging stories, analyzes attention
-          signals, researches claims and prepares editorial
-          intelligence for controlled publishing.
-        </p>
-
-        <div class="hero-actions">
-
-          <button
-            id="discoverBtn"
-            class="btn btn-primary"
-            type="button"
-            onclick="discoverNews()"
-          >
-            <span id="discoverIcon">✦</span>
-            <span id="discoverText">DISCOVER NEWS</span>
-          </button>
-
-          <button
-            class="btn"
-            type="button"
-            onclick="scrollToSection('pipeline')"
-          >
-            VIEW PIPELINE
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="metrics">
-
-      <div class="metric">
-        <div class="metric-label">STORIES FOUND</div>
-        <div id="metricStories" class="metric-value">0</div>
-        <div class="metric-detail">Current discovery batch</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">HIGH POTENTIAL</div>
-        <div id="metricPotential" class="metric-value">0</div>
-        <div class="metric-detail">Strong attention signals</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">VERIFICATION</div>
-        <div id="metricVerification" class="metric-value">0%</div>
-        <div class="metric-detail">Human review indicator</div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">CRITICAL</div>
-        <div id="metricCritical" class="metric-value">0</div>
-        <div class="metric-detail">Priority intelligence</div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =====================================================
-     DISCOVERY
-===================================================== -->
-
-<section id="discovery" class="section">
-  <div class="container">
-
-    <div class="section-head">
-
-      <div class="section-index">
-        01 / DISCOVERY
-      </div>
-
-      <h2 class="section-title">
-        Trending Intelligence
-      </h2>
-
-      <p class="section-description">
-        Current stories are collected through the NEWSFORGE
-        discovery backend and analyzed before appearing here.
-      </p>
-
-    </div>
-
-    <div class="discovery-toolbar">
-
-      <div class="categories">
-
-        <button
-          class="category active"
-          data-category="ALL"
-          onclick="setCategory('ALL')"
-        >
-          ALL
-        </button>
-
-        <button
-          class="category"
-          data-category="POLITICS"
-          onclick="setCategory('POLITICS')"
-        >
-          POLITICS
-        </button>
-
-        <button
-          class="category"
-          data-category="BUSINESS"
-          onclick="setCategory('BUSINESS')"
-        >
-          BUSINESS
-        </button>
-
-        <button
-          class="category"
-          data-category="TECHNOLOGY"
-          onclick="setCategory('TECHNOLOGY')"
-        >
-          TECH
-        </button>
-
-        <button
-          class="category"
-          data-category="WORLD"
-          onclick="setCategory('WORLD')"
-        >
-          WORLD
-        </button>
-
-        <button
-          class="category"
-          data-category="INDIA"
-          onclick="setCategory('INDIA')"
-        >
-          INDIA
-        </button>
-
-      </div>
-
-      <button
-        class="btn"
-        type="button"
-        onclick="discoverNews()"
-      >
-        ↻ REFRESH
-      </button>
-
-    </div>
-
-    <div id="discoveryStatus" class="status-strip">
-      <span class="status-dot"></span>
-      <span id="discoveryStatusText">
-        Ready for discovery.
-      </span>
-    </div>
-
-    <div id="newsGrid" class="news-grid">
-
-      <div class="empty" style="grid-column:1/-1">
-
-        <div class="empty-icon">N</div>
-
-        <div class="empty-title">
-          Discovery engine ready
-        </div>
-
-        <div class="empty-text">
-          Start a discovery run to fetch current stories
-          from the NEWSFORGE backend.
-        </div>
-
-        <button
-          class="btn btn-primary"
-          onclick="discoverNews()"
-        >
-          DISCOVER NEWS
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =====================================================
-     PIPELINE
-===================================================== -->
-
-<section id="pipeline" class="section">
-  <div class="container">
-
-    <div class="section-head">
-      <div class="section-index">
-        02 / PIPELINE
-      </div>
-
-      <h2 class="section-title">
-        Intelligence Pipeline
-      </h2>
-
-      <p class="section-description">
-        Discovery, analysis and verification are separated so
-        an interesting story is never automatically treated as
-        a verified story.
-      </p>
-    </div>
-
-    <div class="pipeline">
-
-      <div id="pipe1" class="pipeline-node">
-        <div class="pipeline-number">01</div>
-        <div class="pipeline-icon">◉</div>
-        <div class="pipeline-title">DISCOVERY</div>
-        <div class="pipeline-text">
-          Find current stories and emerging signals.
-        </div>
-      </div>
-
-      <div id="pipe2" class="pipeline-node">
-        <div class="pipeline-number">02</div>
-        <div class="pipeline-icon">⌁</div>
-        <div class="pipeline-title">ANALYSIS</div>
-        <div class="pipeline-text">
-          Score trend, relevance and attention potential.
-        </div>
-      </div>
-
-      <div id="pipe3" class="pipeline-node">
-        <div class="pipeline-number">03</div>
-        <div class="pipeline-icon">◎</div>
-        <div class="pipeline-title">RESEARCH</div>
-        <div class="pipeline-text">
-          Cross-check claims against current sources.
-        </div>
-      </div>
-
-      <div id="pipe4" class="pipeline-node">
-        <div class="pipeline-number">04</div>
-        <div class="pipeline-icon">✓</div>
-        <div class="pipeline-title">APPROVAL</div>
-        <div class="pipeline-text">
-          Human review for uncertain or sensitive stories.
-        </div>
-      </div>
-
-      <div id="pipe5" class="pipeline-node">
-        <div class="pipeline-number">05</div>
-        <div class="pipeline-icon">↗</div>
-        <div class="pipeline-title">PUBLISH</div>
-        <div class="pipeline-text">
-          Controlled publishing through connected channels.
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =====================================================
-     ARCHITECTURE
-===================================================== -->
-
-<section class="section">
-  <div class="container">
-
-    <div class="section-head">
-      <div class="section-index">
-        03 / ARCHITECTURE
-      </div>
-
-      <h2 class="section-title">
-        NEWSFORGE System
-      </h2>
-
-      <p class="section-description">
-        The current interface is connected to discovery and
-        research APIs. Publishing modules remain intentionally
-        inactive until their integrations are configured.
-      </p>
-    </div>
-
-    <div class="architecture">
-
-      <div class="arch-row">
-
-        <div class="arch-box">
-          <strong>INTERNET</strong>
-          <span>Current information</span>
-        </div>
-
-        <div class="arch-arrow">→</div>
-
-        <div class="arch-box">
-          <strong>DISCOVERY</strong>
-          <span>NewsAPI</span>
-        </div>
-
-        <div class="arch-arrow">→</div>
-
-        <div class="arch-box">
-          <strong>AI ANALYSIS</strong>
-          <span>Gemini</span>
-        </div>
-
-        <div class="arch-arrow">→</div>
-
-        <div class="arch-box">
-          <strong>RESEARCH</strong>
-          <span>Search + URL context</span>
-        </div>
-
-      </div>
-
-      <div style="height:10px"></div>
-
-      <div class="arch-row">
-
-        <div class="arch-box">
-          <strong>HUMAN REVIEW</strong>
-          <span>Editorial control</span>
-        </div>
-
-        <div class="arch-arrow">→</div>
-
-        <div class="arch-box">
-          <strong>CONTENT</strong>
-          <span>Generation layer</span>
-        </div>
-
-        <div class="arch-arrow">→</div>
-
-        <div class="arch-box">
-          <strong>PUBLISH</strong>
-          <span>Social channels</span>
-        </div>
-
-        <div class="arch-arrow">→</div>
-
-        <div class="arch-box">
-          <strong>ANALYTICS</strong>
-          <span>Performance data</span>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-</main>
-
-
-<footer class="footer">
-  <div class="container">
-
-    <div class="footer-inner">
-      <span>NEWSFORGE AI</span>
-      <span>DISCOVER · RESEARCH · VERIFY · PUBLISH</span>
-      <span id="footerStatus">SYSTEM READY</span>
-    </div>
-
-  </div>
-</footer>
+  <div class="ambient two"></div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- ============================================================
+     APP
+     ============================================================ -->
+
+<div class="app">
+
+
+  <!-- ========================================================
+       TOPBAR
+       ======================================================== -->
+
+  <header class="topbar">
+
+    <div class="topbar-inner">
+
+      <div class="brand">
+
+        <div class="brand-symbol">
+          N
+        </div>
+
+        <div class="brand-copy">
+
+          <div class="brand-name">
+            NEWSFORGE
+          </div>
+
+          <div class="brand-sub">
+            EDITORIAL INTELLIGENCE SYSTEM
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="topbar-right">
+
+        <div
+          id="engineStatus"
+          class="engine-status"
+        >
+
+          <span class="engine-dot"></span>
+
+          <span id="engineText">
+            ENGINE ONLINE
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ========================================================
+       MAIN
+       ======================================================== -->
+
+  <main class="shell">
+
+
+    <!-- ======================================================
+         COMMAND HEADER
+         ====================================================== -->
+
+    <section class="command-header">
+
+      <div class="command-left">
+
+        <div class="command-kicker">
+
+          <span class="kicker-line"></span>
+
+          NEWS INTELLIGENCE / CONTROL ROOM
+
+        </div>
+
+
+        <h1 class="command-title">
+
+          See the story<br>
+
+          <span>
+            before the noise.
+          </span>
+
+        </h1>
+
+
+        <p class="command-description">
+
+          NEWSFORGE turns current information into structured
+          editorial intelligence. Discover stories, score their
+          potential, research claims and keep human judgment
+          in the loop before anything reaches publication.
+
+        </p>
+
+      </div>
+
+
+      <div class="command-actions">
+
+        <div
+          id="clock"
+          class="clock"
+        >
+          --
+        </div>
+
+        <div class="shortcut-hint">
+
+          <span class="key">
+            /
+          </span>
+
+          <span class="key">
+            CMD
+          </span>
+
+        </div>
+
+
+        <button
+          id="mainDiscoverBtn"
+          class="primary-btn"
+          type="button"
+          onclick="discoverNews()"
+        >
+
+          <span id="mainDiscoverIcon">
+            ✦
+          </span>
+
+          <span id="mainDiscoverText">
+            DISCOVER CURRENT NEWS
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         OVERVIEW
+         ====================================================== -->
+
+    <section class="overview">
+
+
+      <div class="overview-card primary">
+
+        <div class="overview-label">
+          DISCOVERY ENGINE
+        </div>
+
+        <div
+          id="metricStories"
+          class="overview-value"
+        >
+          0
+        </div>
+
+        <div class="overview-detail">
+          stories in current intelligence batch
+        </div>
+
+        <div class="overview-glow"></div>
+
+      </div>
+
+
+      <div class="overview-card">
+
+        <div class="overview-label">
+          HIGH POTENTIAL
+        </div>
+
+        <div
+          id="metricPotential"
+          class="overview-value"
+        >
+          0
+        </div>
+
+        <div class="overview-detail">
+          strong attention signals
+        </div>
+
+      </div>
+
+
+      <div class="overview-card">
+
+        <div class="overview-label">
+          HUMAN REVIEW
+        </div>
+
+        <div
+          id="metricVerification"
+          class="overview-value"
+        >
+          0%
+        </div>
+
+        <div class="overview-detail">
+          stories requiring verification
+        </div>
+
+      </div>
+
+
+      <div class="overview-card">
+
+        <div class="overview-label">
+          CRITICAL
+        </div>
+
+        <div
+          id="metricCritical"
+          class="overview-value"
+        >
+          0
+        </div>
+
+        <div class="overview-detail">
+          highest priority intelligence
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- ======================================================
+         DISCOVERY SECTION
+         ====================================================== -->
+
+    <section id="discovery">
+
+
+      <div class="section-header">
+
+        <div class="section-heading">
+
+          <div class="section-number">
+            01 / DISCOVERY
+          </div>
+
+          <h2 class="section-title">
+            Trending Intelligence
+          </h2>
+
+          <p class="section-subtitle">
+            Current stories collected by the NEWSFORGE
+            discovery backend.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="workspace">
+
+
+        <!-- ==================================================
+             WORKSPACE HEADER
+             ================================================== -->
+
+        <div class="workspace-top">
+
+          <div class="workspace-top-left">
+
+            <span
+              id="workspaceSignal"
+              class="workspace-signal"
+            ></span>
+
+            <span
+              id="workspaceStatus"
+              class="workspace-status"
+            >
+              READY · WAITING FOR DISCOVERY
+            </span>
+
+          </div>
+
+
+          <div class="workspace-top-right">
+
+            <button
+              class="tool-btn"
+              type="button"
+              onclick="openCommandPalette()"
+            >
+              <span>
+                COMMAND
+              </span>
+              ⌘
+            </button>
+
+            <button
+              class="tool-btn"
+              type="button"
+              onclick="discoverNews()"
+            >
+              <span>
+                REFRESH
+              </span>
+              ↻
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             FILTERS
+             ================================================== -->
+
+        <div class="filters">
+
+
+          <div class="search">
+
+            <span class="search-icon">
+              ⌕
+            </span>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search stories, sources or topics..."
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <select
+            id="categoryFilter"
+            class="filter-select"
+          >
+
+            <option value="ALL">
+              ALL CATEGORIES
+            </option>
+
+            <option value="INDIA">
+              INDIA
+            </option>
+
+            <option value="POLITICS">
+              POLITICS
+            </option>
+
+            <option value="BUSINESS">
+              BUSINESS
+            </option>
+
+            <option value="TECHNOLOGY">
+              TECHNOLOGY
+            </option>
+
+            <option value="WORLD">
+              WORLD
+            </option>
+
+            <option value="OTHER">
+              OTHER
+            </option>
+
+          </select>
+
+
+          <select
+            id="priorityFilter"
+            class="filter-select"
+          >
+
+            <option value="ALL">
+              ALL PRIORITIES
+            </option>
+
+            <option value="CRITICAL">
+              CRITICAL
+            </option>
+
+            <option value="HIGH">
+              HIGH
+            </option>
+
+            <option value="MEDIUM">
+              MEDIUM
+            </option>
+
+            <option value="LOW">
+              LOW
+            </option>
+
+          </select>
+
+
+          <div class="view-switch">
+
+            <button
+              id="gridViewBtn"
+              class="view-btn active"
+              type="button"
+              onclick="setView('grid')"
+              aria-label="Grid view"
+            >
+              ▦
+            </button>
+
+            <button
+              id="listViewBtn"
+              class="view-btn"
+              type="button"
+              onclick="setView('list')"
+              aria-label="List view"
+            >
+              ☰
+            </button>
+
+          </div>
+
+
+        </div>
+
+
+        <div class="scan-line"></div>
+
+
+        <!-- ==================================================
+             NEWS AREA
+             ================================================== -->
+
+        <div class="news-area">
+
+          <div
+            id="newsGrid"
+            class="news-grid"
+          >
+
+            <div
+              class="empty-state"
+              style="grid-column:1/-1"
+            >
+
+              <div class="empty-orb">
+                N
+              </div>
+
+              <div class="empty-title">
+                Intelligence workspace ready
+              </div>
+
+              <div class="empty-text">
+                Run a discovery cycle to retrieve current
+                stories from the NEWSFORGE backend.
+                Nothing is fabricated while the engine is idle.
+              </div>
+
+              <button
+                class="primary-btn"
+                onclick="discoverNews()"
+              >
+                START DISCOVERY
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         PIPELINE
+         ====================================================== -->
+
+    <section id="pipeline">
+
+
+      <div class="section-header">
+
+        <div class="section-heading">
+
+          <div class="section-number">
+            02 / PIPELINE
+          </div>
+
+          <h2 class="section-title">
+            Intelligence Pipeline
+          </h2>
+
+          <p class="section-subtitle">
+            A story moves through discovery, analysis and
+            verification before controlled publication.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="pipeline-shell">
+
+        <div class="pipeline">
+
+
+          <div
+            id="pipe1"
+            class="pipeline-node active"
+          >
+
+            <div class="pipeline-index">
+              STAGE 01
+            </div>
+
+            <div class="pipeline-icon">
+              ◉
+            </div>
+
+            <div class="pipeline-title">
+              DISCOVERY
+            </div>
+
+            <div class="pipeline-text">
+              Find current stories and emerging signals.
+            </div>
+
+          </div>
+
+
+          <div
+            id="pipe2"
+            class="pipeline-node"
+          >
+
+            <div class="pipeline-index">
+              STAGE 02
+            </div>
+
+            <div class="pipeline-icon">
+              ◌
+            </div>
+
+            <div class="pipeline-title">
+              ANALYSIS
+            </div>
+
+            <div class="pipeline-text">
+              Score relevance, trend potential and attention.
+            </div>
+
+          </div>
+
+
+          <div
+            id="pipe3"
+            class="pipeline-node"
+          >
+
+            <div class="pipeline-index">
+              STAGE 03
+            </div>
+
+            <div class="pipeline-icon">
+              ◎
+            </div>
+
+            <div class="pipeline-title">
+              RESEARCH
+            </div>
+
+            <div class="pipeline-text">
+              Cross-check claims against current sources.
+            </div>
+
+          </div>
+
+
+          <div
+            id="pipe4"
+            class="pipeline-node"
+          >
+
+            <div class="pipeline-index">
+              STAGE 04
+            </div>
+
+            <div class="pipeline-icon">
+              ✓
+            </div>
+
+            <div class="pipeline-title">
+              APPROVAL
+            </div>
+
+            <div class="pipeline-text">
+              Human judgment for sensitive or uncertain stories.
+            </div>
+
+          </div>
+
+
+          <div
+            id="pipe5"
+            class="pipeline-node"
+          >
+
+            <div class="pipeline-index">
+              STAGE 05
+            </div>
+
+            <div class="pipeline-icon">
+              ↗
+            </div>
+
+            <div class="pipeline-title">
+              PUBLISH
+            </div>
+
+            <div class="pipeline-text">
+              Controlled distribution after integration.
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         SYSTEM
+         ====================================================== -->
+
+    <section>
+
+
+      <div class="section-header">
+
+        <div class="section-heading">
+
+          <div class="section-number">
+            03 / SYSTEM
+          </div>
+
+          <h2 class="section-title">
+            Architecture
+          </h2>
+
+          <p class="section-subtitle">
+            Separate intelligence from distribution so the
+            system can fail safely.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="system-grid">
+
+
+        <div class="system-card">
+
+          <div class="system-card-title">
+            ACTIVE INTELLIGENCE LAYER
+          </div>
+
+          <div class="system-card-text">
+            The current interface is designed around the
+            discovery and research APIs. Each stage exposes
+            its own state instead of pretending downstream
+            services are connected.
+          </div>
+
+
+          <div class="system-list">
+
+            <div class="system-item">
+              <strong>NEWS API</strong>
+              <span>Current story discovery</span>
+            </div>
+
+            <div class="system-item">
+              <strong>GEMINI</strong>
+              <span>AI analysis</span>
+            </div>
+
+            <div class="system-item">
+              <strong>SEARCH</strong>
+              <span>Current evidence</span>
+            </div>
+
+            <div class="system-item">
+              <strong>URL CONTEXT</strong>
+              <span>Source inspection</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="system-card">
+
+          <div class="system-card-title">
+            CONTROLLED DISTRIBUTION
+          </div>
+
+          <div class="system-card-text">
+            Content generation, approvals, publishing,
+            scheduling and analytics are intentionally
+            represented as separate modules. They should only
+            become active when their backend integrations exist.
+          </div>
+
+
+          <div class="system-list">
+
+            <div class="system-item">
+              <strong>CONTENT</strong>
+              <span>Generation layer</span>
+            </div>
+
+            <div class="system-item">
+              <strong>APPROVAL</strong>
+              <span>Editorial control</span>
+            </div>
+
+            <div class="system-item">
+              <strong>PUBLISH</strong>
+              <span>Social distribution</span>
+            </div>
+
+            <div class="system-item">
+              <strong>ANALYTICS</strong>
+              <span>Performance layer</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+
+    <footer class="footer">
+
+      <div class="footer-inner">
+
+        <span>
+          NEWSFORGE AI
+        </span>
+
+        <span>
+          DISCOVER · RESEARCH · VERIFY · PUBLISH
+        </span>
+
+        <span id="footerClock">
+          SYSTEM READY
+        </span>
+
+      </div>
+
+    </footer>
+
+
+  </main>
+
+
+</div>
+
+
+<!-- ============================================================
      RESEARCH MODAL
-===================================================== -->
+     ============================================================ -->
 
 <div
   id="researchModal"
@@ -1856,32 +4421,45 @@ img{
     <div class="modal-header">
 
       <div>
+
         <div class="modal-kicker">
-          NEWSFORGE INTELLIGENCE WORKSPACE
+          NEWSFORGE / RESEARCH ENGINE
         </div>
 
         <div class="modal-title">
-          STORY RESEARCH
+          Story Intelligence
         </div>
+
       </div>
 
+
       <button
-        class="close-btn"
+        class="close"
+        type="button"
         onclick="closeResearch()"
-        aria-label="Close"
+        aria-label="Close research"
       >
         ×
       </button>
 
     </div>
 
-    <div id="researchBody" class="modal-body">
 
-      <div class="empty">
-        <div class="empty-icon">◎</div>
+    <div
+      id="researchBody"
+      class="modal-body"
+    >
+
+      <div class="empty-state">
+
+        <div class="empty-orb">
+          ◎
+        </div>
+
         <div class="empty-title">
           No story selected
         </div>
+
       </div>
 
     </div>
@@ -1891,53 +4469,258 @@ img{
 </div>
 
 
-<!-- =====================================================
-     TOAST
-===================================================== -->
+<!-- ============================================================
+     COMMAND PALETTE
+     ============================================================ -->
 
-<div id="toast" class="toast">
-  <div id="toastTitle" class="toast-title">
+<div
+  id="commandPalette"
+  class="command-palette"
+  onclick="handleCommandBackdrop(event)"
+>
+
+  <div class="command-box">
+
+    <div class="command-search">
+
+      <span>
+        ⌕
+      </span>
+
+      <input
+        id="commandInput"
+        type="text"
+        placeholder="Type a command..."
+        autocomplete="off"
+      >
+
+      <span class="key">
+        ESC
+      </span>
+
+    </div>
+
+
+    <div class="command-options">
+
+
+      <button
+        class="command-option"
+        onclick="commandDiscover()"
+      >
+
+        <span class="command-option-left">
+
+          <span class="command-option-icon">
+            ✦
+          </span>
+
+          DISCOVER CURRENT NEWS
+
+        </span>
+
+        <span class="key">
+          ↵
+        </span>
+
+      </button>
+
+
+      <button
+        class="command-option"
+        onclick="commandFocusSearch()"
+      >
+
+        <span class="command-option-left">
+
+          <span class="command-option-icon">
+            ⌕
+          </span>
+
+          SEARCH STORIES
+
+        </span>
+
+        <span class="key">
+          /
+        </span>
+
+      </button>
+
+
+      <button
+        class="command-option"
+        onclick="commandScroll('pipeline')"
+      >
+
+        <span class="command-option-left">
+
+          <span class="command-option-icon">
+            ◎
+          </span>
+
+          VIEW PIPELINE
+
+        </span>
+
+      </button>
+
+
+      <button
+        class="command-option"
+        onclick="commandScroll('discovery')"
+      >
+
+        <span class="command-option-left">
+
+          <span class="command-option-icon">
+            ◉
+          </span>
+
+          GO TO DISCOVERY
+
+        </span>
+
+      </button>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     TOAST
+     ============================================================ -->
+
+<div
+  id="toast"
+  class="toast"
+>
+
+  <div
+    id="toastTitle"
+    class="toast-title"
+  >
     NEWSFORGE
   </div>
-  <div id="toastText" class="toast-text"></div>
+
+  <div
+    id="toastText"
+    class="toast-text"
+  ></div>
+
 </div>
 
 
 <script>
+
+/* ============================================================
+   NEWSFORGE AI
+   FRONTEND APPLICATION
+   ============================================================ */
+
 "use strict";
 
-/* =========================================================
+
+/* ============================================================
    STATE
-========================================================= */
+   ============================================================ */
 
 const state = {
+
   articles: [],
-  category: "ALL",
-  discovering: false,
-  researching: false,
-  selectedArticle: null,
-  researchResult: null,
-  lastDiscovery: null
+
+  category:
+    "ALL",
+
+  priority:
+    "ALL",
+
+  search:
+    "",
+
+  sort:
+    "TREND",
+
+  view:
+    "grid",
+
+  discovering:
+    false,
+
+  researching:
+    false,
+
+  selectedArticle:
+    null,
+
+  researchResult:
+    null,
+
+  lastResponse:
+    null,
+
+  toastTimer:
+    null
+
 };
 
 
-/* =========================================================
-   DOM HELPERS
-========================================================= */
+/* ============================================================
+   DOM
+   ============================================================ */
 
-const $ = selector =>
-  document.querySelector(selector);
+const $ =
+  selector =>
+    document.querySelector(selector);
 
-const $$ = selector =>
-  [...document.querySelectorAll(selector)];
+const $$ =
+  selector =>
+    [...document.querySelectorAll(selector)];
 
 
-/* =========================================================
-   TEXT SAFETY
-========================================================= */
+/* ============================================================
+   MOBILE SAFETY
+   ============================================================ */
+
+function applyMobileSafety(){
+
+  const touch =
+    navigator.maxTouchPoints > 0;
+
+  const narrow =
+    window.innerWidth <= 800;
+
+  document.documentElement
+    .classList
+    .toggle(
+      "force-mobile",
+      touch && narrow
+    );
+
+}
+
+applyMobileSafety();
+
+window.addEventListener(
+  "resize",
+  applyMobileSafety
+);
+
+
+/* ============================================================
+   HTML ESCAPE
+   ============================================================ */
 
 function escapeHtml(value){
-  if(value === null || value === undefined){
+
+  if(
+    value === null ||
+    value === undefined
+  ){
     return "";
   }
 
@@ -1947,154 +4730,423 @@ function escapeHtml(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
+
+
+/* ============================================================
+   SAFE URL
+   ============================================================ */
 
 function safeUrl(value){
+
   try{
-    const url = new URL(value);
+
+    const url =
+      new URL(value);
 
     if(
-      url.protocol === "http:" ||
-      url.protocol === "https:"
+      url.protocol !== "http:" &&
+      url.protocol !== "https:"
     ){
-      return url.href;
+      return "#";
     }
 
-    return "#";
+    return url.href;
+
   }catch{
+
     return "#";
+
   }
+
 }
 
 
-/* =========================================================
-   STATUS
-========================================================= */
+/* ============================================================
+   NUMBER
+   ============================================================ */
 
-function setStatus(message,type=""){
-  const strip = $("#discoveryStatus");
-  const text = $("#discoveryStatusText");
+function numeric(value){
 
-  if(!strip || !text){
-    return;
-  }
+  const number =
+    Number(value);
 
-  strip.className =
-    "status-strip" +
-    (type ? " " + type : "");
+  return Number.isFinite(number)
+    ? number
+    : 0;
 
-  text.textContent = message;
 }
 
-function setEngine(online){
-  const engine = $("#engineStatus");
-  const text = $("#engineText");
 
-  if(!engine || !text){
+/* ============================================================
+   CLOCK
+   ============================================================ */
+
+function updateClock(){
+
+  const now =
+    new Date();
+
+  const time =
+    now.toLocaleTimeString(
+      undefined,
+      {
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+      }
+    );
+
+  const date =
+    now.toLocaleDateString(
+      undefined,
+      {
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+      }
+    );
+
+  const value =
+    `${date} · ${time}`;
+
+  const clock =
+    $("#clock");
+
+  const footer =
+    $("#footerClock");
+
+  if(clock){
+    clock.textContent =
+      value.toUpperCase();
+  }
+
+  if(footer){
+    footer.textContent =
+      value.toUpperCase();
+  }
+
+}
+
+updateClock();
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* ============================================================
+   ENGINE STATUS
+   ============================================================ */
+
+function setEngineStatus(
+  online
+){
+
+  const element =
+    $("#engineStatus");
+
+  const text =
+    $("#engineText");
+
+  if(!element){
     return;
   }
 
   if(online){
-    engine.classList.remove("offline");
-    text.textContent = "ENGINE ONLINE";
+
+    element.classList
+      .remove("offline");
+
+    if(text){
+      text.textContent =
+        "ENGINE ONLINE";
+    }
+
   }else{
-    engine.classList.add("offline");
-    text.textContent = "ENGINE DEGRADED";
+
+    element.classList
+      .add("offline");
+
+    if(text){
+      text.textContent =
+        "ENGINE DEGRADED";
+    }
+
   }
+
 }
 
 
-/* =========================================================
+/* ============================================================
+   WORKSPACE STATUS
+   ============================================================ */
+
+function setWorkspaceStatus(
+  text,
+  scanning=false
+){
+
+  const status =
+    $("#workspaceStatus");
+
+  const signal =
+    $("#workspaceSignal");
+
+  if(status){
+    status.textContent =
+      text;
+  }
+
+  if(signal){
+
+    signal.classList.toggle(
+      "scanning",
+      scanning
+    );
+
+  }
+
+}
+
+
+/* ============================================================
    TOAST
-========================================================= */
+   ============================================================ */
 
-let toastTimer = null;
+function showToast(
+  title,
+  message
+){
 
-function toast(title,text){
-  const element = $("#toast");
+  const toast =
+    $("#toast");
 
-  $("#toastTitle").textContent = title;
-  $("#toastText").textContent = text;
+  const titleElement =
+    $("#toastTitle");
 
-  element.classList.add("show");
+  const textElement =
+    $("#toastText");
 
-  clearTimeout(toastTimer);
-
-  toastTimer =
-    setTimeout(() => {
-      element.classList.remove("show");
-    },4200);
-}
-
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-function scrollToSection(id){
-  const element = document.getElementById(id);
-
-  if(element){
-    element.scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+  if(!toast){
+    return;
   }
+
+  titleElement.textContent =
+    title;
+
+  textElement.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(
+    state.toastTimer
+  );
+
+  state.toastTimer =
+    setTimeout(
+      () => {
+
+        toast.classList
+          .remove("show");
+
+      },
+      4200
+    );
+
 }
 
 
-/* =========================================================
-   LOADING
-========================================================= */
+/* ============================================================
+   BUTTON LOADING
+   ============================================================ */
 
-function showLoading(){
-  const grid = $("#newsGrid");
+function setDiscoverButton(
+  loading
+){
+
+  const buttons = [
+    {
+      button:$("#mainDiscoverBtn"),
+      icon:$("#mainDiscoverIcon"),
+      text:$("#mainDiscoverText")
+    }
+  ];
+
+  buttons.forEach(
+    item => {
+
+      if(!item.button){
+        return;
+      }
+
+      item.button.disabled =
+        loading;
+
+      if(loading){
+
+        if(item.icon){
+          item.icon.innerHTML =
+            '<span class="btn-spinner"></span>';
+        }
+
+        if(item.text){
+          item.text.textContent =
+            "SCANNING NEWS...";
+        }
+
+      }else{
+
+        if(item.icon){
+          item.icon.textContent =
+            "✦";
+        }
+
+        if(item.text){
+          item.text.textContent =
+            "DISCOVER CURRENT NEWS";
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   LOADING SKELETONS
+   ============================================================ */
+
+function renderLoading(){
+
+  const grid =
+    $("#newsGrid");
+
+  if(!grid){
+    return;
+  }
+
+  grid.className =
+    "news-grid";
 
   grid.innerHTML =
     Array.from(
       {length:4},
-      () => `
-        <div class="skeleton">
-          <div class="skeleton-image"></div>
-          <div class="skeleton-body">
-            <div class="skeleton-line medium"></div>
-            <div class="skeleton-line big"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
+      (_,index) => `
+
+        <article
+          class="news-card"
+          style="
+            animation-delay:${index * 70}ms;
+          "
+        >
+
+          <div
+            class="news-visual"
+            style="
+              background:
+                linear-gradient(
+                  90deg,
+                  #110d17,
+                  #1a1322,
+                  #110d17
+                );
+              background-size:200% 100%;
+              animation:shimmer 1.3s infinite;
+            "
+          ></div>
+
+          <div class="news-body">
+
+            <div
+              style="
+                height:7px;
+                width:38%;
+                border-radius:8px;
+                background:#211a28;
+                animation:shimmer 1.3s infinite;
+              "
+            ></div>
+
+            <div
+              style="
+                height:18px;
+                width:88%;
+                margin-top:14px;
+                border-radius:8px;
+                background:#1c1623;
+                animation:shimmer 1.3s infinite;
+              "
+            ></div>
+
+            <div
+              style="
+                height:9px;
+                width:100%;
+                margin-top:10px;
+                border-radius:8px;
+                background:#17121e;
+              "
+            ></div>
+
+            <div
+              style="
+                height:9px;
+                width:75%;
+                margin-top:6px;
+                border-radius:8px;
+                background:#17121e;
+              "
+            ></div>
+
           </div>
-        </div>
+
+        </article>
       `
-    ).join("");
+    )
+    .join("");
+
 }
 
 
-/* =========================================================
-   DISCOVER BUTTON STATE
-========================================================= */
+/* ============================================================
+   SKELETON KEYFRAMES
+   ============================================================ */
 
-function setDiscovering(value){
-  state.discovering = value;
+const shimmerStyle =
+  document.createElement("style");
 
-  const button = $("#discoverBtn");
-  const icon = $("#discoverIcon");
-  const text = $("#discoverText");
+shimmerStyle.textContent = `
 
-  if(value){
-    button.disabled = true;
-    icon.innerHTML =
-      '<span class="btn-spinner"></span>';
-    text.textContent = "DISCOVERING...";
-  }else{
-    button.disabled = false;
-    icon.textContent = "✦";
-    text.textContent = "DISCOVER NEWS";
+@keyframes shimmer{
+
+  0%{
+    background-position:
+      200% 0;
   }
+
+  100%{
+    background-position:
+      -200% 0;
+  }
+
 }
 
+`;
 
-/* =========================================================
-   FETCH NEWS
-========================================================= */
+document.head.appendChild(
+  shimmerStyle
+);
+
+
+/* ============================================================
+   DISCOVERY
+   ============================================================ */
 
 async function discoverNews(){
 
@@ -2102,16 +5154,28 @@ async function discoverNews(){
     return;
   }
 
-  setDiscovering(true);
+  state.discovering =
+    true;
 
-  setStatus(
-    "Connecting to NEWSFORGE discovery backend...",
-    ""
+  setDiscoverButton(
+    true
   );
 
-  showLoading();
+  setEngineStatus(
+    true
+  );
 
-  activatePipeline(1);
+  setWorkspaceStatus(
+    "CONNECTING · DISCOVERY API",
+    true
+  );
+
+  activatePipeline(
+    1
+  );
+
+  renderLoading();
+
 
   try{
 
@@ -2120,79 +5184,126 @@ async function discoverNews(){
         "/api/news?pageSize=20",
         {
           method:"GET",
+
           headers:{
-            "Accept":"application/json"
+            Accept:
+              "application/json"
           },
+
           cache:"no-store"
         }
       );
 
-    let data = null;
+
+    let data;
 
     try{
-      data = await response.json();
+
+      data =
+        await response.json();
+
     }catch{
+
       throw new Error(
-        "Discovery backend returned an invalid response."
+        "The discovery API returned an invalid JSON response."
       );
+
     }
+
 
     if(
-      !response.ok ||
-      data?.success === false
+      !response.ok
     ){
+
       throw new Error(
         data?.error?.message ||
-        `Discovery failed (${response.status}).`
+        `Discovery request failed with HTTP ${response.status}.`
       );
+
     }
 
-    const articles =
-      Array.isArray(data?.articles)
+
+    if(
+      data?.success === false &&
+      !Array.isArray(data?.articles)
+    ){
+
+      throw new Error(
+        data?.error?.message ||
+        "The discovery engine reported a failure."
+      );
+
+    }
+
+
+    state.articles =
+      Array.isArray(
+        data?.articles
+      )
         ? data.articles
         : [];
 
-    state.articles = articles;
-    state.lastDiscovery = data;
+    state.lastResponse =
+      data;
 
-    activatePipeline(2);
 
-    renderMetrics(data);
+    renderMetrics(
+      data
+    );
+
+
+    activatePipeline(
+      2
+    );
+
 
     renderNews();
 
-    const ai = data?.ai || {};
 
-    if(ai.error){
-      setEngine(false);
+    const ai =
+      data?.ai || {};
 
-      setStatus(
-        `${articles.length} stories discovered. AI analysis is currently unavailable.`,
-        "error"
+
+    if(
+      ai.error
+    ){
+
+      setEngineStatus(
+        false
       );
 
-      toast(
-        "AI analysis unavailable",
-        ai.error.message ||
-        "News discovery succeeded, but Gemini analysis failed."
+      setWorkspaceStatus(
+        `${state.articles.length} STORIES FOUND · AI ANALYSIS DEGRADED`,
+        false
+      );
+
+      showToast(
+        "Discovery completed",
+        "Stories were retrieved, but AI analysis is currently unavailable."
       );
 
     }else{
 
-      setEngine(true);
-
-      setStatus(
-        `${articles.length} stories discovered and analyzed.`,
-        "success"
+      setEngineStatus(
+        true
       );
 
-      activatePipeline(3);
+      setWorkspaceStatus(
+        `${state.articles.length} STORIES ANALYZED · READY FOR EDITORIAL REVIEW`,
+        false
+      );
 
-      toast(
+      activatePipeline(
+        3
+      );
+
+      showToast(
         "Discovery complete",
-        `${articles.length} stories are ready for review.`
+        `${state.articles.length} stories are now available.`
       );
+
     }
+
 
   }catch(error){
 
@@ -2201,38 +5312,95 @@ async function discoverNews(){
       error
     );
 
-    setEngine(false);
-
-    setStatus(
-      error?.message ||
-      "Unable to reach the discovery backend.",
-      "error"
+    setEngineStatus(
+      false
     );
 
-    renderError(
-      error?.message ||
-      "Unable to load current stories."
+    setWorkspaceStatus(
+      "DISCOVERY FAILED · BACKEND UNAVAILABLE",
+      false
     );
 
-    toast(
+    renderDiscoveryError(
+      error?.message ||
+      "Unable to load current news."
+    );
+
+    showToast(
       "Discovery failed",
       error?.message ||
-      "The discovery backend could not be reached."
+      "The discovery service could not be reached."
     );
+
 
   }finally{
 
-    setDiscovering(false);
+    state.discovering =
+      false;
+
+    setDiscoverButton(
+      false
+    );
 
   }
+
 }
 
 
-/* =========================================================
-   METRICS
-========================================================= */
+/* ============================================================
+   DISCOVERY ERROR
+   ============================================================ */
 
-function renderMetrics(data){
+function renderDiscoveryError(
+  message
+){
+
+  const grid =
+    $("#newsGrid");
+
+  grid.className =
+    "news-grid";
+
+  grid.innerHTML = `
+
+    <div
+      class="empty-state"
+      style="grid-column:1/-1"
+    >
+
+      <div class="empty-orb">
+        !
+      </div>
+
+      <div class="empty-title">
+        Discovery unavailable
+      </div>
+
+      <div class="empty-text">
+        ${escapeHtml(message)}
+      </div>
+
+      <button
+        class="primary-btn"
+        onclick="discoverNews()"
+      >
+        RETRY DISCOVERY
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ============================================================
+   METRICS
+   ============================================================ */
+
+function renderMetrics(
+  data
+){
 
   const articles =
     state.articles;
@@ -2240,19 +5408,30 @@ function renderMetrics(data){
   const ai =
     data?.ai || {};
 
+
   const stories =
     articles.length;
 
+
   const potential =
-    Number(ai.highPotential || 0);
+    numeric(
+      ai.highPotential
+    );
+
 
   const verification =
-    Number(ai.verificationRequired || 0);
+    numeric(
+      ai.verificationRequired
+    );
+
 
   const critical =
-    Number(ai.criticalStories || 0);
+    numeric(
+      ai.criticalStories
+    );
 
-  const verificationPercent =
+
+  const reviewPercent =
     stories
       ? Math.round(
           verification /
@@ -2261,53 +5440,74 @@ function renderMetrics(data){
         )
       : 0;
 
-  animateNumber(
+
+  animateMetric(
     $("#metricStories"),
-    stories
+    stories,
+    ""
   );
 
-  animateNumber(
+
+  animateMetric(
     $("#metricPotential"),
-    potential
+    potential,
+    ""
   );
 
-  animateNumber(
+
+  animateMetric(
     $("#metricVerification"),
-    verificationPercent,
+    reviewPercent,
     "%"
   );
 
-  animateNumber(
+
+  animateMetric(
     $("#metricCritical"),
-    critical
+    critical,
+    ""
   );
+
 }
 
-function animateNumber(
+
+/* ============================================================
+   METRIC ANIMATION
+   ============================================================ */
+
+function animateMetric(
   element,
   target,
-  suffix=""
+  suffix
 ){
 
   if(!element){
     return;
   }
 
-  const start =
-    Number(
-      String(element.textContent)
-        .replace(/[^\d.-]/g,"")
-    ) || 0;
+  const current =
+    numeric(
+      String(
+        element.textContent
+      ).replace(
+        /[^\d.-]/g,
+        ""
+      )
+    );
 
   const end =
-    Number(target) || 0;
-
-  const duration = 450;
+    numeric(target);
 
   const startTime =
     performance.now();
 
-  function tick(now){
+  const duration =
+    650;
+
+
+  function frame(
+    now
+  ){
 
     const progress =
       Math.min(
@@ -2316,6 +5516,7 @@ function animateNumber(
         1
       );
 
+
     const eased =
       1 -
       Math.pow(
@@ -2323,78 +5524,230 @@ function animateNumber(
         3
       );
 
+
     const value =
       Math.round(
-        start +
-        (end - start) *
+        current +
+        (end - current) *
         eased
       );
+
 
     element.textContent =
       value + suffix;
 
-    if(progress < 1){
-      requestAnimationFrame(tick);
+
+    if(
+      progress < 1
+    ){
+
+      requestAnimationFrame(
+        frame
+      );
+
     }
+
   }
 
-  requestAnimationFrame(tick);
-}
 
-
-/* =========================================================
-   CATEGORY
-========================================================= */
-
-function setCategory(category){
-
-  state.category =
-    String(category || "ALL")
-      .toUpperCase();
-
-  $$(".category").forEach(button => {
-
-    button.classList.toggle(
-      "active",
-      button.dataset.category ===
-      state.category
-    );
-
-  });
-
-  renderNews();
-}
-
-
-/* =========================================================
-   FILTER
-========================================================= */
-
-function getFilteredArticles(){
-
-  if(state.category === "ALL"){
-    return state.articles;
-  }
-
-  return state.articles.filter(
-    article =>
-      String(
-        article?.ai?.category ||
-        ""
-      ).toUpperCase() ===
-      state.category
+  requestAnimationFrame(
+    frame
   );
+
 }
 
 
-/* =========================================================
-   DATE
-========================================================= */
+/* ============================================================
+   FILTER EVENTS
+   ============================================================ */
 
-function formatDate(value){
+$("#searchInput")
+  ?.addEventListener(
+    "input",
+    event => {
+
+      state.search =
+        event.target.value
+          .trim()
+          .toLowerCase();
+
+      renderNews();
+
+    }
+  );
+
+
+$("#categoryFilter")
+  ?.addEventListener(
+    "change",
+    event => {
+
+      state.category =
+        event.target.value;
+
+      renderNews();
+
+    }
+  );
+
+
+$("#priorityFilter")
+  ?.addEventListener(
+    "change",
+    event => {
+
+      state.priority =
+        event.target.value;
+
+      renderNews();
+
+    }
+  );
+
+
+/* ============================================================
+   FILTERED ARTICLES
+   ============================================================ */
+
+function getVisibleArticles(){
+
+  let articles =
+    [...state.articles];
+
+
+  if(
+    state.category !== "ALL"
+  ){
+
+    articles =
+      articles.filter(
+        article => {
+
+          const category =
+            String(
+              article?.ai?.category ||
+              ""
+            ).toUpperCase();
+
+          return category ===
+            state.category;
+
+        }
+      );
+
+  }
+
+
+  if(
+    state.priority !== "ALL"
+  ){
+
+    articles =
+      articles.filter(
+        article => {
+
+          const priority =
+            String(
+              article?.ai?.priority ||
+              ""
+            ).toUpperCase();
+
+          return priority ===
+            state.priority;
+
+        }
+      );
+
+  }
+
+
+  if(
+    state.search
+  ){
+
+    articles =
+      articles.filter(
+        article => {
+
+          const title =
+            String(
+              article?.title ||
+              ""
+            ).toLowerCase();
+
+          const description =
+            String(
+              article?.description ||
+              ""
+            ).toLowerCase();
+
+          const source =
+            String(
+              article?.source?.name ||
+              ""
+            ).toLowerCase();
+
+          const category =
+            String(
+              article?.ai?.category ||
+              ""
+            ).toLowerCase();
+
+          return (
+            title.includes(
+              state.search
+            ) ||
+            description.includes(
+              state.search
+            ) ||
+            source.includes(
+              state.search
+            ) ||
+            category.includes(
+              state.search
+            )
+          );
+
+        }
+      );
+
+  }
+
+
+  articles.sort(
+    (a,b) => {
+
+      const aScore =
+        numeric(
+          a?.ai?.trendScore
+        );
+
+      const bScore =
+        numeric(
+          b?.ai?.trendScore
+        );
+
+      return bScore - aScore;
+
+    }
+  );
+
+
+  return articles;
+
+}
+
+
+/* ============================================================
+   DATE FORMAT
+   ============================================================ */
+
+function formatDate(
+  value
+){
 
   if(!value){
-    return "DATE UNAVAILABLE";
+    return "DATE UNKNOWN";
   }
 
   const date =
@@ -2408,64 +5761,119 @@ function formatDate(value){
     return String(value);
   }
 
-  return date.toLocaleString(
-    undefined,
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric",
-      hour:"2-digit",
-      minute:"2-digit"
-    }
-  ).toUpperCase();
+  return date
+    .toLocaleString(
+      undefined,
+      {
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    )
+    .toUpperCase();
+
 }
 
 
-/* =========================================================
-   ARTICLE IMAGE FALLBACK
-========================================================= */
+/* ============================================================
+   ARTICLE IMAGE
+   ============================================================ */
 
-function imageFallback(title){
+function renderImage(
+  article
+){
 
-  const safe =
-    encodeURIComponent(
-      String(title || "NEWSFORGE")
-        .slice(0,60)
+  const image =
+    safeUrl(
+      article?.image
     );
 
+
+  if(
+    image === "#"
+  ){
+
+    return `
+
+      <div
+        style="
+          width:100%;
+          height:100%;
+          display:grid;
+          place-items:center;
+          background:
+            radial-gradient(
+              circle at 50% 30%,
+              rgba(139,92,246,.22),
+              transparent 48%
+            ),
+            linear-gradient(
+              145deg,
+              #181023,
+              #0b0810
+            );
+        "
+      >
+
+        <div
+          style="
+            color:#ad82dd;
+            font-size:10px;
+            font-weight:950;
+            letter-spacing:.16em;
+          "
+        >
+          NEWSFORGE
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
   return `
-    <div
-      style="
-        width:100%;
-        height:100%;
-        display:grid;
-        place-items:center;
-        background:
-          radial-gradient(
-            circle at 50% 30%,
-            rgba(145,71,255,.25),
-            transparent 45%
-          ),
-          #10091a;
-        color:#c89bff;
-        font-size:12px;
-        font-weight:900;
-        letter-spacing:.1em;
-        text-align:center;
-        padding:20px;
+
+    <img
+      class="news-image"
+      src="${image}"
+      alt=""
+      loading="lazy"
+      decoding="async"
+      referrerpolicy="no-referrer"
+      onerror="
+        this.style.display='none';
+        this.nextElementSibling.style.display='grid';
       "
     >
-      ${escapeHtml(
-        decodeURIComponent(safe)
-      )}
+
+    <div
+      style="
+        display:none;
+        width:100%;
+        height:100%;
+        place-items:center;
+        background:#110c18;
+        color:#ad82dd;
+        font-size:10px;
+        font-weight:950;
+        letter-spacing:.15em;
+      "
+    >
+      NEWSFORGE
     </div>
+
   `;
+
 }
 
 
-/* =========================================================
+/* ============================================================
    NEWS CARD
-========================================================= */
+   ============================================================ */
 
 function renderArticleCard(
   article,
@@ -2476,301 +5884,515 @@ function renderArticleCard(
     article?.title ||
     "Untitled story";
 
+
   const description =
     article?.description ||
-    "No description was supplied by the source.";
+    "No description supplied by source.";
+
 
   const source =
     article?.source?.name ||
     "Unknown source";
 
-  const url =
-    safeUrl(article?.url);
 
-  const image =
-    safeUrl(article?.image);
+  const url =
+    safeUrl(
+      article?.url
+    );
+
 
   const ai =
     article?.ai || {};
 
+
   const trend =
-    Number(ai.trendScore || 0);
+    Math.max(
+      0,
+      Math.min(
+        100,
+        numeric(
+          ai.trendScore
+        )
+      )
+    );
+
 
   const relevance =
-    Number(
-      ai.audienceRelevance || 0
+    Math.max(
+      0,
+      Math.min(
+        100,
+        numeric(
+          ai.audienceRelevance
+        )
+      )
     );
 
+
   const attention =
-    Number(
-      ai.attentionPotential || 0
+    Math.max(
+      0,
+      Math.min(
+        100,
+        numeric(
+          ai.attentionPotential
+        )
+      )
     );
+
 
   const category =
     ai.category ||
     "OTHER";
 
+
   const priority =
     ai.priority ||
     "MEDIUM";
 
-  const requiresReview =
-    Boolean(
-      ai.humanVerificationRequired
-    );
 
   const analyzed =
     Boolean(
       ai.analyzed
     );
 
+
+  const humanReview =
+    Boolean(
+      ai.humanVerificationRequired
+    );
+
+
   const reasoning =
     ai.reasoning ||
     (
       analyzed
-        ? "AI analysis returned no editorial reasoning."
-        : "AI analysis was not available. Manual verification is required."
+        ? "AI analysis returned without additional reasoning."
+        : "AI analysis is unavailable. Manual verification is required."
     );
 
-  const safeArticle =
-    encodeURIComponent(
-      JSON.stringify(article)
+
+  const delay =
+    Math.min(
+      index * 55,
+      500
     );
+
+
+  const encoded =
+    encodeURIComponent(
+      JSON.stringify(
+        article
+      )
+    );
+
+
+  let priorityClass =
+    "";
+
+
+  if(
+    priority === "CRITICAL"
+  ){
+    priorityClass =
+      "badge-red";
+  }else if(
+    priority === "HIGH"
+  ){
+    priorityClass =
+      "badge-yellow";
+  }
+
 
   return `
+
     <article
       class="news-card"
-      data-index="${index}"
+      style="
+        animation-delay:${delay}ms;
+      "
     >
 
-      <div class="news-image-wrap">
 
-        ${
-          image !== "#"
-            ? `
-              <img
-                class="news-image"
-                src="${image}"
-                alt=""
-                loading="lazy"
-                decoding="async"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='grid';"
-              >
+      <div class="news-visual">
 
-              <div
-                style="
-                  display:none;
-                  width:100%;
-                  height:100%;
-                  place-items:center;
-                  background:#10091a;
-                  color:#b46cff;
-                  font-size:10px;
-                  font-weight:900;
-                  letter-spacing:.1em;
-                "
-              >
-                NEWSFORGE
-              </div>
-            `
-            :
-            `
-              <div
-                style="
-                  width:100%;
-                  height:100%;
-                  display:grid;
-                  place-items:center;
-                  background:
-                    radial-gradient(
-                      circle at 50% 30%,
-                      rgba(145,71,255,.24),
-                      transparent 45%
-                    ),
-                    #10091a;
-                  color:#b46cff;
-                  font-size:11px;
-                  font-weight:900;
-                  letter-spacing:.12em;
-                "
-              >
-                NEWSFORGE
-              </div>
-            `
-        }
+        ${renderImage(article)}
 
-        <div class="news-image-overlay"></div>
+        <div class="news-gradient"></div>
+
+
+        <div class="news-top-label">
+
+          <span class="news-top-dot"></span>
+
+          ${escapeHtml(
+            category
+          )}
+
+        </div>
+
+
+        <div class="news-score">
+
+          <div class="news-score-number">
+            ${trend}
+          </div>
+
+          <div class="news-score-label">
+            TREND
+          </div>
+
+        </div>
+
 
       </div>
 
-      <div class="news-content">
+
+      <div class="news-body">
+
 
         <div class="news-meta">
-          <span>
-            ${escapeHtml(source)}
+
+          <span class="news-source">
+            ${escapeHtml(
+              source
+            )}
           </span>
 
-          <span>
+          <span class="news-date">
             ${escapeHtml(
               formatDate(
                 article?.publishedAt
               )
             )}
           </span>
+
         </div>
+
 
         <h3 class="news-title">
           ${escapeHtml(title)}
         </h3>
 
+
         <p class="news-description">
           ${escapeHtml(description)}
         </p>
 
+
         <div class="badges">
+
 
           <span class="badge badge-purple">
-            TREND ${trend}/100
+            TREND ${trend}
           </span>
+
 
           <span class="badge">
-            ${escapeHtml(category)}
+            ${escapeHtml(
+              category
+            )}
           </span>
 
-          <span class="badge ${
-            priority === "CRITICAL"
-              ? "badge-red"
-              : priority === "HIGH"
-                ? "badge-yellow"
-                : ""
-          }">
-            ${escapeHtml(priority)}
+
+          <span
+            class="badge ${priorityClass}"
+          >
+            ${escapeHtml(
+              priority
+            )}
           </span>
+
 
           ${
-            requiresReview
+            humanReview
+
               ? `
-                <span class="badge badge-yellow">
+
+                <span
+                  class="badge badge-yellow"
+                >
                   HUMAN REVIEW
                 </span>
+
               `
-              : `
-                <span class="badge badge-green">
-                  AI SCREENED
-                </span>
-              `
+
+              : analyzed
+
+                ? `
+
+                  <span
+                    class="badge badge-green"
+                  >
+                    AI SCREENED
+                  </span>
+
+                `
+
+                : `
+
+                  <span
+                    class="badge badge-red"
+                  >
+                    NOT VERIFIED
+                  </span>
+
+                `
           }
 
-        </div>
-
-        <div class="badges">
-
-          <span class="badge">
-            RELEVANCE ${relevance}
-          </span>
-
-          <span class="badge">
-            ATTENTION ${attention}
-          </span>
 
         </div>
 
-        <div class="ai-signal">
 
-          <div class="ai-signal-label">
-            AI SIGNAL
+        <div class="ai-panel">
+
+
+          <div class="ai-header">
+
+            <div class="ai-title">
+              AI SIGNAL
+            </div>
+
+            <div class="ai-status">
+              ${
+                analyzed
+                  ? "ANALYZED"
+                  : "MANUAL REVIEW"
+              }
+            </div>
+
           </div>
 
-          <div class="ai-signal-text">
-            ${escapeHtml(reasoning)}
+
+          <div class="ai-text">
+            ${escapeHtml(
+              reasoning
+            )}
           </div>
+
+
+          <div class="ai-bars">
+
+
+            <div class="ai-bar">
+
+              <div class="ai-bar-label">
+                <span>RELEVANCE</span>
+                <span>${relevance}</span>
+              </div>
+
+              <div class="ai-track">
+
+                <div
+                  class="ai-fill"
+                  data-width="${relevance}%"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div class="ai-bar">
+
+              <div class="ai-bar-label">
+                <span>ATTENTION</span>
+                <span>${attention}</span>
+              </div>
+
+              <div class="ai-track">
+
+                <div
+                  class="ai-fill"
+                  data-width="${attention}%"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div class="ai-bar">
+
+              <div class="ai-bar-label">
+                <span>TREND</span>
+                <span>${trend}</span>
+              </div>
+
+              <div class="ai-track">
+
+                <div
+                  class="ai-fill"
+                  data-width="${trend}%"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
 
         </div>
 
-        <div class="news-actions">
+
+        <div class="card-actions">
+
 
           <button
-            class="small-btn primary"
+            class="card-btn primary"
             type="button"
-            onclick='openResearchFromEncoded("${safeArticle}")'
+            onclick='openResearchFromEncoded("${encoded}")'
           >
             RESEARCH STORY
           </button>
 
+
           ${
             url !== "#"
+
               ? `
+
                 <a
-                  class="small-btn"
+                  class="card-btn"
                   href="${url}"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   SOURCE ↗
                 </a>
+
               `
+
               : ""
+
           }
+
 
         </div>
 
+
       </div>
 
+
     </article>
+
   `;
+
 }
 
 
-/* =========================================================
+/* ============================================================
    RENDER NEWS
-========================================================= */
+   ============================================================ */
 
 function renderNews(){
 
   const grid =
     $("#newsGrid");
 
-  const articles =
-    getFilteredArticles();
-
-  if(!state.articles.length){
+  if(!grid){
     return;
   }
 
-  if(!articles.length){
+
+  const articles =
+    getVisibleArticles();
+
+
+  grid.className =
+    state.view === "list"
+      ? "news-grid list"
+      : "news-grid";
+
+
+  if(
+    !state.articles.length
+  ){
 
     grid.innerHTML = `
+
       <div
-        class="empty"
+        class="empty-state"
         style="grid-column:1/-1"
       >
-        <div class="empty-icon">⌕</div>
+
+        <div class="empty-orb">
+          N
+        </div>
 
         <div class="empty-title">
-          No stories in ${escapeHtml(state.category)}
+          Intelligence workspace ready
         </div>
 
         <div class="empty-text">
-          The current discovery batch contains no stories
-          matching this category.
+          Run discovery to load current stories.
         </div>
 
         <button
-          class="btn"
-          onclick="setCategory('ALL')"
+          class="primary-btn"
+          onclick="discoverNews()"
         >
-          SHOW ALL STORIES
+          START DISCOVERY
         </button>
+
       </div>
+
     `;
 
     return;
+
   }
+
+
+  if(
+    !articles.length
+  ){
+
+    grid.innerHTML = `
+
+      <div
+        class="empty-state"
+        style="grid-column:1/-1"
+      >
+
+        <div class="empty-orb">
+          ⌕
+        </div>
+
+        <div class="empty-title">
+          No matching intelligence
+        </div>
+
+        <div class="empty-text">
+          No stories match the current search and filters.
+        </div>
+
+        <button
+          class="tool-btn"
+          type="button"
+          onclick="clearFilters()"
+        >
+          CLEAR FILTERS
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
 
   grid.innerHTML =
     articles
       .map(
-        (article,index) =>
+        (
+          article,
+          index
+        ) =>
           renderArticleCard(
             article,
             index
@@ -2778,46 +6400,225 @@ function renderNews(){
       )
       .join("");
 
+
+  requestAnimationFrame(
+    animateScoreBars
+  );
+
 }
 
 
-/* =========================================================
-   ERROR
-========================================================= */
+/* ============================================================
+   SCORE BAR ANIMATION
+   ============================================================ */
 
-function renderError(message){
+function animateScoreBars(){
 
-  $("#newsGrid").innerHTML = `
-    <div
-      class="empty"
-      style="grid-column:1/-1"
-    >
+  $$(".ai-fill")
+    .forEach(
+      (bar,index) => {
 
-      <div class="empty-icon">!</div>
+        const width =
+          bar.dataset.width ||
+          "0%";
 
-      <div class="empty-title">
-        Discovery unavailable
-      </div>
+        setTimeout(
+          () => {
 
-      <div class="empty-text">
-        ${escapeHtml(message)}
-      </div>
+            bar.style.width =
+              width;
 
-      <button
-        class="btn btn-primary"
-        onclick="discoverNews()"
-      >
-        RETRY DISCOVERY
-      </button>
+          },
+          Math.min(
+            index * 35,
+            300
+          )
+        );
 
-    </div>
-  `;
+      }
+    );
+
 }
 
 
-/* =========================================================
-   RESEARCH
-========================================================= */
+/* ============================================================
+   CLEAR FILTERS
+   ============================================================ */
+
+function clearFilters(){
+
+  state.search =
+    "";
+
+  state.category =
+    "ALL";
+
+  state.priority =
+    "ALL";
+
+
+  const search =
+    $("#searchInput");
+
+  const category =
+    $("#categoryFilter");
+
+  const priority =
+    $("#priorityFilter");
+
+
+  if(search){
+    search.value =
+      "";
+  }
+
+  if(category){
+    category.value =
+      "ALL";
+  }
+
+  if(priority){
+    priority.value =
+      "ALL";
+  }
+
+
+  renderNews();
+
+}
+
+
+/* ============================================================
+   VIEW
+   ============================================================ */
+
+function setView(
+  view
+){
+
+  state.view =
+    view === "list"
+      ? "list"
+      : "grid";
+
+
+  $("#gridViewBtn")
+    ?.classList
+    .toggle(
+      "active",
+      state.view === "grid"
+    );
+
+
+  $("#listViewBtn")
+    ?.classList
+    .toggle(
+      "active",
+      state.view === "list"
+    );
+
+
+  renderNews();
+
+}
+
+
+/* ============================================================
+   PIPELINE
+   ============================================================ */
+
+function activatePipeline(
+  activeStage
+){
+
+  for(
+    let i=1;
+    i<=5;
+    i++
+  ){
+
+    const node =
+      document.getElementById(
+        "pipe" + i
+      );
+
+    if(!node){
+      continue;
+    }
+
+
+    node.classList.remove(
+      "active",
+      "complete"
+    );
+
+
+    if(
+      i < activeStage
+    ){
+
+      node.classList.add(
+        "complete"
+      );
+
+    }
+
+
+    if(
+      i === activeStage
+    ){
+
+      node.classList.add(
+        "active"
+      );
+
+    }
+
+  }
+
+}
+
+
+/* ============================================================
+   RESEARCH OPEN
+   ============================================================ */
+
+function openResearch(
+  article
+){
+
+  if(!article){
+    return;
+  }
+
+
+  state.selectedArticle =
+    article;
+
+  state.researchResult =
+    null;
+
+
+  $("#researchModal")
+    ?.classList
+    .add("open");
+
+
+  document.body.style.overflow =
+    "hidden";
+
+
+  renderResearchLoading();
+
+
+  startResearch();
+
+}
+
+
+/* ============================================================
+   ENCODED RESEARCH
+   ============================================================ */
 
 function openResearchFromEncoded(
   encoded
@@ -2827,152 +6628,240 @@ function openResearchFromEncoded(
 
     const article =
       JSON.parse(
-        decodeURIComponent(encoded)
+        decodeURIComponent(
+          encoded
+        )
       );
 
-    openResearch(article);
+
+    openResearch(
+      article
+    );
 
   }catch(error){
 
     console.error(
-      "Article decode error:",
       error
     );
 
-    toast(
-      "Unable to open story",
-      "The selected article could not be loaded."
+    showToast(
+      "Story error",
+      "The selected story could not be opened."
     );
 
   }
-}
-
-function openResearch(article){
-
-  if(!article){
-    return;
-  }
-
-  state.selectedArticle =
-    article;
-
-  state.researchResult =
-    null;
-
-  $("#researchModal")
-    .classList.add("open");
-
-  renderResearchLoading();
-
-  startResearch();
 
 }
 
-function closeResearch(){
 
-  if(state.researching){
-    return;
-  }
-
-  $("#researchModal")
-    .classList.remove("open");
-
-  state.selectedArticle =
-    null;
-
-  state.researchResult =
-    null;
-}
-
-function handleResearchBackdrop(
-  event
-){
-
-  if(
-    event.target ===
-    $("#researchModal")
-  ){
-    closeResearch();
-  }
-}
-
-
-/* =========================================================
+/* ============================================================
    RESEARCH LOADING
-========================================================= */
+   ============================================================ */
 
 function renderResearchLoading(){
 
   const article =
-    state.selectedArticle || {};
+    state.selectedArticle ||
+    {};
 
-  $("#researchBody").innerHTML = `
 
-    <div class="research-story">
+  $("#researchBody")
+    .innerHTML = `
 
-      <div class="research-source">
-        ${escapeHtml(
-          article?.source?.name ||
-          "UNKNOWN SOURCE"
-        )}
+      <div class="research-hero">
+
+        <div class="research-source">
+          ${escapeHtml(
+            article?.source?.name ||
+            "UNKNOWN SOURCE"
+          )}
+        </div>
+
+        <div class="research-title">
+          ${escapeHtml(
+            article?.title ||
+            "Selected story"
+          )}
+        </div>
+
+        <div class="research-description">
+          ${escapeHtml(
+            article?.description ||
+            "Research engine is preparing this story."
+          )}
+        </div>
+
       </div>
 
-      <h2 class="research-story-title">
-        ${escapeHtml(
-          article?.title ||
-          "Selected story"
-        )}
-      </h2>
 
-      <div class="research-story-description">
-        ${escapeHtml(
-          article?.description ||
-          "Researching this story..."
-        )}
-      </div>
+      <div
+        id="researchProcess"
+        class="research-process"
+      >
 
-    </div>
+        <div class="process-orb">
 
-    <div
-      class="status-strip"
-      style="margin-top:12px"
-    >
-      <span class="status-dot"></span>
-      <span>
-        Research engine is cross-checking this story...
-      </span>
-    </div>
+          <div class="process-core"></div>
 
-    <div class="research-grid">
+        </div>
 
-      ${Array.from(
-        {length:6},
-        () => `
-          <div class="research-box">
-            <div class="research-label">
-              PROCESSING
+
+        <div class="process-title">
+          Researching story
+        </div>
+
+
+        <div class="process-text">
+          NEWSFORGE is cross-checking the story against
+          current search evidence and source context.
+        </div>
+
+
+        <div class="process-steps">
+
+
+          <div
+            id="researchStep1"
+            class="process-step active"
+          >
+
+            <div class="process-step-number">
+              01
             </div>
 
-            <div
-              class="skeleton-line"
-              style="margin-top:12px"
-            ></div>
+            <div class="process-step-title">
+              SOURCE
+            </div>
 
-            <div
-              class="skeleton-line medium"
-            ></div>
           </div>
-        `
-      ).join("")}
 
-    </div>
-  `;
+
+          <div
+            id="researchStep2"
+            class="process-step"
+          >
+
+            <div class="process-step-number">
+              02
+            </div>
+
+            <div class="process-step-title">
+              SEARCH
+            </div>
+
+          </div>
+
+
+          <div
+            id="researchStep3"
+            class="process-step"
+          >
+
+            <div class="process-step-number">
+              03
+            </div>
+
+            <div class="process-step-title">
+              CROSS-CHECK
+            </div>
+
+          </div>
+
+
+          <div
+            id="researchStep4"
+            class="process-step"
+          >
+
+            <div class="process-step-number">
+              04
+            </div>
+
+            <div class="process-step-title">
+              ASSESS
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    `;
+
+
+  animateResearchProcess();
+
 }
 
 
-/* =========================================================
-   START RESEARCH
-========================================================= */
+/* ============================================================
+   RESEARCH PROCESS ANIMATION
+   ============================================================ */
+
+function animateResearchProcess(){
+
+  const steps = [
+    "researchStep1",
+    "researchStep2",
+    "researchStep3",
+    "researchStep4"
+  ];
+
+
+  steps.forEach(
+    (
+      id,
+      index
+    ) => {
+
+      setTimeout(
+        () => {
+
+          steps.forEach(
+            (
+              stepId,
+              stepIndex
+            ) => {
+
+              const element =
+                document.getElementById(
+                  stepId
+                );
+
+              if(!element){
+                return;
+              }
+
+
+              element.classList.toggle(
+                "active",
+                stepIndex === index
+              );
+
+
+              element.classList.toggle(
+                "done",
+                stepIndex < index
+              );
+
+            }
+          );
+
+        },
+        index * 850
+      );
+
+    }
+  );
+
+}
+
+
+/* ============================================================
+   RESEARCH API
+   ============================================================ */
 
 async function startResearch(){
 
@@ -2983,7 +6872,15 @@ async function startResearch(){
     return;
   }
 
-  state.researching = true;
+
+  state.researching =
+    true;
+
+
+  activatePipeline(
+    3
+  );
+
 
   try{
 
@@ -2997,7 +6894,7 @@ async function startResearch(){
             "Content-Type":
               "application/json",
 
-            "Accept":
+            Accept:
               "application/json"
           },
 
@@ -3009,61 +6906,68 @@ async function startResearch(){
         }
       );
 
-    let data = null;
+
+    let data;
+
 
     try{
+
       data =
         await response.json();
+
     }catch{
+
       throw new Error(
-        "Research backend returned an invalid response."
+        "Research API returned invalid JSON."
       );
+
     }
 
-    /*
-      The backend intentionally returns a structured
-      success:false result when the research engine fails.
-      Do not convert that into fake research.
-    */
 
     if(
       !response.ok
     ){
+
       throw new Error(
         data?.error?.message ||
-        `Research request failed (${response.status}).`
+        `Research failed with HTTP ${response.status}.`
       );
+
     }
+
 
     state.researchResult =
       data;
+
 
     renderResearchResult(
       data
     );
 
-    activatePipeline(3);
 
     if(
       data?.success === false
     ){
 
-      toast(
-        "Research failed",
+      showToast(
+        "Research engine failed",
         data?.error?.message ||
-        "The research engine could not complete verification."
+        "The story remains unverified."
       );
 
     }else{
 
-      activatePipeline(4);
+      activatePipeline(
+        4
+      );
 
-      toast(
+      showToast(
         "Research complete",
-        "Evidence and confidence analysis are available."
+        "Evidence, confidence and editorial risk are available."
       );
 
     }
+
 
   }catch(error){
 
@@ -3072,28 +6976,33 @@ async function startResearch(){
       error
     );
 
+
     renderResearchFailure(
       error?.message ||
       "Research could not be completed."
     );
 
-    toast(
+
+    showToast(
       "Research unavailable",
       error?.message ||
       "The research engine could not be reached."
     );
 
+
   }finally{
 
-    state.researching = false;
+    state.researching =
+      false;
 
   }
+
 }
 
 
-/* =========================================================
-   RESEARCH NORMALIZATION
-========================================================= */
+/* ============================================================
+   RESEARCH OBJECT
+   ============================================================ */
 
 function getResearchObject(
   data
@@ -3103,54 +7012,96 @@ function getResearchObject(
     data &&
     data.research
   ){
+
     return data.research;
+
   }
 
   return data || {};
+
 }
 
 
-/* =========================================================
-   LIST HTML
-========================================================= */
+/* ============================================================
+   RESEARCH LIST
+   ============================================================ */
 
-function listHtml(
+function renderResearchList(
   items,
-  emptyText="No information returned."
+  emptyMessage
 ){
 
   if(
     !Array.isArray(items) ||
     !items.length
   ){
+
     return `
+
       <div class="research-value">
-        ${escapeHtml(emptyText)}
+        ${escapeHtml(
+          emptyMessage ||
+          "No information returned."
+        )}
       </div>
+
     `;
+
   }
 
+
   return `
+
     <ul class="research-list">
+
       ${items.map(
-        item =>
-          `<li>${escapeHtml(
-            typeof item === "string"
-              ? item
-              : item?.reason ||
-                JSON.stringify(item)
-          )}</li>`
+        item => {
+
+          let text;
+
+          if(
+            typeof item ===
+            "string"
+          ){
+
+            text =
+              item;
+
+          }else{
+
+            text =
+              item?.reason ||
+              item?.claim ||
+              item?.summary ||
+              item?.text ||
+              JSON.stringify(
+                item
+              );
+
+          }
+
+
+          return `
+            <li>
+              ${escapeHtml(text)}
+            </li>
+          `;
+
+        }
       ).join("")}
+
     </ul>
+
   `;
+
 }
 
 
-/* =========================================================
-   RISK HTML
-========================================================= */
+/* ============================================================
+   RESEARCH RISK
+   ============================================================ */
 
-function riskHtml(
+function renderRiskFlags(
   flags
 ){
 
@@ -3158,49 +7109,77 @@ function riskHtml(
     !Array.isArray(flags) ||
     !flags.length
   ){
+
     return `
+
       <div class="research-value">
         No additional risk flags returned.
       </div>
+
     `;
+
   }
 
+
   return `
+
     <ul class="research-list">
+
       ${flags.map(
         flag => {
 
           const level =
-            typeof flag === "string"
+            typeof flag ===
+            "string"
               ? "MEDIUM"
-              : flag?.level || "MEDIUM";
+              : flag?.level ||
+                "MEDIUM";
+
 
           const reason =
-            typeof flag === "string"
+            typeof flag ===
+            "string"
               ? flag
-              : flag?.reason || "";
+              : flag?.reason ||
+                flag?.text ||
+                "";
+
 
           return `
+
             <li>
+
               <strong>
-                ${escapeHtml(level)}
+                ${escapeHtml(
+                  level
+                )}
               </strong>
+
               ·
-              ${escapeHtml(reason)}
+
+              ${escapeHtml(
+                reason
+              )}
+
             </li>
+
           `;
+
         }
       ).join("")}
+
     </ul>
+
   `;
+
 }
 
 
-/* =========================================================
+/* ============================================================
    SOURCES
-========================================================= */
+   ============================================================ */
 
-function sourcesHtml(
+function renderSources(
   sources
 ){
 
@@ -3208,15 +7187,21 @@ function sourcesHtml(
     !Array.isArray(sources) ||
     !sources.length
   ){
+
     return `
+
       <div class="research-value">
         No additional source list returned.
       </div>
+
     `;
+
   }
 
+
   return `
-    <div class="source-list">
+
+    <div class="sources">
 
       ${sources.map(
         source => {
@@ -3226,9 +7211,50 @@ function sourcesHtml(
               source?.url
             );
 
+
+          const title =
+            source?.title ||
+            source?.publisher ||
+            "Source";
+
+
+          const publisher =
+            source?.publisher ||
+            source?.url ||
+            "";
+
+
+          if(
+            url === "#"
+          ){
+
+            return `
+
+              <div class="source">
+
+                <strong>
+                  ${escapeHtml(
+                    title
+                  )}
+                </strong>
+
+                <span>
+                  ${escapeHtml(
+                    publisher
+                  )}
+                </span>
+
+              </div>
+
+            `;
+
+          }
+
+
           return `
+
             <a
-              class="source-link"
+              class="source"
               href="${url}"
               target="_blank"
               rel="noopener noreferrer"
@@ -3236,35 +7262,33 @@ function sourcesHtml(
 
               <strong>
                 ${escapeHtml(
-                  source?.title ||
-                  source?.publisher ||
-                  "Source"
+                  title
                 )}
               </strong>
 
               <span>
-                ${
-                  escapeHtml(
-                    source?.publisher ||
-                    source?.url ||
-                    ""
-                  )
-                }
+                ${escapeHtml(
+                  publisher
+                )}
               </span>
 
             </a>
+
           `;
+
         }
       ).join("")}
 
     </div>
+
   `;
+
 }
 
 
-/* =========================================================
+/* ============================================================
    RESEARCH RESULT
-========================================================= */
+   ============================================================ */
 
 function renderResearchResult(
   data
@@ -3275,19 +7299,28 @@ function renderResearchResult(
       data
     );
 
+
   const article =
     state.selectedArticle ||
-    research.article ||
     {};
+
 
   const status =
     research.research_status ||
     "UNVERIFIED";
 
+
   const confidence =
-    Number(
-      research.confidence || 0
+    Math.max(
+      0,
+      Math.min(
+        100,
+        numeric(
+          research.confidence
+        )
+      )
     );
+
 
   const confidenceLabel =
     research.confidence_label ||
@@ -3299,475 +7332,794 @@ function renderResearchResult(
           : "LOW"
     );
 
+
   const summary =
     research.executive_summary ||
     "No executive summary returned.";
+
 
   const crossCheck =
     research.cross_check_summary ||
     "No cross-check summary returned.";
 
+
   const recommendation =
     research.recommendation ||
     "Human verification is recommended before publication.";
+
 
   const humanReview =
     Boolean(
       research.human_verification_required
     );
 
-  $("#researchBody").innerHTML = `
 
-    <div class="research-story">
+  $("#researchBody")
+    .innerHTML = `
 
-      <div class="research-source">
-        ${escapeHtml(
-          article?.source?.name ||
-          article?.source ||
-          "UNKNOWN SOURCE"
-        )}
-      </div>
+      <div class="research-hero">
 
-      <h2 class="research-story-title">
-        ${escapeHtml(
-          article?.title ||
-          "Research result"
-        )}
-      </h2>
-
-      <div class="research-story-description">
-        ${escapeHtml(
-          article?.description ||
-          ""
-        )}
-      </div>
-
-      <div class="badges">
-
-        <span class="badge badge-purple">
-          TREND ${
-            Number(
-              article?.ai?.trendScore ||
-              0
-            )
-          }/100
-        </span>
-
-        <span class="badge">
+        <div class="research-source">
           ${escapeHtml(
-            article?.ai?.category ||
-            "OTHER"
-          )}
-        </span>
-
-        ${
-          humanReview
-            ? `
-              <span class="badge badge-yellow">
-                HUMAN REVIEW
-              </span>
-            `
-            : `
-              <span class="badge badge-green">
-                REVIEW NOT REQUIRED
-              </span>
-            `
-        }
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="status-strip ${
-        status === "VERIFIED"
-          ? "success"
-          : "error"
-      }"
-      style="margin-top:12px"
-    >
-
-      <span class="status-dot"></span>
-
-      <span>
-        ${
-          data?.success === false
-            ? "RESEARCH ENGINE FAILURE"
-            : "RESEARCH COMPLETE"
-        }
-      </span>
-
-    </div>
-
-
-    <div class="research-grid">
-
-      <div class="research-box">
-
-        <div class="research-label">
-          VERIFICATION STATUS
-        </div>
-
-        <div class="research-value">
-          ${escapeHtml(status)}
-        </div>
-
-      </div>
-
-
-      <div class="research-box">
-
-        <div class="research-label">
-          CONFIDENCE
-        </div>
-
-        <div class="research-value">
-          ${confidence}/100 ·
-          ${escapeHtml(
-            confidenceLabel
+            article?.source?.name ||
+            "UNKNOWN SOURCE"
           )}
         </div>
 
-        <div class="confidence">
-          <div class="confidence-track">
-            <div
-              class="confidence-fill"
-              style="width:${Math.max(
-                0,
-                Math.min(
-                  100,
-                  confidence
-                )
-              )}%"
-            ></div>
+        <div class="research-title">
+          ${escapeHtml(
+            article?.title ||
+            "Research result"
+          )}
+        </div>
+
+        <div class="research-description">
+          ${escapeHtml(
+            article?.description ||
+            ""
+          )}
+        </div>
+
+
+        <div class="badges">
+
+          <span class="badge badge-purple">
+            ${escapeHtml(
+              status
+            )}
+          </span>
+
+          <span class="badge">
+            CONFIDENCE ${confidence}
+          </span>
+
+          ${
+            humanReview
+
+              ? `
+
+                <span
+                  class="badge badge-yellow"
+                >
+                  HUMAN REVIEW
+                </span>
+
+              `
+
+              : `
+
+                <span
+                  class="badge badge-green"
+                >
+                  RESEARCH SCREENED
+                </span>
+
+              `
+          }
+
+        </div>
+
+      </div>
+
+
+      <div class="research-grid">
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            VERIFICATION STATUS
           </div>
+
+          <div class="research-value">
+            ${escapeHtml(
+              status
+            )}
+          </div>
+
         </div>
 
-      </div>
+
+        <div class="research-box">
+
+          <div class="research-label">
+            CONFIDENCE
+          </div>
+
+          <div class="research-value">
+
+            ${confidence}/100 ·
+
+            ${escapeHtml(
+              confidenceLabel
+            )}
+
+          </div>
 
 
-      <div class="research-box">
+          <div class="confidence-row">
 
-        <div class="research-label">
-          EXECUTIVE SUMMARY
+            <div class="confidence-track">
+
+              <div
+                id="confidenceFill"
+                class="confidence-fill"
+                data-confidence="${confidence}"
+              ></div>
+
+            </div>
+
+            <div class="confidence-number">
+              ${confidence}%
+            </div>
+
+          </div>
+
         </div>
 
-        <div class="research-value">
-          ${escapeHtml(summary)}
+
+        <div class="research-box">
+
+          <div class="research-label">
+            EXECUTIVE SUMMARY
+          </div>
+
+          <div class="research-value">
+            ${escapeHtml(
+              summary
+            )}
+          </div>
+
         </div>
 
-      </div>
 
+        <div class="research-box">
 
-      <div class="research-box">
+          <div class="research-label">
+            CROSS-CHECK SUMMARY
+          </div>
 
-        <div class="research-label">
-          CROSS CHECK
+          <div class="research-value">
+            ${escapeHtml(
+              crossCheck
+            )}
+          </div>
+
         </div>
 
-        <div class="research-value">
-          ${escapeHtml(crossCheck)}
-        </div>
 
-      </div>
+        <div class="research-box">
 
+          <div class="research-label">
+            KEY CLAIMS
+          </div>
 
-      <div class="research-box">
-
-        <div class="research-label">
-          KEY CLAIMS
-        </div>
-
-        ${listHtml(
-          research.key_claims
-        )}
-
-      </div>
-
-
-      <div class="research-box">
-
-        <div class="research-label">
-          SUPPORTING EVIDENCE
-        </div>
-
-        ${listHtml(
-          research.supporting_evidence
-        )}
-
-      </div>
-
-
-      <div class="research-box">
-
-        <div class="research-label">
-          CONFLICTING EVIDENCE
-        </div>
-
-        ${listHtml(
-          research.conflicting_evidence,
-          "No conflicting evidence was returned."
-        )}
-
-      </div>
-
-
-      <div class="research-box">
-
-        <div class="research-label">
-          RISK FLAGS
-        </div>
-
-        ${riskHtml(
-          research.risk_flags
-        )}
-
-      </div>
-
-
-      <div class="research-box full">
-
-        <div class="research-label">
-          RECOMMENDATION
-        </div>
-
-        <div class="research-value">
-          ${escapeHtml(
-            recommendation
+          ${renderResearchList(
+            research.key_claims,
+            "No structured claims returned."
           )}
+
         </div>
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            SUPPORTING EVIDENCE
+          </div>
+
+          ${renderResearchList(
+            research.supporting_evidence,
+            "No supporting evidence returned."
+          )}
+
+        </div>
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            CONFLICTING EVIDENCE
+          </div>
+
+          ${renderResearchList(
+            research.conflicting_evidence,
+            "No conflicting evidence returned."
+          )}
+
+        </div>
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            RISK FLAGS
+          </div>
+
+          ${renderRiskFlags(
+            research.risk_flags
+          )}
+
+        </div>
+
+
+        <div class="research-box full">
+
+          <div class="research-label">
+            EDITORIAL RECOMMENDATION
+          </div>
+
+          <div class="research-value">
+            ${escapeHtml(
+              recommendation
+            )}
+          </div>
+
+        </div>
+
+
+        <div class="research-box full">
+
+          <div class="research-label">
+            RESEARCH SOURCES
+          </div>
+
+          ${renderSources(
+            research.sources
+          )}
+
+        </div>
+
 
       </div>
 
 
-      <div class="research-box full">
+      <div class="modal-actions">
 
-        <div class="research-label">
-          RESEARCH SOURCES
-        </div>
+        ${
+          article?.url
 
-        ${sourcesHtml(
-          research.sources
-        )}
+            ? `
+
+              <a
+                class="primary-btn"
+                href="${safeUrl(
+                  article.url
+                )}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                OPEN ORIGINAL SOURCE
+              </a>
+
+            `
+
+            : `
+
+              <button
+                class="primary-btn"
+                disabled
+              >
+                SOURCE UNAVAILABLE
+              </button>
+
+            `
+        }
+
+
+        <button
+          class="tool-btn"
+          type="button"
+          onclick="startResearch()"
+          ${state.researching ? "disabled" : ""}
+        >
+          RUN RESEARCH AGAIN
+        </button>
 
       </div>
 
-    </div>
+    `;
 
 
-    <div class="modal-actions">
+  requestAnimationFrame(
+    () => {
 
-      ${
-        article?.url
-          ? `
-            <a
-              class="btn"
-              href="${safeUrl(
-                article.url
-              )}"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              OPEN SOURCE
-            </a>
-          `
-          : `
-            <button
-              class="btn"
-              disabled
-            >
-              SOURCE UNAVAILABLE
-            </button>
-          `
+      const fill =
+        $("#confidenceFill");
+
+      if(fill){
+
+        const value =
+          fill.dataset.confidence ||
+          "0";
+
+        setTimeout(
+          () => {
+
+            fill.style.width =
+              `${value}%`;
+
+          },
+          80
+        );
+
       }
 
-      <button
-        class="btn btn-primary"
-        onclick="startResearch()"
-        ${
-          state.researching
-            ? "disabled"
-            : ""
-        }
-      >
-        RUN AI RESEARCH
-      </button>
+    }
+  );
 
-    </div>
-
-  `;
 }
 
 
-/* =========================================================
+/* ============================================================
    RESEARCH FAILURE
-========================================================= */
+   ============================================================ */
 
 function renderResearchFailure(
   message
 ){
 
   const article =
-    state.selectedArticle || {};
+    state.selectedArticle ||
+    {};
 
-  $("#researchBody").innerHTML = `
 
-    <div class="research-story">
+  $("#researchBody")
+    .innerHTML = `
 
-      <div class="research-source">
-        ${escapeHtml(
-          article?.source?.name ||
-          "UNKNOWN SOURCE"
-        )}
-      </div>
+      <div class="research-hero">
 
-      <h2 class="research-story-title">
-        ${escapeHtml(
-          article?.title ||
-          "Selected story"
-        )}
-      </h2>
-
-      <div class="research-story-description">
-        Research could not be completed.
-      </div>
-
-    </div>
-
-    <div
-      class="status-strip error"
-      style="margin-top:12px"
-    >
-      <span class="status-dot"></span>
-      <span>
-        RESEARCH FAILED
-      </span>
-    </div>
-
-    <div class="research-grid">
-
-      <div class="research-box full">
-
-        <div class="research-label">
-          ERROR
+        <div class="research-source">
+          ${escapeHtml(
+            article?.source?.name ||
+            "UNKNOWN SOURCE"
+          )}
         </div>
 
-        <div class="research-value">
-          ${escapeHtml(message)}
+        <div class="research-title">
+          ${escapeHtml(
+            article?.title ||
+            "Selected story"
+          )}
+        </div>
+
+        <div class="research-description">
+          Research could not be completed.
         </div>
 
       </div>
 
-      <div class="research-box full">
 
-        <div class="research-label">
-          EDITORIAL SAFETY
+      <div class="research-grid">
+
+
+        <div class="research-box full">
+
+          <div class="research-label">
+            RESEARCH ENGINE ERROR
+          </div>
+
+          <div class="research-value">
+            ${escapeHtml(
+              message
+            )}
+          </div>
+
         </div>
 
-        <div class="research-value">
-          Do not treat the original story as verified.
-          Retry the research request or manually verify
-          the story before publication.
+
+        <div class="research-box full">
+
+          <div class="research-label">
+            EDITORIAL SAFETY
+          </div>
+
+          <div class="research-value">
+            This story must not be treated as verified
+            because the research stage failed. Retry the
+            research request or inspect the original source
+            manually.
+          </div>
+
         </div>
+
 
       </div>
 
-    </div>
 
-    <div class="modal-actions">
+      <div class="modal-actions">
 
-      ${
-        article?.url
-          ? `
-            <a
-              class="btn"
-              href="${safeUrl(
-                article.url
-              )}"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              OPEN SOURCE
-            </a>
-          `
-          : ""
-      }
+        ${
+          article?.url
 
-      <button
-        class="btn btn-primary"
-        onclick="startResearch()"
-      >
-        RETRY RESEARCH
-      </button>
+            ? `
 
-    </div>
-  `;
+              <a
+                class="primary-btn"
+                href="${safeUrl(
+                  article.url
+                )}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                OPEN ORIGINAL SOURCE
+              </a>
+
+            `
+
+            : ""
+
+        }
+
+
+        <button
+          class="primary-btn"
+          type="button"
+          onclick="startResearch()"
+        >
+          RETRY RESEARCH
+        </button>
+
+      </div>
+
+    `;
+
 }
 
 
-/* =========================================================
-   PIPELINE VISUAL STATE
-========================================================= */
+/* ============================================================
+   CLOSE RESEARCH
+   ============================================================ */
 
-function activatePipeline(
-  number
-){
+function closeResearch(){
 
-  for(
-    let i = 1;
-    i <= 5;
-    i++
+  if(
+    state.researching
   ){
 
-    const node =
-      document.getElementById(
-        "pipe" + i
-      );
+    /*
+      Do not silently abort an active request.
+      The user can close only after the current request
+      finishes. This prevents inconsistent UI state.
+    */
 
-    if(!node){
-      continue;
-    }
+    return;
 
-    node.classList.remove(
-      "active",
-      "complete"
-    );
-
-    if(i < number){
-      node.classList.add(
-        "complete"
-      );
-    }
-
-    if(i === number){
-      node.classList.add(
-        "active"
-      );
-    }
   }
+
+
+  $("#researchModal")
+    ?.classList
+    .remove("open");
+
+
+  document.body.style.overflow =
+    "";
+
+
+  state.selectedArticle =
+    null;
+
+  state.researchResult =
+    null;
+
 }
 
 
-/* =========================================================
-   KEYBOARD
-========================================================= */
+/* ============================================================
+   RESEARCH BACKDROP
+   ============================================================ */
+
+function handleResearchBackdrop(
+  event
+){
+
+  if(
+    event.target ===
+    $("#researchModal")
+  ){
+
+    closeResearch();
+
+  }
+
+}
+
+
+/* ============================================================
+   COMMAND PALETTE
+   ============================================================ */
+
+function openCommandPalette(){
+
+  const palette =
+    $("#commandPalette");
+
+  palette
+    ?.classList
+    .add("open");
+
+
+  const input =
+    $("#commandInput");
+
+  setTimeout(
+    () => {
+
+      input?.focus();
+
+    },
+    80
+  );
+
+}
+
+
+function closeCommandPalette(){
+
+  $("#commandPalette")
+    ?.classList
+    .remove("open");
+
+}
+
+
+/* ============================================================
+   COMMAND BACKDROP
+   ============================================================ */
+
+function handleCommandBackdrop(
+  event
+){
+
+  if(
+    event.target ===
+    $("#commandPalette")
+  ){
+
+    closeCommandPalette();
+
+  }
+
+}
+
+
+/* ============================================================
+   COMMAND ACTIONS
+   ============================================================ */
+
+function commandDiscover(){
+
+  closeCommandPalette();
+
+  discoverNews();
+
+}
+
+
+function commandFocusSearch(){
+
+  closeCommandPalette();
+
+  const input =
+    $("#searchInput");
+
+  if(input){
+
+    input.focus();
+
+    input.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+  }
+
+}
+
+
+function commandScroll(
+  id
+){
+
+  closeCommandPalette();
+
+  const element =
+    document.getElementById(
+      id
+    );
+
+  element?.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+}
+
+
+/* ============================================================
+   COMMAND INPUT
+   ============================================================ */
+
+$("#commandInput")
+  ?.addEventListener(
+    "keydown",
+    event => {
+
+      if(
+        event.key ===
+        "Escape"
+      ){
+
+        closeCommandPalette();
+
+        return;
+
+      }
+
+
+      if(
+        event.key ===
+        "Enter"
+      ){
+
+        const value =
+          event.target.value
+            .trim()
+            .toLowerCase();
+
+
+        if(
+          !value ||
+          value.includes(
+            "discover"
+          )
+        ){
+
+          commandDiscover();
+
+        }else if(
+          value.includes(
+            "search"
+          )
+        ){
+
+          commandFocusSearch();
+
+        }else if(
+          value.includes(
+            "pipeline"
+          )
+        ){
+
+          commandScroll(
+            "pipeline"
+          );
+
+        }else if(
+          value.includes(
+            "news"
+          )
+        ){
+
+          commandScroll(
+            "discovery"
+          );
+
+        }else{
+
+          commandFocusSearch();
+
+        }
+
+      }
+
+    }
+  );
+
+
+/* ============================================================
+   KEYBOARD SHORTCUTS
+   ============================================================ */
 
 document.addEventListener(
   "keydown",
   event => {
 
+    const active =
+      document.activeElement;
+
+
+    const typing =
+      active &&
+      (
+        active.tagName ===
+        "INPUT" ||
+        active.tagName ===
+        "TEXTAREA" ||
+        active.tagName ===
+        "SELECT"
+      );
+
+
     if(
-      event.key === "Escape"
+      event.key ===
+      "Escape"
     ){
 
+      closeCommandPalette();
+
       if(
-        $("#researchModal")
-          .classList
-          .contains("open")
+        !state.researching
       ){
+
         closeResearch();
+
       }
+
+      return;
+
+    }
+
+
+    if(
+      event.key === "/" &&
+      !typing
+    ){
+
+      event.preventDefault();
+
+      commandFocusSearch();
+
+      return;
+
+    }
+
+
+    if(
+      (event.metaKey ||
+       event.ctrlKey) &&
+      event.key.toLowerCase() === "k"
+    ){
+
+      event.preventDefault();
+
+      openCommandPalette();
+
+      return;
+
+    }
+
+
+    if(
+      event.key.toLowerCase() === "r" &&
+      !typing &&
+      !state.discovering
+    ){
+
+      event.preventDefault();
+
+      discoverNews();
 
     }
 
@@ -3775,29 +8127,18 @@ document.addEventListener(
 );
 
 
-/* =========================================================
-   IMAGE LAZY PERFORMANCE
-========================================================= */
+/* ============================================================
+   INITIAL PIPELINE
+   ============================================================ */
 
-if(
-  "loading" in HTMLImageElement.prototype
-){
-  // Native lazy loading is already enabled
-}
-
-
-/* =========================================================
-   INITIAL STATE
-========================================================= */
-
-activatePipeline(1);
-
-setEngine(true);
-
-setStatus(
-  "Ready for discovery.",
-  ""
+activatePipeline(
+  1
 );
+
+
+/* ============================================================
+   GLOBAL EXPORTS
+   ============================================================ */
 
 window.discoverNews =
   discoverNews;
@@ -3805,33 +8146,74 @@ window.discoverNews =
 window.openResearch =
   openResearch;
 
+window.openResearchFromEncoded =
+  openResearchFromEncoded;
+
 window.closeResearch =
   closeResearch;
 
 window.startResearch =
   startResearch;
 
-window.setCategory =
-  setCategory;
+window.setView =
+  setView;
 
-window.scrollToSection =
-  scrollToSection;
+window.clearFilters =
+  clearFilters;
+
+window.openCommandPalette =
+  openCommandPalette;
+
+window.closeCommandPalette =
+  closeCommandPalette;
+
+window.commandDiscover =
+  commandDiscover;
+
+window.commandFocusSearch =
+  commandFocusSearch;
+
+window.commandScroll =
+  commandScroll;
 
 window.handleResearchBackdrop =
   handleResearchBackdrop;
 
-window.openResearchFromEncoded =
-  openResearchFromEncoded;
+window.handleCommandBackdrop =
+  handleCommandBackdrop;
 
 
-/* =========================================================
-   OPTIONAL AUTO DISCOVERY
-   Disabled intentionally.
-   User controls the API call.
-========================================================= */
+/* ============================================================
+   STARTUP
+   ============================================================ */
 
-// No automatic API call on page load.
-// This prevents unnecessary NewsAPI/Gemini requests.
+setWorkspaceStatus(
+  "READY · WAITING FOR DISCOVERY",
+  false
+);
+
+
+/* ============================================================
+   PERFORMANCE NOTE
+   ============================================================ */
+
+/*
+  Important:
+  The interface intentionally avoids heavy infinite animations
+  on every news card. Expensive blur/backdrop effects are limited
+  to structural elements, while cards mostly animate through
+  transform and opacity.
+
+  Images use native lazy loading.
+
+  News discovery is NOT automatically triggered on page load.
+  This prevents unnecessary API calls and reduces mobile lag.
+
+  Research is triggered only after the user explicitly selects
+  a story.
+
+  No downstream publishing operation is simulated here.
+*/
 
 
 </script>
