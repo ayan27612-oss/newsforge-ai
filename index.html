@@ -1711,6 +1711,9 @@
       }
     }
 
+    /* APPROVAL WORKSPACE */
+    #approvalModal .modal-field-value { white-space: pre-wrap; overflow-wrap: anywhere; }
+
     /* ============================================================
        MOBILE OVERLAY
        ============================================================ */
@@ -3514,8 +3517,35 @@
 
       <div class="modal-footer news-detail-footer">
         <button class="btn btn-secondary" id="closeContent2" type="button">CLOSE</button>
+        <button class="btn btn-lime" id="sendToApproval" type="button" hidden>SEND TO APPROVAL</button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- APPROVAL WORKSPACE -->
+  <div class="modal-backdrop" id="approvalModal">
+    <div class="modal news-detail-modal" role="dialog" aria-modal="true" aria-labelledby="approvalTitle">
+      <div class="modal-head">
+        <div><div class="modal-kicker">EDITORIAL CONTROL / NEWSFORGE AI</div><div class="modal-title" id="approvalTitle">Approval Queue</div></div>
+        <button class="modal-close" id="closeApproval" type="button">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-grid">
+          <div class="modal-field full"><div class="modal-field-label">Selected Story</div><div class="modal-field-value" id="approvalStory">NOT AVAILABLE</div></div>
+          <div class="modal-field"><div class="modal-field-label">Approval State</div><div class="modal-field-value" id="approvalState">READY</div></div>
+          <div class="modal-field"><div class="modal-field-label">Human Gate</div><div class="modal-field-value" id="approvalHumanGate">REQUIRED</div></div>
+          <div class="modal-field"><div class="modal-field-label">Research Confidence</div><div class="modal-field-value" id="approvalConfidence">NOT AVAILABLE</div></div>
+          <div class="modal-field"><div class="modal-field-label">Factual Risk</div><div class="modal-field-value" id="approvalRisk">NOT AVAILABLE</div></div>
+          <div class="modal-field full"><div class="modal-field-label">Editorial Recommendation</div><div class="modal-field-value" id="approvalRecommendation">NOT AVAILABLE</div></div>
+          <div class="modal-field full"><div class="modal-field-label">Approval Message</div><div class="modal-field-value" id="approvalMessage">Content must pass the editorial gate before publishing.</div></div>
+        </div>
+      </div>
+      <div class="modal-footer news-detail-footer">
+        <button class="btn btn-secondary" id="rejectApproval" type="button">REJECT</button>
+        <button class="btn btn-secondary" id="holdApproval" type="button">HOLD</button>
+        <button class="btn btn-primary" id="approveApproval" type="button">APPROVE</button>
+      </div>
     </div>
   </div>
 
@@ -3567,7 +3597,8 @@
         sidebarOpen: false,
         selectedStory: null,
         researchResult: null,
-        contentResult: null
+        contentResult: null,
+        approvalResult: null
       }
     };
 
@@ -4463,12 +4494,14 @@
           data;
 
         NEWSFORGE.state.contentResult = content;
+        NEWSFORGE.state.approvalResult = null;
         updateContentModal(content);
 
         $("#contentState").textContent =
           content?.humanApprovalRequired === true
             ? "COMPLETE / HUMAN APPROVAL REQUIRED"
             : "COMPLETE";
+        $("#sendToApproval").hidden = false;
 
         contentModal.classList.add("open");
 
@@ -4496,6 +4529,73 @@
 
       }
     });
+
+    /* ============================================================
+       APPROVAL ACTION
+       ============================================================ */
+    const approvalModal = $("#approvalModal");
+
+    function updateApprovalModal(approval) {
+      const research = NEWSFORGE.state.researchResult || {};
+      const story = NEWSFORGE.state.selectedStory || {};
+      const confidence = approval?.researchConfidence ?? research?.factCheckConfidence ?? research?.confidence;
+      const risk = approval?.factualRisk ?? research?.factualRisk ?? research?.factCheckRisk;
+      const recommendation = approval?.recommendation ?? research?.recommendation ?? research?.editorialRecommendation;
+      $("#approvalStory").textContent = story.title || "NOT AVAILABLE";
+      $("#approvalState").textContent = approval?.status || approval?.state || "READY";
+      $("#approvalHumanGate").textContent = approval?.humanApprovalRequired === false ? "NOT REQUIRED" : "REQUIRED";
+      $("#approvalConfidence").textContent = confidence != null ? `${confidence}%` : "NOT AVAILABLE";
+      $("#approvalRisk").textContent = risk != null ? String(risk).toUpperCase() : "NOT AVAILABLE";
+      $("#approvalRecommendation").textContent = recommendation ? String(recommendation).toUpperCase() : "NOT AVAILABLE";
+      $("#approvalMessage").textContent = approval?.message || approval?.reason || "Content must pass the editorial gate before publishing.";
+    }
+
+    function openApprovalModal() {
+      if (!NEWSFORGE.state.selectedStory || !NEWSFORGE.state.researchResult || !NEWSFORGE.state.contentResult) {
+        showToast("Approval Queue", "Complete research and content generation before requesting approval.");
+        return;
+      }
+      updateApprovalModal(NEWSFORGE.state.approvalResult || {});
+      approvalModal?.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeApprovalModal() {
+      approvalModal?.classList.remove("open");
+      if (!NEWSFORGE.state.newsDetailOpen && !NEWSFORGE.state.researchOpen && !$("#contentModal")?.classList.contains("open")) document.body.style.overflow = "";
+    }
+
+    async function requestApprovalAction(action) {
+      const story = NEWSFORGE.state.selectedStory;
+      const research = NEWSFORGE.state.researchResult;
+      const content = NEWSFORGE.state.contentResult;
+      if (!story || !research || !content) { showToast("Approval Queue", "Selected story, research and generated content are required."); return; }
+      const buttons = [$("#approveApproval"), $("#rejectApproval"), $("#holdApproval")];
+      buttons.forEach((button) => { if (button) button.disabled = true; });
+      $("#approvalState").textContent = action.toUpperCase();
+      try {
+        const response = await fetch(NEWSFORGE.api.approval, {
+          method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({ action, story, research, content, approval: NEWSFORGE.state.approvalResult || null, source: "newsforge-ui" })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data?.error || data?.message || `Approval request returned ${response.status}`);
+        NEWSFORGE.state.approvalResult = data?.approval || data?.result || data;
+        updateApprovalModal(NEWSFORGE.state.approvalResult);
+        showToast(action === "approve" ? "Content Approved" : `Approval ${action.toUpperCase()}`, action === "approve" ? "Human approval recorded. Publishing remains behind its own backend gate." : "The editorial decision was recorded by the approval layer.");
+      } catch (error) {
+        console.error("NEWSFORGE approval error:", error);
+        $("#approvalState").textContent = "FAILED";
+        showToast("Approval Queue", error?.message || "Unable to record the editorial decision.");
+      } finally { buttons.forEach((button) => { if (button) button.disabled = false; }); }
+    }
+
+    $("#sendToApproval")?.addEventListener("click", openApprovalModal);
+    $("#closeApproval")?.addEventListener("click", closeApprovalModal);
+    $("#approveApproval")?.addEventListener("click", () => requestApprovalAction("approve"));
+    $("#rejectApproval")?.addEventListener("click", () => requestApprovalAction("reject"));
+    $("#holdApproval")?.addEventListener("click", () => requestApprovalAction("hold"));
+    approvalModal?.addEventListener("click", (event) => { if (event.target === approvalModal) closeApprovalModal(); });
 
     /* ============================================================
        DISCOVER BUTTON
@@ -4692,9 +4792,11 @@
 
           NEWSFORGE.state.researchResult = research;
           NEWSFORGE.state.contentResult = null;
+          NEWSFORGE.state.approvalResult = null;
 
           $("#researchState").textContent = "COMPLETE";
           $("#runContent").hidden = false;
+          $("#sendToApproval").hidden = true;
 
           if (research?.executiveSummary) {
             $("#researchSignal").textContent =
