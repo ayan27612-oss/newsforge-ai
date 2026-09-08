@@ -1566,6 +1566,151 @@
       }
     }
 
+
+    /* ============================================================
+       NEWS DETAIL VIEW
+       ------------------------------------------------------------
+       Opens a complete story intelligence record without changing
+       the existing dashboard structure.
+       ============================================================ */
+
+    .story {
+      cursor: pointer;
+    }
+
+    .story:focus-visible {
+      outline: 2px solid var(--purple-3);
+      outline-offset: -2px;
+    }
+
+    .news-detail-modal {
+      width: min(980px, 100%);
+      max-height: min(820px, 92vh);
+    }
+
+    .news-detail-hero {
+      padding: 19px;
+      border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(
+          circle at 90% 0%,
+          rgba(168,85,247,0.12),
+          transparent 22rem
+        ),
+        rgba(139,92,246,0.025);
+    }
+
+    .news-detail-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .news-detail-meta .tag {
+      min-height: 22px;
+    }
+
+    .news-detail-description {
+      margin-top: 13px;
+      color: var(--text-2);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    .news-detail-section {
+      margin-top: 13px;
+    }
+
+    .news-detail-section:first-child {
+      margin-top: 0;
+    }
+
+    .news-detail-section-title {
+      margin-bottom: 8px;
+      color: var(--purple-3);
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .news-detail-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-2);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .news-detail-source-dot {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 10px rgba(200,255,69,0.6);
+    }
+
+    .news-detail-list {
+      display: grid;
+      gap: 7px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .news-detail-list li {
+      position: relative;
+      padding-left: 13px;
+      color: var(--text-2);
+      font-size: 9px;
+      line-height: 1.6;
+    }
+
+    .news-detail-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--purple-3);
+      box-shadow: 0 0 8px rgba(168,85,247,0.45);
+    }
+
+    .news-detail-empty {
+      color: var(--text-4);
+      font-size: 9px;
+      line-height: 1.6;
+    }
+
+    .news-detail-url {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .news-detail-footer {
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+      .news-detail-modal {
+        max-height: 94vh;
+      }
+
+      .news-detail-hero {
+        padding: 16px;
+      }
+
+      .news-detail-description {
+        font-size: 10px;
+      }
+    }
+
     /* ============================================================
        MOBILE OVERLAY
        ============================================================ */
@@ -3023,6 +3168,152 @@
 
   </div>
 
+
+  <!-- ============================================================
+       NEWS DETAIL MODAL
+       ------------------------------------------------------------
+       Shows the complete intelligence record available for the
+       selected story. Missing backend fields remain explicitly
+       unavailable instead of being fabricated.
+       ============================================================ -->
+
+  <div class="modal-backdrop" id="newsDetailModal">
+
+    <div class="modal news-detail-modal" role="dialog" aria-modal="true" aria-labelledby="newsDetailTitle">
+
+      <div class="modal-head">
+
+        <div>
+          <div class="modal-kicker">NEWS INTELLIGENCE / STORY DETAIL</div>
+          <div class="modal-title" id="newsDetailTitle">Story Details</div>
+        </div>
+
+        <button class="modal-close" id="closeNewsDetail" type="button" aria-label="Close story details">
+          ×
+        </button>
+
+      </div>
+
+      <div class="news-detail-hero">
+
+        <div class="story-source" id="newsDetailSource">
+          <span class="story-source-dot"></span>
+          SOURCE UNAVAILABLE
+        </div>
+
+        <div class="news-detail-meta" id="newsDetailTags"></div>
+
+        <p class="news-detail-description" id="newsDetailDescription">
+          No additional story description is available.
+        </p>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="modal-grid">
+
+          <div class="modal-field">
+            <div class="modal-field-label">Trend Score</div>
+            <div class="modal-field-value" id="detailTrendScore">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Priority</div>
+            <div class="modal-field-value" id="detailPriority">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Category</div>
+            <div class="modal-field-value" id="detailCategory">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Audience Relevance</div>
+            <div class="modal-field-value" id="detailAudience">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Attention Potential</div>
+            <div class="modal-field-value" id="detailAttention">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Confidence</div>
+            <div class="modal-field-value" id="detailConfidence">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Verification</div>
+            <div class="modal-field-value" id="detailVerification">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Published</div>
+            <div class="modal-field-value" id="detailPublished">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field full">
+            <div class="modal-field-label">AI Editorial Reasoning</div>
+            <div class="modal-field-value" id="detailReasoning">No AI reasoning is available for this story yet.</div>
+          </div>
+
+          <div class="modal-field full">
+            <div class="modal-field-label">Verification Reason</div>
+            <div class="modal-field-value" id="detailVerificationReason">No verification reason is available.</div>
+          </div>
+
+          <div class="modal-field full">
+            <div class="modal-field-label">Original Description</div>
+            <div class="modal-field-value" id="detailOriginalDescription">No source description is available.</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Source</div>
+            <div class="modal-field-value" id="detailSourceName">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field">
+            <div class="modal-field-label">Story ID</div>
+            <div class="modal-field-value" id="detailStoryId">NOT AVAILABLE</div>
+          </div>
+
+          <div class="modal-field full">
+            <div class="news-detail-section">
+              <div class="news-detail-section-title">Editorial / Intelligence Notes</div>
+              <ul class="news-detail-list" id="detailNotes"></ul>
+            </div>
+          </div>
+
+          <div class="modal-field full">
+            <div class="news-detail-section">
+              <div class="news-detail-section-title">Original Source URL</div>
+              <div class="modal-field-value news-detail-url" id="detailSourceUrl">
+                No source URL is available.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer news-detail-footer">
+
+        <button class="btn btn-secondary" id="closeNewsDetail2" type="button">
+          CLOSE
+        </button>
+
+        <a class="btn btn-primary" id="openOriginalSource" href="#" target="_blank" rel="noopener noreferrer" hidden>
+          OPEN ORIGINAL SOURCE
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- ============================================================
        RESEARCH MODAL
        ============================================================ -->
@@ -3185,6 +3476,7 @@
         activeSection: "overview",
         activeFilter: "all",
         researchOpen: false,
+        newsDetailOpen: false,
         sidebarOpen: false
       }
     };
@@ -3338,15 +3630,420 @@
     syncResponsiveSidebar();
 
     /* ============================================================
-       DISCOVERY FILTERS
+       DISCOVERY + NEWS DETAIL VIEW
+       ------------------------------------------------------------
+       The original dashboard stays intact. Discovery results now
+       become real interactive story records, and every story can
+       be opened for a complete detail view.
        ============================================================ */
 
-    const storyItems = $$(".story");
+    let currentStories = $$(".story").map((story, index) => ({
+      id: `static-${index + 1}`,
+      title: $(".story-title", story)?.textContent?.trim() || "Untitled story",
+      description: $(".story-description", story)?.textContent?.trim() || "",
+      source: $(".story-source", story)?.textContent?.replace(/\s+/g, " ").trim() || "Unknown source",
+      trendScore: Number($(".score-number", story)?.textContent?.trim()) || null,
+      category: story.dataset.category || null,
+      priority: story.dataset.priority || null,
+      tags: $$(".tag", story).map((tag) => tag.textContent.trim()),
+      url: null,
+      publishedAt: null,
+      audienceRelevance: null,
+      attentionPotential: null,
+      humanVerificationRequired: null,
+      confidence: null,
+      reasoning: null,
+      verificationReason: null
+    }));
+
+    function storyArrayFromResponse(data) {
+      if (Array.isArray(data)) return data;
+
+      if (Array.isArray(data?.stories)) {
+        return data.stories;
+      }
+
+      if (Array.isArray(data?.articles)) {
+        return data.articles;
+      }
+
+      return [];
+    }
+
+    function firstDefined(...values) {
+      return values.find((value) =>
+        value !== undefined &&
+        value !== null &&
+        String(value).trim() !== ""
+      );
+    }
+
+    function normalizeStory(item, index) {
+      const ai = item?.ai || {};
+      const sourceObject = item?.source && typeof item.source === "object"
+        ? item.source
+        : {};
+
+      const sourceName = firstDefined(
+        sourceObject.name,
+        item?.sourceName,
+        item?.source,
+        item?.publisher,
+        item?.source_title
+      );
+
+      const url = firstDefined(
+        item?.url,
+        item?.sourceUrl,
+        item?.source_url,
+        item?.link,
+        sourceObject.url
+      );
+
+      const tags = Array.isArray(item?.tags)
+        ? item.tags
+        : [
+            firstDefined(ai.category, item?.category),
+            firstDefined(ai.priority, item?.priority)
+          ].filter(Boolean);
+
+      return {
+        ...item,
+        id: firstDefined(item?.id, item?.articleId, item?.uuid, `story-${index + 1}`),
+        title: firstDefined(item?.title, item?.headline, item?.name, "Untitled story"),
+        description: firstDefined(item?.description, item?.summary, item?.content, ""),
+        source: sourceName || "Unknown source",
+        url: url || null,
+        publishedAt: firstDefined(item?.publishedAt, item?.published_at, item?.pubDate, item?.date),
+        category: firstDefined(ai.category, item?.category),
+        priority: firstDefined(ai.priority, item?.priority),
+        trendScore: Number(firstDefined(ai.trendScore, item?.trendScore)) || null,
+        audienceRelevance: firstDefined(ai.audienceRelevance, item?.audienceRelevance),
+        attentionPotential: firstDefined(ai.attentionPotential, item?.attentionPotential),
+        humanVerificationRequired: firstDefined(
+          ai.humanVerificationRequired,
+          item?.humanVerificationRequired
+        ),
+        confidence: firstDefined(ai.confidence, item?.confidence),
+        reasoning: firstDefined(ai.reasoning, item?.reasoning),
+        verificationReason: firstDefined(
+          ai.verificationReason,
+          item?.verificationReason
+        ),
+        tags
+      };
+    }
+
+    function formatDetailValue(value) {
+      if (value === undefined || value === null || String(value).trim() === "") {
+        return "NOT AVAILABLE";
+      }
+
+      if (typeof value === "boolean") {
+        return value ? "YES" : "NO";
+      }
+
+      if (typeof value === "object") {
+        return JSON.stringify(value, null, 2);
+      }
+
+      return String(value);
+    }
+
+    function formatPublishedDate(value) {
+      if (!value) return "NOT AVAILABLE";
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
+
+      return date.toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+    }
+
+    function setDetailField(id, value) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = formatDetailValue(value);
+      }
+    }
+
+    function buildDetailTags(story) {
+      const container = $("#newsDetailTags");
+      if (!container) return;
+
+      container.innerHTML = "";
+
+      const tags = [
+        ...(Array.isArray(story.tags) ? story.tags : []),
+        story.category,
+        story.priority ? `${story.priority} priority` : null,
+        story.humanVerificationRequired === true ? "review required" : null
+      ].filter(Boolean);
+
+      [...new Set(tags.map((tag) => String(tag).trim()).filter(Boolean))]
+        .slice(0, 8)
+        .forEach((tag) => {
+          const span = document.createElement("span");
+          span.className = "tag";
+          span.textContent = tag;
+          container.appendChild(span);
+        });
+
+      if (!container.children.length) {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = "NEWS INTELLIGENCE";
+        container.appendChild(span);
+      }
+    }
+
+    function buildDetailNotes(story) {
+      const list = $("#detailNotes");
+      if (!list) return;
+
+      list.innerHTML = "";
+
+      const notes = [
+        story.reasoning ? `AI reasoning: ${story.reasoning}` : null,
+        story.verificationReason ? `Verification: ${story.verificationReason}` : null,
+        story.humanVerificationRequired === true
+          ? "Human verification is required before publication."
+          : null,
+        story.confidence !== null && story.confidence !== undefined
+          ? `Model confidence: ${story.confidence}`
+          : null,
+        story.attentionPotential !== null && story.attentionPotential !== undefined
+          ? `Attention potential: ${story.attentionPotential}`
+          : null
+      ].filter(Boolean);
+
+      if (!notes.length) {
+        const li = document.createElement("li");
+        li.textContent = "No additional editorial notes are available for this story yet.";
+        list.appendChild(li);
+        return;
+      }
+
+      notes.forEach((note) => {
+        const li = document.createElement("li");
+        li.textContent = note;
+        list.appendChild(li);
+      });
+    }
+
+    const newsDetailModal = $("#newsDetailModal");
+
+    function openNewsDetail(story) {
+      if (!newsDetailModal || !story) return;
+
+      const normalized = normalizeStory(story, 0);
+
+      $("#newsDetailTitle").textContent = normalized.title;
+      $("#newsDetailSource").innerHTML = `
+        <span class="story-source-dot"></span>
+        ${escapeHTML(normalized.source)}
+      `;
+
+      $("#newsDetailDescription").textContent =
+        normalized.description || "No additional story description is available.";
+
+      setDetailField("detailTrendScore",
+        normalized.trendScore !== null ? `${normalized.trendScore} / 100` : null
+      );
+      setDetailField("detailPriority", normalized.priority);
+      setDetailField("detailCategory", normalized.category);
+      setDetailField("detailAudience", normalized.audienceRelevance);
+      setDetailField("detailAttention", normalized.attentionPotential);
+      setDetailField("detailConfidence", normalized.confidence);
+      setDetailField(
+        "detailVerification",
+        normalized.humanVerificationRequired === true
+          ? "HUMAN REVIEW REQUIRED"
+          : normalized.humanVerificationRequired === false
+            ? "NO HUMAN REVIEW FLAG"
+            : null
+      );
+      setDetailField("detailPublished", formatPublishedDate(normalized.publishedAt));
+      setDetailField("detailReasoning", normalized.reasoning);
+      setDetailField("detailVerificationReason", normalized.verificationReason);
+      setDetailField("detailOriginalDescription", normalized.description);
+      setDetailField("detailSourceName", normalized.source);
+      setDetailField("detailStoryId", normalized.id);
+
+      buildDetailTags(normalized);
+      buildDetailNotes(normalized);
+
+      const sourceUrl = $("#detailSourceUrl");
+      const sourceLink = $("#openOriginalSource");
+
+      if (normalized.url) {
+        sourceUrl.textContent = normalized.url;
+        sourceLink.href = normalized.url;
+        sourceLink.hidden = false;
+      } else {
+        sourceUrl.textContent = "No source URL is available.";
+        sourceLink.hidden = true;
+        sourceLink.removeAttribute("href");
+      }
+
+      newsDetailModal.classList.add("open");
+      NEWSFORGE.state.newsDetailOpen = true;
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeNewsDetail() {
+      if (!newsDetailModal) return;
+
+      newsDetailModal.classList.remove("open");
+      NEWSFORGE.state.newsDetailOpen = false;
+
+      if (!NEWSFORGE.state.researchOpen) {
+        document.body.style.overflow = "";
+      }
+    }
+
+    function bindStoryClickHandlers() {
+      $$(".story").forEach((storyElement) => {
+        if (storyElement.dataset.detailBound === "true") return;
+
+        storyElement.dataset.detailBound = "true";
+        storyElement.setAttribute("role", "button");
+        storyElement.setAttribute("tabindex", "0");
+        storyElement.setAttribute("aria-label", "Open news details");
+
+        const index = Number(storyElement.dataset.storyIndex);
+
+        storyElement.addEventListener("click", () => {
+          const story = Number.isInteger(index) && currentStories[index]
+            ? currentStories[index]
+            : {
+                title: $(".story-title", storyElement)?.textContent?.trim(),
+                description: $(".story-description", storyElement)?.textContent?.trim(),
+                source: $(".story-source", storyElement)?.textContent?.replace(/\s+/g, " ").trim(),
+                trendScore: Number($(".score-number", storyElement)?.textContent?.trim()) || null,
+                category: storyElement.dataset.category,
+                priority: storyElement.dataset.priority,
+                tags: $$(".tag", storyElement).map((tag) => tag.textContent.trim())
+              };
+
+          openNewsDetail(story);
+        });
+
+        storyElement.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            storyElement.click();
+          }
+        });
+      });
+    }
+
+    function renderStories(stories) {
+      const list = $("#storyList");
+      if (!list) return;
+
+      currentStories = stories.map(normalizeStory);
+
+      if (!currentStories.length) {
+        list.innerHTML = `
+          <div class="story" style="cursor:default">
+            <div class="story-main">
+              <div class="story-source">
+                <span class="story-source-dot"></span>
+                DISCOVERY ENGINE
+              </div>
+              <h3 class="story-title">No stories returned</h3>
+              <p class="story-description">
+                The discovery service returned no usable intelligence items.
+              </p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = currentStories.map((story, index) => {
+        const priority = String(story.priority || "medium").toLowerCase();
+        const category = String(story.category || "general").toLowerCase();
+
+        const tags = [
+          story.attentionPotential ? "HIGH ATTENTION" : null,
+          priority === "high" || priority === "critical" ? "HIGH PRIORITY" : null,
+          category.toUpperCase(),
+          story.humanVerificationRequired === true ? "REVIEW REQUIRED" : null
+        ].filter(Boolean);
+
+        return `
+          <article
+            class="story"
+            data-category="${escapeHTML(category)}"
+            data-priority="${escapeHTML(priority)}"
+            data-story-index="${index}"
+          >
+            <div class="story-index">${String(index + 1).padStart(2, "0")}</div>
+
+            <div class="story-main">
+              <div class="story-source">
+                <span class="story-source-dot"></span>
+                ${escapeHTML(story.source)}
+              </div>
+
+              <h3 class="story-title">${escapeHTML(story.title)}</h3>
+
+              <p class="story-description">
+                ${escapeHTML(story.description || "No description available.")}
+              </p>
+
+              <div class="story-tags">
+                ${tags.map((tag) => `<span class="tag">${escapeHTML(tag)}</span>`).join("")}
+              </div>
+            </div>
+
+            <div class="story-score">
+              <div class="score-label">Signal</div>
+              <div class="score-number">${story.trendScore ?? "—"}</div>
+              <div class="score-unit">${story.trendScore !== null ? "/100" : ""}</div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      bindStoryClickHandlers();
+      applyActiveStoryFilter();
+    }
+
+    function applyActiveStoryFilter() {
+      const filter = NEWSFORGE.state.activeFilter;
+
+      $$(".story").forEach((story) => {
+        const category = story.dataset.category;
+        const priority = story.dataset.priority;
+
+        let visible = true;
+
+        if (filter === "high") {
+          visible = priority === "high" || priority === "critical";
+        }
+
+        if (
+          filter !== "all" &&
+          filter !== "high" &&
+          filter !== category
+        ) {
+          visible = false;
+        }
+
+        story.style.display = visible ? "" : "none";
+      });
+    }
 
     $$(".filter-btn").forEach((button) => {
-
       button.addEventListener("click", () => {
-
         const filter = button.dataset.filter;
 
         NEWSFORGE.state.activeFilter = filter;
@@ -3356,35 +4053,26 @@
         });
 
         button.classList.add("active");
-
-        storyItems.forEach((story) => {
-
-          const category = story.dataset.category;
-          const priority = story.dataset.priority;
-
-          let visible = true;
-
-          if (filter === "high") {
-            visible = priority === "high";
-          }
-
-          if (
-            filter !== "all" &&
-            filter !== "high" &&
-            filter !== category
-          ) {
-            visible = false;
-          }
-
-          story.style.display = visible ? "" : "none";
-        });
+        applyActiveStoryFilter();
       });
-
     });
+
+    $("#closeNewsDetail")?.addEventListener("click", closeNewsDetail);
+    $("#closeNewsDetail2")?.addEventListener("click", closeNewsDetail);
+
+    newsDetailModal?.addEventListener("click", (event) => {
+      if (event.target === newsDetailModal) {
+        closeNewsDetail();
+      }
+    });
+
+    bindStoryClickHandlers();
 
     /* ============================================================
        RESEARCH MODAL
-       ============================================================ */
+       ============================================================
+
+/
 
     const researchModal = $("#researchModal");
 
@@ -3397,7 +4085,9 @@
     function closeResearchModal() {
       researchModal.classList.remove("open");
       NEWSFORGE.state.researchOpen = false;
-      document.body.style.overflow = "";
+      if (!NEWSFORGE.state.newsDetailOpen) {
+        document.body.style.overflow = "";
+      }
     }
 
     $("#researchBtn")?.addEventListener(
@@ -3424,6 +4114,14 @@
     });
 
     document.addEventListener("keydown", (event) => {
+
+      if (
+        event.key === "Escape" &&
+        NEWSFORGE.state.newsDetailOpen
+      ) {
+        closeNewsDetail();
+        return;
+      }
 
       if (
         event.key === "Escape" &&
@@ -3478,6 +4176,8 @@
 
         const data = await response.json();
 
+        const stories = storyArrayFromResponse(data).map(normalizeStory);
+        renderStories(stories);
         updateMetricsFromNews(data);
 
         showToast(
