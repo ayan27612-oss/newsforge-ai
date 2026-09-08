@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07050d">
-<meta name="description" content="NEWSFORGE AI - News intelligence, research and publishing control center.">
+<meta name="color-scheme" content="dark">
+<meta name="description"
+      content="NEWSFORGE AI — intelligent news discovery, research and editorial control.">
 
 <title>NEWSFORGE AI</title>
 
 <style>
+
+/* =========================================================
+   NEWSFORGE AI
+   STEP 1 — FINAL FRONTEND FOUNDATION
+   ========================================================= */
+
 :root{
-  --bg:#07050d;
-  --bg2:#0b0813;
-  --panel:rgba(18,12,29,.82);
-  --panel2:rgba(24,15,39,.72);
-  --panel3:#151020;
+  --bg:#06040b;
+  --bg-soft:#0a0711;
+  --bg-panel:#0e0917;
 
   --purple:#8b5cf6;
-  --purple2:#a855f7;
+  --purple-bright:#a855f7;
   --violet:#c084fc;
   --indigo:#6366f1;
   --blue:#60a5fa;
@@ -25,17 +32,37 @@
   --green:#4ade80;
   --yellow:#facc15;
   --red:#fb7185;
+  --cyan:#22d3ee;
 
-  --text:#f8f7ff;
-  --muted:#aaa4ba;
-  --muted2:#756e87;
+  --white:#ffffff;
+  --text:#f7f4ff;
+  --text-soft:#d9d2e7;
+  --muted:#9c94aa;
+  --muted-dark:#6f687c;
 
-  --line:rgba(168,85,247,.17);
-  --line2:rgba(192,132,252,.28);
+  --border:rgba(168,85,247,.16);
+  --border-strong:rgba(192,132,252,.34);
 
-  --shadow:0 24px 80px rgba(0,0,0,.42);
-  --radius:22px;
+  --glass:rgba(17,10,28,.72);
+  --glass-strong:rgba(22,13,36,.86);
+
+  --radius-sm:10px;
+  --radius:18px;
+  --radius-lg:26px;
+  --radius-xl:34px;
+
+  --shadow:
+    0 25px 80px rgba(0,0,0,.45);
+
+  --purple-glow:
+    0 0 45px rgba(139,92,246,.16);
+
+  --max:1420px;
 }
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 *{
   box-sizing:border-box;
@@ -44,34 +71,139 @@
 }
 
 html{
-  scroll-behavior:smooth;
   background:var(--bg);
+  scroll-behavior:smooth;
 }
 
 body{
   min-height:100vh;
-  background:
-    radial-gradient(circle at 15% 5%,rgba(139,92,246,.15),transparent 30%),
-    radial-gradient(circle at 85% 20%,rgba(99,102,241,.10),transparent 28%),
-    linear-gradient(180deg,#07050d 0%,#090711 45%,#06050a 100%);
-  color:var(--text);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   overflow-x:hidden;
+
+  color:var(--text);
+
+  background:
+    radial-gradient(
+      circle at 12% 3%,
+      rgba(139,92,246,.17),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 88% 14%,
+      rgba(99,102,241,.12),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 70%,
+      rgba(168,85,247,.055),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #07050d 0%,
+      #090610 48%,
+      #05040a 100%
+    );
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
   -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
+
+/* =========================================================
+   BACKGROUND GRID
+   ========================================================= */
 
 body::before{
   content:"";
   position:fixed;
   inset:0;
+
   pointer-events:none;
-  z-index:-1;
-  opacity:.22;
+  z-index:-5;
+
   background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:42px 42px;
+    linear-gradient(
+      rgba(192,132,252,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(192,132,252,.025) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    42px 42px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 88%
+    );
 }
+
+/* =========================================================
+   AMBIENT LIGHT
+   ========================================================= */
+
+.ambient{
+  position:fixed;
+  width:340px;
+  height:340px;
+
+  border-radius:50%;
+
+  pointer-events:none;
+  z-index:-3;
+
+  filter:blur(75px);
+
+  opacity:.12;
+
+  background:
+    radial-gradient(
+      circle,
+      var(--purple),
+      transparent 68%
+    );
+
+  animation:
+    ambientFloat 12s ease-in-out infinite;
+}
+
+.ambient.one{
+  top:5%;
+  left:-180px;
+}
+
+.ambient.two{
+  right:-190px;
+  top:38%;
+  animation-delay:-5s;
+}
+
+@keyframes ambientFloat{
+  0%,100%{
+    transform:translate3d(0,0,0);
+  }
+
+  50%{
+    transform:translate3d(25px,-30px,0);
+  }
+}
+
+/* =========================================================
+   GENERAL
+   ========================================================= */
 
 button,
 input{
@@ -87,730 +219,1381 @@ a{
   text-decoration:none;
 }
 
+img{
+  max-width:100%;
+}
+
 ::selection{
-  background:rgba(168,85,247,.35);
-  color:#fff;
-}
-
-/* ---------------------------
-   GLOBAL MOTION
----------------------------- */
-
-.reveal{
-  opacity:0;
-  transform:translateY(16px);
-  animation:reveal .65s cubic-bezier(.2,.7,.2,1) forwards;
-}
-
-.reveal:nth-child(1){animation-delay:.03s}
-.reveal:nth-child(2){animation-delay:.08s}
-.reveal:nth-child(3){animation-delay:.13s}
-.reveal:nth-child(4){animation-delay:.18s}
-.reveal:nth-child(5){animation-delay:.23s}
-
-@keyframes reveal{
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-@keyframes pulse{
-  0%,100%{opacity:.45}
-  50%{opacity:1}
-}
-
-@keyframes scan{
-  0%{transform:translateX(-110%)}
-  100%{transform:translateX(110%)}
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-5px)}
-}
-
-@keyframes modalIn{
-  from{
-    opacity:0;
-    transform:translateY(22px) scale(.97);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-/* ---------------------------
-   HEADER
----------------------------- */
-
-.header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  border-bottom:1px solid var(--line);
-  background:rgba(7,5,13,.78);
-  backdrop-filter:blur(22px);
-  -webkit-backdrop-filter:blur(22px);
-}
-
-.header-inner{
-  width:min(1440px,calc(100% - 28px));
-  margin:auto;
-  min-height:70px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-}
-
-.logo{
-  width:40px;
-  height:40px;
-  flex:none;
-  display:grid;
-  place-items:center;
-  border-radius:12px;
-  font-size:20px;
-  font-weight:900;
   color:white;
-  background:
-    linear-gradient(135deg,var(--purple),var(--indigo));
-  box-shadow:
-    0 0 28px rgba(139,92,246,.38);
-}
-
-.brand-name{
-  font-size:15px;
-  font-weight:900;
-  letter-spacing:.13em;
-}
-
-.brand-sub{
-  margin-top:2px;
-  color:var(--muted2);
-  font-size:9px;
-  letter-spacing:.14em;
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#d8d2e7;
-  font-size:10px;
-  letter-spacing:.08em;
-  white-space:nowrap;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 12px rgba(74,222,128,.75);
-  animation:pulse 2s ease-in-out infinite;
-}
-
-.version{
-  display:none;
-  color:var(--muted2);
-  font-size:9px;
-}
-
-/* ---------------------------
-   LAYOUT
----------------------------- */
-
-.shell{
-  width:min(1440px,calc(100% - 28px));
-  margin:auto;
-  padding:34px 0 70px;
-}
-
-.section{
-  margin-top:46px;
-}
-
-.section-head{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom:18px;
-}
-
-.kicker{
-  color:var(--violet);
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-}
-
-.section-title{
-  margin-top:5px;
-  font-size:24px;
-  line-height:1.1;
-  letter-spacing:-.035em;
-}
-
-.section-copy{
-  margin-top:7px;
-  max-width:620px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.65;
-}
-
-/* ---------------------------
-   HERO
----------------------------- */
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  min-height:360px;
-  padding:38px 24px;
-  border:1px solid var(--line);
-  border-radius:30px;
-  background:
-    radial-gradient(circle at 85% 25%,rgba(139,92,246,.20),transparent 32%),
-    radial-gradient(circle at 65% 100%,rgba(99,102,241,.11),transparent 32%),
-    linear-gradient(135deg,rgba(25,16,42,.88),rgba(8,6,14,.94));
-  box-shadow:var(--shadow);
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  width:260px;
-  height:260px;
-  right:-90px;
-  top:-100px;
-  border-radius:50%;
-  border:1px solid rgba(192,132,252,.12);
-  box-shadow:
-    0 0 0 30px rgba(139,92,246,.025),
-    0 0 0 60px rgba(139,92,246,.018);
-  pointer-events:none;
-}
-
-.hero-content{
-  position:relative;
-  z-index:2;
-  max-width:850px;
-}
-
-.hero-eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border:1px solid var(--line2);
-  border-radius:999px;
-  background:rgba(139,92,246,.07);
-  color:#d8c9f9;
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-}
-
-.hero h1{
-  margin-top:20px;
-  max-width:900px;
-  font-size:clamp(38px,7vw,82px);
-  line-height:.94;
-  letter-spacing:-.065em;
-}
-
-.gradient-text{
-  background:linear-gradient(100deg,#fff 20%,#c084fc 65%,#818cf8);
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-
-.hero p{
-  max-width:650px;
-  margin-top:18px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
-}
-
-.hero-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:24px;
-}
-
-.btn{
-  min-height:42px;
-  padding:0 16px;
-  border-radius:12px;
-  border:1px solid var(--line2);
-  color:#eeeaff;
-  background:rgba(255,255,255,.035);
-  transition:
-    transform .2s ease,
-    background .2s ease,
-    border-color .2s ease,
-    box-shadow .2s ease;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  border-color:rgba(192,132,252,.5);
-  background:rgba(139,92,246,.10);
-}
-
-.btn:active{
-  transform:translateY(0) scale(.98);
-}
-
-.btn-primary{
-  color:white;
-  border-color:transparent;
-  background:linear-gradient(135deg,var(--purple),var(--indigo));
-  box-shadow:0 10px 30px rgba(124,58,237,.28);
-}
-
-.btn-primary:hover{
-  background:linear-gradient(135deg,#9b6aff,#7377ff);
-  box-shadow:0 14px 38px rgba(124,58,237,.38);
-}
-
-.btn:disabled{
-  cursor:not-allowed;
-  opacity:.5;
-  transform:none;
-}
-
-.hero-grid{
-  position:absolute;
-  right:30px;
-  bottom:30px;
-  width:270px;
-  display:none;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-  opacity:.8;
-}
-
-.hero-node{
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:rgba(15,10,24,.72);
-}
-
-.hero-node span{
-  display:block;
-  color:var(--muted2);
-  font-size:8px;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-
-.hero-node strong{
-  display:block;
-  margin-top:4px;
-  font-size:14px;
-}
-
-/* ---------------------------
-   METRICS
----------------------------- */
-
-.metrics{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:12px;
-}
-
-.metric{
-  padding:18px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:linear-gradient(145deg,rgba(25,16,41,.72),rgba(12,9,19,.78));
-  transition:transform .2s ease,border-color .2s ease;
-}
-
-.metric:hover{
-  transform:translateY(-3px);
-  border-color:var(--line2);
-}
-
-.metric-label{
-  color:var(--muted2);
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.13em;
-  text-transform:uppercase;
-}
-
-.metric-value{
-  margin-top:8px;
-  font-size:28px;
-  font-weight:900;
-  letter-spacing:-.05em;
-}
-
-.metric-meta{
-  margin-top:4px;
-  color:var(--muted);
-  font-size:9px;
-}
-
-/* ---------------------------
-   DISCOVERY
----------------------------- */
-
-.discovery-bar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-bottom:14px;
-}
-
-.filter{
-  padding:8px 11px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  color:var(--muted);
-  background:rgba(255,255,255,.025);
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:.06em;
-  transition:.2s ease;
-}
-
-.filter:hover,
-.filter.active{
-  color:white;
-  border-color:rgba(168,85,247,.55);
-  background:rgba(139,92,246,.13);
-}
-
-.discovery-status{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  min-height:38px;
-  margin-bottom:12px;
-  padding:0 12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  color:var(--muted);
-  background:rgba(255,255,255,.02);
-  font-size:10px;
-}
-
-.spinner{
-  width:12px;
-  height:12px;
-  border:2px solid rgba(255,255,255,.15);
-  border-top-color:var(--violet);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
+  background:rgba(168,85,247,.42);
 }
 
 .hidden{
   display:none!important;
 }
 
-/* ---------------------------
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.container{
+  width:min(
+    var(--max),
+    calc(100% - 28px)
+  );
+
+  margin:auto;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header{
+  position:sticky;
+  top:0;
+
+  z-index:100;
+
+  border-bottom:
+    1px solid rgba(168,85,247,.14);
+
+  background:
+    rgba(6,4,11,.72);
+
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+}
+
+.header-inner{
+  min-height:70px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:14px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+
+  min-width:0;
+}
+
+.logo{
+  width:40px;
+  height:40px;
+
+  display:grid;
+  place-items:center;
+
+  flex:none;
+
+  border:
+    1px solid rgba(255,255,255,.14);
+
+  border-radius:12px;
+
+  color:white;
+
+  font-size:19px;
+  font-weight:950;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #a855f7 55%,
+      #6366f1
+    );
+
+  box-shadow:
+    0 0 30px rgba(139,92,246,.42);
+
+  animation:
+    logoPulse 4s ease-in-out infinite;
+}
+
+@keyframes logoPulse{
+  0%,100%{
+    box-shadow:
+      0 0 25px rgba(139,92,246,.32);
+  }
+
+  50%{
+    box-shadow:
+      0 0 42px rgba(168,85,247,.52);
+  }
+}
+
+.brand-text{
+  min-width:0;
+}
+
+.brand-name{
+  font-size:14px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+
+.brand-sub{
+  margin-top:2px;
+
+  color:var(--muted-dark);
+
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.15em;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.engine{
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  padding:
+    7px 9px;
+
+  border:
+    1px solid rgba(74,222,128,.13);
+
+  border-radius:999px;
+
+  color:#bdeecb;
+
+  background:
+    rgba(74,222,128,.035);
+
+  font-size:8px;
+  font-weight:850;
+  letter-spacing:.1em;
+}
+
+.engine-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:var(--green);
+
+  box-shadow:
+    0 0 13px rgba(74,222,128,.8);
+
+  animation:
+    enginePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes enginePulse{
+  0%,100%{
+    opacity:.45;
+    transform:scale(.8);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.header-version{
+  display:none;
+
+  color:var(--muted-dark);
+
+  font-size:8px;
+  letter-spacing:.1em;
+}
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+main{
+  padding:
+    24px 0 70px;
+}
+
+/* =========================================================
+   REVEAL ANIMATION
+   ========================================================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+
+  animation:
+    revealIn .65s
+    cubic-bezier(.2,.75,.2,1)
+    forwards;
+}
+
+.reveal:nth-child(1){animation-delay:.04s}
+.reveal:nth-child(2){animation-delay:.09s}
+.reveal:nth-child(3){animation-delay:.14s}
+.reveal:nth-child(4){animation-delay:.19s}
+.reveal:nth-child(5){animation-delay:.24s}
+.reveal:nth-child(6){animation-delay:.29s}
+
+@keyframes revealIn{
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+
+  padding:28px 20px;
+
+  border:
+    1px solid rgba(168,85,247,.18);
+
+  border-radius:var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at 82% 20%,
+      rgba(139,92,246,.22),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 62% 100%,
+      rgba(99,102,241,.10),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(28,15,45,.92),
+      rgba(10,7,17,.95)
+    );
+
+  box-shadow:var(--shadow);
+}
+
+.hero::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      110deg,
+      transparent 0%,
+      rgba(255,255,255,.025) 48%,
+      transparent 52%
+    );
+
+  transform:
+    translateX(-110%);
+
+  animation:
+    heroSweep 7s ease-in-out infinite;
+}
+
+@keyframes heroSweep{
+  0%,65%{
+    transform:translateX(-110%);
+  }
+
+  82%,100%{
+    transform:translateX(110%);
+  }
+}
+
+.hero-ring{
+  position:absolute;
+
+  width:260px;
+  height:260px;
+
+  right:-130px;
+  top:-130px;
+
+  border:
+    1px solid rgba(192,132,252,.13);
+
+  border-radius:50%;
+
+  box-shadow:
+    0 0 0 35px rgba(139,92,246,.025),
+    0 0 0 70px rgba(139,92,246,.018);
+
+  pointer-events:none;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:
+    7px 10px;
+
+  border:
+    1px solid rgba(192,132,252,.23);
+
+  border-radius:999px;
+
+  color:#d9c8f5;
+
+  background:
+    rgba(139,92,246,.06);
+
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+
+.eyebrow-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:var(--purple-bright);
+
+  box-shadow:
+    0 0 12px rgba(168,85,247,.85);
+}
+
+.hero h1{
+  max-width:900px;
+
+  margin-top:19px;
+
+  font-size:
+    clamp(40px,11vw,86px);
+
+  line-height:.91;
+
+  letter-spacing:-.065em;
+}
+
+.hero-gradient{
+  display:block;
+
+  background:
+    linear-gradient(
+      100deg,
+      #ffffff 10%,
+      #d8b4fe 55%,
+      #818cf8 90%
+    );
+
+  -webkit-background-clip:text;
+  background-clip:text;
+
+  color:transparent;
+}
+
+.hero-description{
+  max-width:680px;
+
+  margin-top:18px;
+
+  color:var(--muted);
+
+  font-size:11px;
+  line-height:1.75;
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+
+  margin-top:21px;
+}
+
+.btn{
+  min-height:40px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid var(--border-strong);
+
+  border-radius:11px;
+
+  color:#eae4f4;
+
+  background:
+    rgba(255,255,255,.025);
+
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.06em;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+
+  border-color:
+    rgba(192,132,252,.55);
+
+  background:
+    rgba(139,92,246,.09);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.22);
+}
+
+.btn:active{
+  transform:scale(.98);
+}
+
+.btn-primary{
+  border-color:transparent;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #a855f7
+    );
+
+  box-shadow:
+    0 12px 30px rgba(124,58,237,.27);
+}
+
+.btn-primary:hover{
+  border-color:transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8b5cf6,
+      #c084fc
+    );
+
+  box-shadow:
+    0 16px 38px rgba(139,92,246,.36);
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.hero-console{
+  display:none;
+
+  position:absolute;
+
+  right:35px;
+  bottom:32px;
+
+  width:275px;
+
+  z-index:3;
+
+  padding:13px;
+
+  border:
+    1px solid rgba(168,85,247,.18);
+
+  border-radius:16px;
+
+  background:
+    rgba(8,5,14,.68);
+
+  backdrop-filter:blur(16px);
+}
+
+.console-head{
+  display:flex;
+  justify-content:space-between;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+
+.console-bars{
+  display:grid;
+  gap:6px;
+
+  margin-top:11px;
+}
+
+.console-bar{
+  height:6px;
+
+  overflow:hidden;
+
+  border-radius:99px;
+
+  background:
+    rgba(255,255,255,.05);
+}
+
+.console-fill{
+  height:100%;
+
+  border-radius:99px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--purple),
+      var(--indigo)
+    );
+
+  animation:
+    consoleLoad 4s ease-in-out infinite;
+}
+
+.console-bar:nth-child(2) .console-fill{
+  animation-delay:-1s;
+}
+
+.console-bar:nth-child(3) .console-fill{
+  animation-delay:-2s;
+}
+
+@keyframes consoleLoad{
+  0%,100%{width:24%}
+  50%{width:88%}
+}
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section{
+  margin-top:38px;
+}
+
+.section-heading{
+  margin-bottom:15px;
+}
+
+.section-kicker{
+  color:var(--violet);
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:.2em;
+}
+
+.section-title{
+  margin-top:5px;
+
+  font-size:23px;
+  line-height:1.05;
+
+  letter-spacing:-.04em;
+}
+
+.section-description{
+  max-width:700px;
+
+  margin-top:7px;
+
+  color:var(--muted);
+
+  font-size:10px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+.metrics{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:8px;
+
+  margin-top:12px;
+}
+
+.metric{
+  position:relative;
+  overflow:hidden;
+
+  min-height:108px;
+
+  padding:15px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25,14,41,.76),
+      rgba(10,7,16,.82)
+    );
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease;
+}
+
+.metric::after{
+  content:"";
+
+  position:absolute;
+
+  width:70px;
+  height:70px;
+
+  right:-35px;
+  bottom:-35px;
+
+  border-radius:50%;
+
+  background:
+    rgba(139,92,246,.11);
+
+  filter:blur(12px);
+}
+
+.metric:hover{
+  transform:translateY(-3px);
+
+  border-color:
+    rgba(168,85,247,.38);
+}
+
+.metric-label{
+  color:var(--muted-dark);
+
+  font-size:7px;
+  font-weight:900;
+
+  letter-spacing:.14em;
+}
+
+.metric-value{
+  margin-top:8px;
+
+  font-size:28px;
+  line-height:1;
+
+  font-weight:950;
+
+  letter-spacing:-.06em;
+}
+
+.metric-meta{
+  margin-top:7px;
+
+  color:var(--muted);
+
+  font-size:8px;
+}
+
+/* =========================================================
+   DISCOVERY TOOLBAR
+   ========================================================= */
+
+.toolbar{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+
+  margin-bottom:13px;
+}
+
+.filters{
+  display:flex;
+
+  gap:6px;
+
+  overflow-x:auto;
+
+  padding-bottom:2px;
+
+  scrollbar-width:none;
+}
+
+.filters::-webkit-scrollbar{
+  display:none;
+}
+
+.filter{
+  flex:none;
+
+  min-height:31px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:999px;
+
+  color:var(--muted);
+
+  background:
+    rgba(255,255,255,.02);
+
+  font-size:7px;
+  font-weight:900;
+  letter-spacing:.08em;
+
+  transition:.2s ease;
+}
+
+.filter:hover,
+.filter.active{
+  color:white;
+
+  border-color:
+    rgba(168,85,247,.48);
+
+  background:
+    rgba(139,92,246,.11);
+
+  box-shadow:
+    0 0 18px rgba(139,92,246,.07);
+}
+
+.discovery-state{
+  min-height:36px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  padding:
+    0 11px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:11px;
+
+  color:var(--muted);
+
+  background:
+    rgba(255,255,255,.018);
+
+  font-size:8px;
+}
+
+.state-dot{
+  width:6px;
+  height:6px;
+
+  flex:none;
+
+  border-radius:50%;
+
+  background:var(--purple-bright);
+
+  box-shadow:
+    0 0 11px rgba(168,85,247,.7);
+}
+
+.spinner{
+  width:12px;
+  height:12px;
+
+  flex:none;
+
+  border:
+    2px solid rgba(255,255,255,.12);
+
+  border-top-color:
+    var(--violet);
+
+  border-radius:50%;
+
+  animation:
+    spin .7s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================================================
    NEWS GRID
----------------------------- */
+   ========================================================= */
 
 .news-grid{
   display:grid;
-  gap:12px;
+
+  grid-template-columns:
+    1fr;
+
+  gap:11px;
 }
+
+/* =========================================================
+   NEWS CARD
+   ========================================================= */
 
 .news-card{
   position:relative;
   overflow:hidden;
-  border:1px solid var(--line);
+
+  border:
+    1px solid var(--border);
+
   border-radius:20px;
+
   background:
-    linear-gradient(145deg,rgba(24,15,39,.84),rgba(10,8,16,.92));
+    linear-gradient(
+      145deg,
+      rgba(25,14,41,.82),
+      rgba(9,7,14,.92)
+    );
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
   transition:
-    transform .24s ease,
-    border-color .24s ease,
-    box-shadow .24s ease;
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+
+  contain:layout paint;
   content-visibility:auto;
-  contain-intrinsic-size:300px;
+  contain-intrinsic-size:420px;
 }
 
 .news-card:hover{
   transform:translateY(-4px);
-  border-color:rgba(168,85,247,.42);
-  box-shadow:0 18px 45px rgba(0,0,0,.28);
+
+  border-color:
+    rgba(168,85,247,.4);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.3),
+    0 0 30px rgba(139,92,246,.05);
+}
+
+.news-image-wrap{
+  position:relative;
+
+  height:190px;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1b102b,
+      #0b0811
+    );
 }
 
 .news-image{
   width:100%;
-  height:175px;
-  object-fit:cover;
+  height:100%;
+
   display:block;
+
+  object-fit:cover;
+
+  transition:
+    transform .5s cubic-bezier(.2,.7,.2,1),
+    filter .5s ease;
+}
+
+.news-card:hover .news-image{
+  transform:scale(1.035);
+
+  filter:
+    saturate(1.08)
+    brightness(1.05);
+}
+
+.image-overlay{
+  position:absolute;
+  inset:0;
+
   background:
-    linear-gradient(135deg,#1a1027,#0c0a12);
+    linear-gradient(
+      to bottom,
+      transparent 45%,
+      rgba(7,4,12,.82)
+    );
 }
 
 .news-body{
-  padding:17px;
+  padding:16px;
 }
 
-.news-meta{
+.news-top{
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   gap:10px;
-  color:var(--muted2);
-  font-size:8px;
-  font-weight:800;
-  letter-spacing:.09em;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
+  font-weight:900;
+
+  letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 .news-title{
   margin-top:10px;
-  font-size:17px;
-  line-height:1.24;
+
+  color:white;
+
+  font-size:16px;
+  line-height:1.27;
+
   letter-spacing:-.025em;
 }
 
 .news-description{
-  margin-top:9px;
+  margin-top:8px;
+
   color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
+
+  font-size:9px;
+  line-height:1.65;
+
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
 }
 
 .badges{
   display:flex;
   flex-wrap:wrap;
+
   gap:5px;
-  margin-top:12px;
+
+  margin-top:11px;
 }
 
 .badge{
-  padding:5px 7px;
-  border:1px solid var(--line);
+  padding:
+    5px 7px;
+
+  border:
+    1px solid var(--border);
+
   border-radius:7px;
-  color:#bdb4ce;
-  background:rgba(255,255,255,.025);
-  font-size:7px;
-  font-weight:900;
+
+  color:#bdb4c9;
+
+  background:
+    rgba(255,255,255,.022);
+
+  font-size:6px;
+  font-weight:950;
+
   letter-spacing:.08em;
-  text-transform:uppercase;
 }
 
-.badge.purple{
-  color:#d7c0ff;
-  border-color:rgba(168,85,247,.3);
-  background:rgba(139,92,246,.09);
+.badge-purple{
+  color:#ddc8ff;
+
+  border-color:
+    rgba(168,85,247,.28);
+
+  background:
+    rgba(139,92,246,.08);
 }
 
-.badge.green{
+.badge-green{
   color:#a7f3c0;
-  border-color:rgba(74,222,128,.22);
-  background:rgba(74,222,128,.06);
+
+  border-color:
+    rgba(74,222,128,.2);
+
+  background:
+    rgba(74,222,128,.045);
 }
 
-.badge.yellow{
+.badge-yellow{
   color:#fde68a;
-  border-color:rgba(250,204,21,.22);
-  background:rgba(250,204,21,.05);
+
+  border-color:
+    rgba(250,204,21,.2);
+
+  background:
+    rgba(250,204,21,.045);
 }
 
-.badge.red{
+.badge-red{
   color:#fecdd3;
-  border-color:rgba(251,113,133,.22);
-  background:rgba(251,113,133,.05);
+
+  border-color:
+    rgba(251,113,133,.2);
+
+  background:
+    rgba(251,113,133,.045);
 }
 
-.ai-reason{
-  margin-top:13px;
+.ai-box{
+  position:relative;
+
+  margin-top:12px;
+
   padding:11px;
-  border-left:2px solid var(--purple);
-  background:rgba(139,92,246,.055);
-  color:#bcb3ca;
-  font-size:10px;
-  line-height:1.55;
+
+  border:
+    1px solid rgba(168,85,247,.1);
+
+  border-left:
+    2px solid var(--purple);
+
+  border-radius:9px;
+
+  background:
+    rgba(139,92,246,.045);
+
+  color:#bcb3c9;
+
+  font-size:8px;
+  line-height:1.6;
 }
 
-.news-footer{
+.ai-label{
+  color:#caa8fa;
+
+  font-size:6px;
+  font-weight:950;
+
+  letter-spacing:.13em;
+}
+
+.news-actions{
   display:flex;
-  gap:7px;
-  margin-top:14px;
+  gap:6px;
+
+  margin-top:12px;
 }
 
 .small-btn{
-  min-height:34px;
-  padding:0 10px;
-  border:1px solid var(--line);
-  border-radius:9px;
-  color:#ddd7e8;
-  background:rgba(255,255,255,.025);
-  font-size:9px;
-  font-weight:800;
+  min-height:31px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:8px;
+
+  color:#d6cfdf;
+
+  background:
+    rgba(255,255,255,.022);
+
+  font-size:7px;
+  font-weight:900;
+
+  transition:.2s ease;
 }
 
 .small-btn:hover{
-  border-color:var(--line2);
-  background:rgba(139,92,246,.08);
+  color:white;
+
+  border-color:
+    rgba(168,85,247,.4);
+
+  background:
+    rgba(139,92,246,.08);
 }
 
-/* ---------------------------
+/* =========================================================
    SKELETON
----------------------------- */
+   ========================================================= */
 
 .skeleton{
   overflow:hidden;
-  min-height:300px;
-  border:1px solid var(--line);
+
+  min-height:360px;
+
+  border:
+    1px solid var(--border);
+
   border-radius:20px;
-  background:rgba(255,255,255,.025);
+
+  background:
+    rgba(255,255,255,.018);
+}
+
+.skeleton-image{
+  height:190px;
+
+  background:
+    rgba(255,255,255,.035);
 }
 
 .skeleton-line{
   position:relative;
   overflow:hidden;
-  height:12px;
-  margin:16px;
-  border-radius:6px;
-  background:rgba(255,255,255,.055);
+
+  height:10px;
+
+  margin:
+    14px 15px 0;
+
+  border-radius:99px;
+
+  background:
+    rgba(255,255,255,.045);
 }
 
 .skeleton-line::after{
   content:"";
+
   position:absolute;
+
   inset:0;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,.06),
-    transparent
-  );
-  animation:scan 1.5s ease-in-out infinite;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.06),
+      transparent
+    );
+
+  transform:
+    translateX(-100%);
+
+  animation:
+    skeletonSweep 1.4s ease-in-out infinite;
 }
 
-/* ---------------------------
-   REPORT / PANELS
----------------------------- */
+@keyframes skeletonSweep{
+  to{
+    transform:
+      translateX(100%);
+  }
+}
 
-.two-col{
+/* =========================================================
+   TWO COLUMN
+   ========================================================= */
+
+.two-column{
   display:grid;
-  gap:12px;
+  grid-template-columns:1fr;
+  gap:11px;
 }
+
+/* =========================================================
+   PANEL
+   ========================================================= */
 
 .panel{
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:linear-gradient(145deg,rgba(23,14,37,.76),rgba(10,8,15,.9));
-  padding:18px;
+  padding:17px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:19px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,14,39,.74),
+      rgba(9,7,14,.88)
+    );
 }
 
 .panel-label{
   color:var(--violet);
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:.16em;
-  text-transform:uppercase;
+
+  font-size:7px;
+  font-weight:950;
+
+  letter-spacing:.17em;
 }
 
-.panel h3{
-  margin-top:7px;
-  font-size:17px;
+.panel-title{
+  margin-top:6px;
+
+  font-size:16px;
+  line-height:1.25;
+
+  letter-spacing:-.025em;
 }
 
-.panel p{
+.panel-text{
   margin-top:8px;
+
   color:var(--muted);
-  font-size:11px;
+
+  font-size:9px;
   line-height:1.65;
+}
+
+.signal-list{
+  display:grid;
+  gap:6px;
+
+  margin-top:13px;
 }
 
 .signal{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  margin-top:14px;
-  padding:11px 12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:rgba(139,92,246,.045);
+
+  gap:10px;
+
+  padding:
+    10px 11px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.015);
 }
 
 .signal span{
-  color:var(--muted2);
-  font-size:9px;
+  color:var(--muted-dark);
+
+  font-size:7px;
+  font-weight:850;
+
+  letter-spacing:.09em;
 }
 
 .signal strong{
-  color:#ddd0f9;
-  font-size:12px;
+  color:#e6def1;
+
+  font-size:9px;
 }
 
-/* ---------------------------
+/* =========================================================
    PIPELINE
----------------------------- */
+   ========================================================= */
 
 .pipeline{
   display:grid;
-  gap:8px;
+  gap:7px;
 }
 
 .pipeline-step{
   position:relative;
+
   display:flex;
   align-items:center;
-  gap:12px;
-  min-height:64px;
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  background:rgba(255,255,255,.018);
-  transition:.25s ease;
+
+  gap:10px;
+
+  min-height:61px;
+
+  padding:
+    10px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:13px;
+
+  background:
+    rgba(255,255,255,.015);
+
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    background .22s ease;
 }
 
 .pipeline-step.active{
-  border-color:rgba(168,85,247,.55);
-  background:rgba(139,92,246,.09);
-  box-shadow:0 0 28px rgba(139,92,246,.08);
+  transform:
+    translateX(4px);
+
+  border-color:
+    rgba(168,85,247,.48);
+
+  background:
+    rgba(139,92,246,.075);
+
+  box-shadow:
+    0 0 25px rgba(139,92,246,.07);
 }
 
-.pipeline-icon{
-  width:34px;
-  height:34px;
+.pipeline-number{
+  width:31px;
+  height:31px;
+
   flex:none;
+
   display:grid;
   place-items:center;
-  border:1px solid var(--line2);
-  border-radius:10px;
+
+  border:
+    1px solid rgba(192,132,252,.2);
+
+  border-radius:9px;
+
   color:#d7c3fa;
-  background:rgba(139,92,246,.08);
-  font-size:11px;
-  font-weight:900;
+
+  background:
+    rgba(139,92,246,.07);
+
+  font-size:7px;
+  font-weight:950;
 }
 
 .pipeline-copy{
@@ -819,155 +1602,261 @@ a{
 
 .pipeline-copy strong{
   display:block;
-  font-size:11px;
+
+  font-size:9px;
+  font-weight:900;
 }
 
 .pipeline-copy span{
   display:block;
+
   margin-top:3px;
-  color:var(--muted2);
-  font-size:9px;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
 }
 
-.pipeline-state{
+.pipeline-status{
   margin-left:auto;
-  color:var(--muted2);
-  font-size:8px;
-  font-weight:900;
+
+  color:var(--muted-dark);
+
+  font-size:6px;
+  font-weight:950;
+
   letter-spacing:.08em;
-  text-transform:uppercase;
 }
 
-/* ---------------------------
-   FUTURE MODULES
----------------------------- */
+/* =========================================================
+   MODULES
+   ========================================================= */
 
 .module-grid{
   display:grid;
-  gap:10px;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
 }
 
 .module{
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:17px;
-  background:rgba(255,255,255,.018);
+  min-height:105px;
+
+  padding:13px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,.014);
+
+  transition:.2s ease;
 }
 
-.module-top{
+.module:hover{
+  transform:translateY(-2px);
+
+  border-color:
+    rgba(168,85,247,.34);
+}
+
+.module-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+
+  gap:8px;
 }
 
 .module-name{
-  font-size:12px;
-  font-weight:900;
+  font-size:8px;
+  font-weight:950;
 }
 
 .module-status{
-  color:#b5acc2;
-  font-size:8px;
-  text-transform:uppercase;
-  letter-spacing:.1em;
+  color:var(--muted-dark);
+
+  font-size:5px;
+  font-weight:900;
+
+  letter-spacing:.08em;
+}
+
+.module-icon{
+  width:29px;
+  height:29px;
+
+  display:grid;
+  place-items:center;
+
+  margin-bottom:10px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:8px;
+
+  color:#c9b2ee;
+
+  background:
+    rgba(139,92,246,.06);
+
+  font-size:9px;
 }
 
 .module p{
-  margin-top:7px;
-  color:var(--muted2);
-  font-size:9px;
-  line-height:1.5;
+  margin-top:6px;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
+  line-height:1.55;
 }
 
-/* ---------------------------
+/* =========================================================
    ACTIVITY
----------------------------- */
+   ========================================================= */
 
 .activity{
   display:grid;
-  gap:8px;
+  gap:6px;
 }
 
 .activity-item{
   display:flex;
   align-items:flex-start;
-  gap:10px;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:rgba(255,255,255,.015);
+
+  gap:9px;
+
+  padding:
+    10px 11px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:11px;
+
+  background:
+    rgba(255,255,255,.014);
 }
 
 .activity-dot{
-  width:7px;
-  height:7px;
+  width:6px;
+  height:6px;
+
   flex:none;
-  margin-top:4px;
+
+  margin-top:3px;
+
   border-radius:50%;
-  background:var(--purple);
-  box-shadow:0 0 12px rgba(139,92,246,.55);
+
+  background:
+    var(--purple-bright);
+
+  box-shadow:
+    0 0 10px rgba(168,85,247,.6);
 }
 
 .activity-item strong{
   display:block;
-  font-size:10px;
+
+  font-size:8px;
 }
 
 .activity-item span{
   display:block;
+
   margin-top:3px;
-  color:var(--muted2);
-  font-size:9px;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
+  line-height:1.4;
 }
 
-/* ---------------------------
+/* =========================================================
    ARCHITECTURE
----------------------------- */
+   ========================================================= */
 
 .architecture{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:7px;
 }
 
 .arch-node{
-  min-height:80px;
+  position:relative;
+
+  min-height:90px;
+
   padding:13px;
-  border:1px solid var(--line);
+
+  border:
+    1px solid var(--border);
+
   border-radius:14px;
+
   background:
-    linear-gradient(145deg,rgba(139,92,246,.07),rgba(255,255,255,.015));
+    linear-gradient(
+      145deg,
+      rgba(139,92,246,.06),
+      rgba(255,255,255,.012)
+    );
+}
+
+.arch-number{
+  color:var(--muted-dark);
+
+  font-size:6px;
+  font-weight:950;
+
+  letter-spacing:.1em;
 }
 
 .arch-node strong{
   display:block;
-  font-size:10px;
+
+  margin-top:8px;
+
+  font-size:9px;
 }
 
 .arch-node span{
   display:block;
+
   margin-top:5px;
-  color:var(--muted2);
-  font-size:8px;
-  line-height:1.4;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
+  line-height:1.5;
 }
 
-/* ---------------------------
+/* =========================================================
    MODAL
----------------------------- */
+   ========================================================= */
 
 .modal{
   position:fixed;
   inset:0;
-  z-index:100;
+
+  z-index:500;
+
   display:none;
   align-items:flex-end;
   justify-content:center;
+
   padding:0;
-  background:rgba(3,2,7,.72);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
+
+  background:
+    rgba(3,2,7,.76);
+
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
 }
 
 .modal.open{
@@ -975,206 +1864,363 @@ a{
 }
 
 .modal-card{
-  width:min(900px,100%);
-  max-height:92vh;
+  width:min(920px,100%);
+
+  max-height:
+    93vh;
+
   overflow:auto;
-  border:1px solid rgba(168,85,247,.3);
+
+  border:
+    1px solid rgba(168,85,247,.3);
+
   border-bottom:0;
-  border-radius:26px 26px 0 0;
+
+  border-radius:
+    26px 26px 0 0;
+
   background:
-    radial-gradient(circle at 80% 0%,rgba(139,92,246,.13),transparent 32%),
-    linear-gradient(145deg,#160e22,#09070e);
-  box-shadow:0 -20px 90px rgba(0,0,0,.6);
-  animation:modalIn .32s cubic-bezier(.2,.8,.2,1);
+    radial-gradient(
+      circle at 82% 0%,
+      rgba(139,92,246,.15),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #160d23,
+      #08060d
+    );
+
+  box-shadow:
+    0 -30px 100px rgba(0,0,0,.62);
+
+  animation:
+    modalEnter .3s
+    cubic-bezier(.2,.8,.2,1);
 }
 
-.modal-head{
+@keyframes modalEnter{
+  from{
+    opacity:0;
+    transform:
+      translateY(30px)
+      scale(.98);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.modal-header{
   position:sticky;
   top:0;
-  z-index:2;
+
+  z-index:3;
+
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
+
   gap:12px;
-  padding:18px;
-  border-bottom:1px solid var(--line);
-  background:rgba(12,8,19,.88);
+
+  padding:16px;
+
+  border-bottom:
+    1px solid var(--border);
+
+  background:
+    rgba(10,7,16,.88);
+
   backdrop-filter:blur(18px);
 }
 
 .modal-kicker{
   color:var(--violet);
-  font-size:8px;
-  font-weight:900;
-  letter-spacing:.16em;
+
+  font-size:7px;
+  font-weight:950;
+
+  letter-spacing:.15em;
 }
 
-.modal-title{
+.modal-heading{
   margin-top:5px;
-  font-size:16px;
-  font-weight:900;
+
+  font-size:15px;
+  font-weight:950;
 }
 
-.close{
+.close-btn{
   width:34px;
   height:34px;
+
   flex:none;
-  border:1px solid var(--line);
-  border-radius:10px;
-  color:#d8d0e4;
-  background:rgba(255,255,255,.03);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:9px;
+
+  color:#d9d0e2;
+
+  background:
+    rgba(255,255,255,.025);
+
+  font-size:18px;
 }
 
 .modal-content{
-  padding:18px;
+  padding:16px;
 }
 
 .research-story{
-  padding:15px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,255,255,.018);
-}
-
-.research-story h2{
-  font-size:19px;
-  line-height:1.3;
-}
-
-.research-story p{
-  margin-top:8px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-}
-
-.research-grid{
-  display:grid;
-  gap:9px;
-  margin-top:12px;
-}
-
-.research-box{
   padding:14px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:rgba(255,255,255,.018);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:15px;
+
+  background:
+    rgba(255,255,255,.015);
 }
 
-.research-box-label{
-  color:var(--muted2);
-  font-size:8px;
+.research-meta{
+  display:flex;
+  justify-content:space-between;
+
+  gap:10px;
+
+  color:var(--muted-dark);
+
+  font-size:7px;
   font-weight:900;
-  letter-spacing:.12em;
+
   text-transform:uppercase;
 }
 
-.research-box-value{
-  margin-top:7px;
-  color:#eee9f6;
-  font-size:11px;
+.research-title{
+  margin-top:9px;
+
+  font-size:18px;
+  line-height:1.3;
+
+  letter-spacing:-.025em;
+}
+
+.research-description{
+  margin-top:8px;
+
+  color:var(--muted);
+
+  font-size:9px;
   line-height:1.6;
-  white-space:pre-wrap;
 }
 
 .research-state{
   position:relative;
   overflow:hidden;
-  margin-top:12px;
-  padding:14px;
-  border:1px solid rgba(168,85,247,.2);
-  border-radius:14px;
-  background:rgba(139,92,246,.055);
+
+  margin-top:10px;
+
+  padding:13px;
+
+  border:
+    1px solid rgba(168,85,247,.2);
+
+  border-radius:13px;
+
+  background:
+    rgba(139,92,246,.05);
 }
 
 .research-state.scanning::after{
   content:"";
+
   position:absolute;
-  left:0;
+
   top:0;
+  bottom:0;
+  left:0;
+
   width:35%;
-  height:100%;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    rgba(168,85,247,.14),
-    transparent
-  );
-  animation:scan 1.6s linear infinite;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(192,132,252,.14),
+      transparent
+    );
+
+  animation:
+    researchScan 1.4s linear infinite;
+}
+
+@keyframes researchScan{
+  from{
+    transform:
+      translateX(-120%);
+  }
+
+  to{
+    transform:
+      translateX(320%);
+  }
 }
 
 .research-state strong{
-  font-size:10px;
+  display:block;
+
+  font-size:8px;
+  font-weight:950;
 }
 
 .research-state p{
-  margin-top:5px;
+  margin-top:4px;
+
   color:var(--muted);
-  font-size:9px;
+
+  font-size:8px;
   line-height:1.5;
+}
+
+.research-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:7px;
+
+  margin-top:10px;
+}
+
+.research-box{
+  padding:12px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:12px;
+
+  background:
+    rgba(255,255,255,.014);
+}
+
+.research-label{
+  color:var(--muted-dark);
+
+  font-size:6px;
+  font-weight:950;
+
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.research-value{
+  margin-top:6px;
+
+  color:#e7e0ef;
+
+  font-size:8px;
+  line-height:1.65;
+
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
 
 .sources{
   display:grid;
-  gap:7px;
-  margin-top:12px;
+  gap:6px;
+
+  margin-top:10px;
 }
 
 .source{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding:10px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:rgba(255,255,255,.015);
+
+  gap:10px;
+
+  padding:9px 10px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:9px;
+
+  background:
+    rgba(255,255,255,.012);
 }
 
 .source span{
   overflow:hidden;
-  color:#c9c1d4;
-  font-size:9px;
+
+  color:#c9c0d2;
+
+  font-size:7px;
+
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 
 .source a{
   flex:none;
+
   color:#c084fc;
-  font-size:8px;
-  font-weight:900;
+
+  font-size:6px;
+  font-weight:950;
 }
 
 .modal-actions{
   display:flex;
-  gap:8px;
-  margin-top:15px;
+  gap:7px;
+
+  margin-top:11px;
 }
 
 .modal-actions .btn{
   flex:1;
 }
 
-/* ---------------------------
+/* =========================================================
    TOAST
----------------------------- */
+   ========================================================= */
 
 .toast{
   position:fixed;
+
+  left:14px;
   right:14px;
   bottom:14px;
-  z-index:200;
-  width:min(360px,calc(100% - 28px));
-  padding:13px 15px;
-  border:1px solid var(--line2);
-  border-radius:14px;
-  background:rgba(16,10,25,.94);
-  box-shadow:var(--shadow);
-  transform:translateY(20px);
+
+  z-index:800;
+
+  padding:12px 14px;
+
+  border:
+    1px solid var(--border-strong);
+
+  border-radius:13px;
+
+  background:
+    rgba(15,8,23,.95);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.48);
+
+  transform:
+    translateY(20px);
+
   opacity:0;
+
   pointer-events:none;
-  transition:.25s ease;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
 }
 
 .toast.show{
@@ -1184,589 +2230,1471 @@ a{
 
 .toast strong{
   display:block;
-  font-size:10px;
+
+  font-size:8px;
+  font-weight:950;
 }
 
 .toast span{
   display:block;
-  margin-top:4px;
+
+  margin-top:3px;
+
   color:var(--muted);
-  font-size:9px;
+
+  font-size:7px;
   line-height:1.4;
 }
 
-/* ---------------------------
+/* =========================================================
    FOOTER
----------------------------- */
+   ========================================================= */
 
 .footer{
-  margin-top:55px;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-  color:var(--muted2);
-  font-size:9px;
-  line-height:1.6;
+  margin-top:45px;
+
+  padding:
+    18px 0 0;
+
+  border-top:
+    1px solid var(--border);
+
+  color:var(--muted-dark);
+
+  font-size:7px;
+  line-height:1.7;
 }
 
 .footer strong{
-  color:#bdb4ca;
+  color:#bfb4cb;
 }
 
-/* ---------------------------
-   DESKTOP
----------------------------- */
+/* =========================================================
+   MOBILE OVERRIDE
+   This intentionally protects against mobile browsers
+   incorrectly reporting a desktop-sized CSS viewport.
+   ========================================================= */
 
-@media(min-width:700px){
+.mobile-force .container{
+  width:calc(100% - 24px);
+}
 
-  .header-inner,
-  .shell{
-    width:min(1380px,calc(100% - 48px));
+.mobile-force .header-inner{
+  min-height:62px;
+}
+
+.mobile-force .hero{
+  padding:24px 17px;
+}
+
+.mobile-force .hero h1{
+  font-size:40px;
+}
+
+.mobile-force .hero-console{
+  display:none;
+}
+
+.mobile-force .news-grid{
+  grid-template-columns:1fr;
+}
+
+.mobile-force .two-column{
+  grid-template-columns:1fr;
+}
+
+.mobile-force .module-grid{
+  grid-template-columns:1fr 1fr;
+}
+
+.mobile-force .architecture{
+  grid-template-columns:1fr 1fr;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media(min-width:600px){
+
+  .container{
+    width:min(
+      var(--max),
+      calc(100% - 38px)
+    );
   }
 
-  .version{
-    display:block;
+  main{
+    padding-top:32px;
   }
 
   .hero{
-    min-height:420px;
-    padding:58px 52px;
+    padding:40px 34px;
   }
 
-  .hero-grid{
-    display:grid;
+  .hero h1{
+    font-size:
+      clamp(52px,8vw,76px);
   }
 
   .metrics{
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+      repeat(4,1fr);
+
+    gap:9px;
   }
 
   .news-grid{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
   }
 
-  .two-col{
-    grid-template-columns:1.25fr .75fr;
-  }
-
-  .module-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .architecture{
-    grid-template-columns:repeat(4,1fr);
+  .two-column{
+    grid-template-columns:
+      1.25fr .75fr;
   }
 
   .research-grid{
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .module-grid{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+  .architecture{
+    grid-template-columns:
+      repeat(4,1fr);
   }
 
   .modal{
     align-items:center;
-    padding:24px;
+    padding:20px;
   }
 
   .modal-card{
-    max-height:88vh;
-    border-bottom:1px solid rgba(168,85,247,.3);
-    border-radius:26px;
+    border-bottom:
+      1px solid rgba(168,85,247,.3);
+
+    border-radius:25px;
+  }
+
+  .toast{
+    left:auto;
+    width:min(370px,calc(100% - 28px));
   }
 }
 
-/* ---------------------------
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media(min-width:1000px){
+
+  .header-version{
+    display:block;
+  }
+
+  .header-inner{
+    min-height:74px;
+  }
+
+  main{
+    padding-top:38px;
+  }
+
+  .hero{
+    min-height:440px;
+
+    padding:
+      58px 52px;
+  }
+
+  .hero-console{
+    display:block;
+  }
+
+  .hero h1{
+    max-width:850px;
+
+    font-size:
+      clamp(64px,6.2vw,88px);
+  }
+
+  .hero-description{
+    font-size:12px;
+  }
+
+  .section{
+    margin-top:52px;
+  }
+
+  .section-title{
+    font-size:27px;
+  }
+
+  .news-grid{
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+  }
+
+  .news-image-wrap{
+    height:205px;
+  }
+}
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media(min-width:1300px){
+
+  .news-grid{
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+  }
+
+  .hero{
+    min-height:470px;
+  }
+}
+
+/* =========================================================
    ACCESSIBILITY
----------------------------- */
+   ========================================================= */
 
 button:focus-visible,
 a:focus-visible{
-  outline:2px solid var(--violet);
-  outline-offset:3px;
+  outline:
+    2px solid var(--violet);
+
+  outline-offset:
+    3px;
 }
 
 @media(prefers-reduced-motion:reduce){
+
+  html{
+    scroll-behavior:auto;
+  }
+
   *,
   *::before,
   *::after{
-    scroll-behavior:auto!important;
     animation-duration:.01ms!important;
     animation-iteration-count:1!important;
     transition-duration:.01ms!important;
   }
 }
+
 </style>
 </head>
 
 <body>
 
+<div class="ambient one"></div>
+<div class="ambient two"></div>
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
 <header class="header">
-  <div class="header-inner">
+
+  <div class="container header-inner">
 
     <div class="brand">
-      <div class="logo">N</div>
-      <div>
-        <div class="brand-name">NEWSFORGE</div>
-        <div class="brand-sub">AI NEWS INTELLIGENCE</div>
+
+      <div class="logo">
+        N
       </div>
+
+      <div class="brand-text">
+
+        <div class="brand-name">
+          NEWSFORGE
+        </div>
+
+        <div class="brand-sub">
+          AI NEWS INTELLIGENCE
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="status">
-      <span class="status-dot"></span>
-      <span>ENGINE ONLINE</span>
-      <span class="version">V2.0</span>
+    <div class="header-right">
+
+      <div class="engine">
+        <span class="engine-dot"></span>
+        ENGINE ONLINE
+      </div>
+
+      <div class="header-version">
+        V2.0
+      </div>
+
     </div>
 
   </div>
+
 </header>
 
-<main class="shell">
 
-  <!-- HERO -->
-  <section class="hero reveal">
+<!-- =======================================================
+     MAIN
+======================================================= -->
 
-    <div class="hero-content">
+<main>
 
-      <div class="hero-eyebrow">
-        <span>●</span>
-        AI-POWERED NEWS OPERATIONS
+<div class="container">
+
+
+<!-- =======================================================
+     HERO
+======================================================= -->
+
+<section class="hero reveal">
+
+  <div class="hero-ring"></div>
+
+  <div class="hero-content">
+
+    <div class="eyebrow">
+
+      <span class="eyebrow-dot"></span>
+
+      AI-POWERED NEWS OPERATIONS
+
+    </div>
+
+
+    <h1>
+
+      Know what matters.
+
+      <span class="hero-gradient">
+        Before everyone else.
+      </span>
+
+    </h1>
+
+
+    <p class="hero-description">
+
+      NEWSFORGE discovers emerging stories, analyzes
+      attention signals, researches claims and prepares
+      editorial intelligence for controlled publishing.
+
+    </p>
+
+
+    <div class="hero-actions">
+
+      <button
+        class="btn btn-primary"
+        id="discoverButton"
+        onclick="discoverNews()">
+
+        DISCOVER NEWS
+
+      </button>
+
+
+      <button
+        class="btn"
+        onclick="scrollToSection('pipeline')">
+
+        VIEW PIPELINE
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="hero-console">
+
+    <div class="console-head">
+
+      <span>
+        INTELLIGENCE CORE
+      </span>
+
+      <span>
+        ONLINE
+      </span>
+
+    </div>
+
+    <div class="console-bars">
+
+      <div class="console-bar">
+        <div
+          class="console-fill"
+          style="width:82%">
+        </div>
       </div>
 
-      <h1>
-        Know what matters.
-        <span class="gradient-text">Before everyone else.</span>
-      </h1>
+      <div class="console-bar">
+        <div
+          class="console-fill"
+          style="width:63%">
+        </div>
+      </div>
 
-      <p>
-        NEWSFORGE discovers emerging stories, analyzes signals, evaluates
-        editorial risk and prepares intelligence for human-controlled publishing.
+      <div class="console-bar">
+        <div
+          class="console-fill"
+          style="width:91%">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     METRICS
+======================================================= -->
+
+<section class="metrics">
+
+  <div class="metric reveal">
+
+    <div class="metric-label">
+      STORIES FOUND
+    </div>
+
+    <div
+      class="metric-value"
+      id="metricStories">
+      0
+    </div>
+
+    <div class="metric-meta">
+      Current discovery batch
+    </div>
+
+  </div>
+
+
+  <div class="metric reveal">
+
+    <div class="metric-label">
+      HIGH POTENTIAL
+    </div>
+
+    <div
+      class="metric-value"
+      id="metricHigh">
+      0
+    </div>
+
+    <div class="metric-meta">
+      Strong attention signals
+    </div>
+
+  </div>
+
+
+  <div class="metric reveal">
+
+    <div class="metric-label">
+      VERIFICATION
+    </div>
+
+    <div
+      class="metric-value"
+      id="metricVerify">
+      0%
+    </div>
+
+    <div class="metric-meta">
+      Human review indicator
+    </div>
+
+  </div>
+
+
+  <div class="metric reveal">
+
+    <div class="metric-label">
+      CRITICAL
+    </div>
+
+    <div
+      class="metric-value"
+      id="metricCritical">
+      0
+    </div>
+
+    <div class="metric-meta">
+      Priority intelligence
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     DISCOVERY
+======================================================= -->
+
+<section
+  class="section"
+  id="discovery">
+
+  <div class="section-heading">
+
+    <div class="section-kicker">
+      01 / DISCOVERY
+    </div>
+
+    <h2 class="section-title">
+      Trending Intelligence
+    </h2>
+
+    <p class="section-description">
+      Current stories are collected through the NEWSFORGE
+      discovery backend and analyzed before appearing here.
+    </p>
+
+  </div>
+
+
+  <div class="toolbar">
+
+    <div class="filters">
+
+      <button
+        class="filter active"
+        data-category="ALL"
+        onclick="setCategory('ALL')">
+        ALL
+      </button>
+
+      <button
+        class="filter"
+        data-category="POLITICS"
+        onclick="setCategory('POLITICS')">
+        POLITICS
+      </button>
+
+      <button
+        class="filter"
+        data-category="BUSINESS"
+        onclick="setCategory('BUSINESS')">
+        BUSINESS
+      </button>
+
+      <button
+        class="filter"
+        data-category="TECH"
+        onclick="setCategory('TECH')">
+        TECH
+      </button>
+
+      <button
+        class="filter"
+        data-category="WORLD"
+        onclick="setCategory('WORLD')">
+        WORLD
+      </button>
+
+      <button
+        class="filter"
+        data-category="INDIA"
+        onclick="setCategory('INDIA')">
+        INDIA
+      </button>
+
+    </div>
+
+
+    <div
+      class="discovery-state"
+      id="discoveryState">
+
+      <span class="state-dot"></span>
+
+      <span>
+        Ready for discovery.
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="news-grid"
+    id="newsGrid">
+
+    <div class="panel">
+
+      <div class="panel-label">
+        DISCOVERY ENGINE
+      </div>
+
+      <h3 class="panel-title">
+        No intelligence loaded yet
+      </h3>
+
+      <p class="panel-text">
+        Start discovery to retrieve current stories
+        and run the connected AI analysis layer.
       </p>
 
-      <div class="hero-actions">
-        <button class="btn btn-primary" onclick="discoverNews()">
-          DISCOVER NEWS
-        </button>
+      <button
+        class="btn btn-primary"
+        style="margin-top:14px"
+        onclick="discoverNews()">
 
-        <button class="btn" onclick="document.getElementById('pipeline').scrollIntoView({behavior:'smooth'})">
-          VIEW PIPELINE
-        </button>
-      </div>
+        START DISCOVERY
 
-    </div>
-
-    <div class="hero-grid">
-      <div class="hero-node">
-        <span>Discovery</span>
-        <strong>LIVE</strong>
-      </div>
-
-      <div class="hero-node">
-        <span>Research</span>
-        <strong>AI</strong>
-      </div>
-
-      <div class="hero-node">
-        <span>Verification</span>
-        <strong>HUMAN</strong>
-      </div>
-
-      <div class="hero-node">
-        <span>Publishing</span>
-        <strong>CONTROLLED</strong>
-      </div>
-    </div>
-
-  </section>
-
-
-  <!-- METRICS -->
-  <section class="section">
-
-    <div class="metrics">
-
-      <div class="metric reveal">
-        <div class="metric-label">Stories Found</div>
-        <div class="metric-value" id="metricStories">0</div>
-        <div class="metric-meta">Current discovery batch</div>
-      </div>
-
-      <div class="metric reveal">
-        <div class="metric-label">High Potential</div>
-        <div class="metric-value" id="metricHigh">0</div>
-        <div class="metric-meta">AI attention signals</div>
-      </div>
-
-      <div class="metric reveal">
-        <div class="metric-label">Verification</div>
-        <div class="metric-value" id="metricVerify">0%</div>
-        <div class="metric-meta">Human review required</div>
-      </div>
-
-      <div class="metric reveal">
-        <div class="metric-label">Critical</div>
-        <div class="metric-value" id="metricCritical">0</div>
-        <div class="metric-meta">Priority intelligence</div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- DISCOVERY -->
-  <section class="section" id="discovery">
-
-    <div class="section-head">
-      <div>
-        <div class="kicker">01 / DISCOVERY</div>
-        <h2 class="section-title">Trending Intelligence</h2>
-        <p class="section-copy">
-          News discovery and AI-assisted prioritization. Sources remain visible,
-          because journalism without sources is just confident fan fiction.
-        </p>
-      </div>
-    </div>
-
-    <div class="discovery-bar">
-      <button class="filter active" data-category="ALL" onclick="setCategory('ALL')">ALL</button>
-      <button class="filter" data-category="POLITICS" onclick="setCategory('POLITICS')">POLITICS</button>
-      <button class="filter" data-category="BUSINESS" onclick="setCategory('BUSINESS')">BUSINESS</button>
-      <button class="filter" data-category="TECH" onclick="setCategory('TECH')">TECH</button>
-      <button class="filter" data-category="WORLD" onclick="setCategory('WORLD')">WORLD</button>
-      <button class="filter" data-category="INDIA" onclick="setCategory('INDIA')">INDIA</button>
-    </div>
-
-    <div id="discoveryStatus" class="discovery-status">
-      <span class="status-dot"></span>
-      <span>Ready for discovery.</span>
-    </div>
-
-    <div id="newsGrid" class="news-grid"></div>
-
-  </section>
-
-
-  <!-- INTELLIGENCE REPORT -->
-  <section class="section">
-
-    <div class="section-head">
-      <div>
-        <div class="kicker">02 / INTELLIGENCE</div>
-        <h2 class="section-title">AI Situation Report</h2>
-        <p class="section-copy">
-          A compact operational view of what the current discovery engine sees.
-        </p>
-      </div>
-    </div>
-
-    <div class="two-col">
-
-      <div class="panel reveal">
-        <div class="panel-label">Current Signal</div>
-        <h3 id="reportHeadline">Waiting for discovery data</h3>
-        <p id="reportText">
-          Run discovery to populate the intelligence layer.
-        </p>
-
-        <div class="signal">
-          <span>TOP TREND SCORE</span>
-          <strong id="reportScore">--</strong>
-        </div>
-
-        <div class="signal">
-          <span>PRIMARY CATEGORY</span>
-          <strong id="reportCategory">--</strong>
-        </div>
-
-        <div class="signal">
-          <span>EDITORIAL RISK</span>
-          <strong id="reportRisk">--</strong>
-        </div>
-      </div>
-
-      <div class="panel reveal">
-        <div class="panel-label">Operational Principle</div>
-        <h3>Source → Cross-check → Confidence</h3>
-        <p>
-          High-risk stories should move through verification before publishing.
-          The interface deliberately does not pretend that an API key is a newsroom.
-        </p>
-
-        <div class="badges">
-          <span class="badge purple">AI ANALYSIS</span>
-          <span class="badge yellow">HUMAN REVIEW</span>
-          <span class="badge green">SOURCE TRACEABLE</span>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- PIPELINE -->
-  <section class="section" id="pipeline">
-
-    <div class="section-head">
-      <div>
-        <div class="kicker">03 / AUTOMATION</div>
-        <h2 class="section-title">NEWSFORGE Pipeline</h2>
-        <p class="section-copy">
-          The architecture is designed for real automation, while unavailable
-          backend modules remain explicitly marked instead of being faked.
-        </p>
-      </div>
-
-      <button class="btn btn-primary" onclick="runPipeline()">
-        RUN PIPELINE
       </button>
-    </div>
-
-    <div class="pipeline">
-
-      <div class="pipeline-step" id="pipe1">
-        <div class="pipeline-icon">01</div>
-        <div class="pipeline-copy">
-          <strong>Discovery</strong>
-          <span>Find current stories and signals</span>
-        </div>
-        <div class="pipeline-state">LIVE</div>
-      </div>
-
-      <div class="pipeline-step" id="pipe2">
-        <div class="pipeline-icon">02</div>
-        <div class="pipeline-copy">
-          <strong>AI Research</strong>
-          <span>Cross-check claims and gather evidence</span>
-        </div>
-        <div class="pipeline-state">LIVE</div>
-      </div>
-
-      <div class="pipeline-step" id="pipe3">
-        <div class="pipeline-icon">03</div>
-        <div class="pipeline-copy">
-          <strong>Content Engine</strong>
-          <span>Generate platform-specific editorial packages</span>
-        </div>
-        <div class="pipeline-state">NEXT</div>
-      </div>
-
-      <div class="pipeline-step" id="pipe4">
-        <div class="pipeline-icon">04</div>
-        <div class="pipeline-copy">
-          <strong>Approval Queue</strong>
-          <span>Human review before publication</span>
-        </div>
-        <div class="pipeline-state">NEXT</div>
-      </div>
-
-      <div class="pipeline-step" id="pipe5">
-        <div class="pipeline-icon">05</div>
-        <div class="pipeline-copy">
-          <strong>Publishing</strong>
-          <span>OAuth-connected social distribution</span>
-        </div>
-        <div class="pipeline-state">NEXT</div>
-      </div>
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <!-- FUTURE MODULES -->
-  <section class="section">
+<!-- =======================================================
+     SITUATION REPORT
+======================================================= -->
 
-    <div class="section-head">
+<section class="section">
+
+  <div class="section-heading">
+
+    <div class="section-kicker">
+      02 / INTELLIGENCE
+    </div>
+
+    <h2 class="section-title">
+      AI Situation Report
+    </h2>
+
+    <p class="section-description">
+      The strongest current signal from the discovery batch.
+    </p>
+
+  </div>
+
+
+  <div class="two-column">
+
+
+    <div class="panel reveal">
+
+      <div class="panel-label">
+        CURRENT SIGNAL
+      </div>
+
+      <h3
+        class="panel-title"
+        id="reportHeadline">
+
+        Waiting for discovery data
+
+      </h3>
+
+      <p
+        class="panel-text"
+        id="reportText">
+
+        Run discovery to populate the intelligence layer.
+
+      </p>
+
+
+      <div class="signal-list">
+
+        <div class="signal">
+
+          <span>
+            TOP TREND SCORE
+          </span>
+
+          <strong id="reportScore">
+            --
+          </strong>
+
+        </div>
+
+
+        <div class="signal">
+
+          <span>
+            PRIMARY CATEGORY
+          </span>
+
+          <strong id="reportCategory">
+            --
+          </strong>
+
+        </div>
+
+
+        <div class="signal">
+
+          <span>
+            PRIORITY
+          </span>
+
+          <strong id="reportRisk">
+            --
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="panel reveal">
+
+      <div class="panel-label">
+        EDITORIAL PRINCIPLE
+      </div>
+
+      <h3 class="panel-title">
+        Source → Cross-check → Confidence
+      </h3>
+
+      <p class="panel-text">
+        NEWSFORGE separates discovery from publication.
+        High-risk stories require stronger verification and
+        human editorial control before distribution.
+      </p>
+
+
+      <div class="badges">
+
+        <span class="badge badge-purple">
+          AI ANALYSIS
+        </span>
+
+        <span class="badge badge-yellow">
+          HUMAN REVIEW
+        </span>
+
+        <span class="badge badge-green">
+          TRACEABLE SOURCE
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     AUTOMATION PIPELINE
+======================================================= -->
+
+<section
+  class="section"
+  id="pipeline">
+
+  <div class="section-heading">
+
+    <div class="section-kicker">
+      03 / AUTOMATION
+    </div>
+
+    <h2 class="section-title">
+      NEWSFORGE Pipeline
+    </h2>
+
+    <p class="section-description">
+      The complete product architecture is represented here.
+      Connected modules are executed only when their backend
+      exists. Nothing is falsely marked as published.
+    </p>
+
+  </div>
+
+
+  <div class="pipeline">
+
+
+    <div
+      class="pipeline-step"
+      id="pipe1">
+
+      <div class="pipeline-number">
+        01
+      </div>
+
+      <div class="pipeline-copy">
+
+        <strong>
+          Discovery
+        </strong>
+
+        <span>
+          Find current stories and signals
+        </span>
+
+      </div>
+
+      <div class="pipeline-status">
+        LIVE
+      </div>
+
+    </div>
+
+
+    <div
+      class="pipeline-step"
+      id="pipe2">
+
+      <div class="pipeline-number">
+        02
+      </div>
+
+      <div class="pipeline-copy">
+
+        <strong>
+          AI Research
+        </strong>
+
+        <span>
+          Cross-check claims and gather evidence
+        </span>
+
+      </div>
+
+      <div class="pipeline-status">
+        LIVE
+      </div>
+
+    </div>
+
+
+    <div
+      class="pipeline-step"
+      id="pipe3">
+
+      <div class="pipeline-number">
+        03
+      </div>
+
+      <div class="pipeline-copy">
+
+        <strong>
+          Content Engine
+        </strong>
+
+        <span>
+          Create platform-specific content
+        </span>
+
+      </div>
+
+      <div class="pipeline-status">
+        NEXT
+      </div>
+
+    </div>
+
+
+    <div
+      class="pipeline-step"
+      id="pipe4">
+
+      <div class="pipeline-number">
+        04
+      </div>
+
+      <div class="pipeline-copy">
+
+        <strong>
+          Approval Queue
+        </strong>
+
+        <span>
+          Human editorial review
+        </span>
+
+      </div>
+
+      <div class="pipeline-status">
+        NEXT
+      </div>
+
+    </div>
+
+
+    <div
+      class="pipeline-step"
+      id="pipe5">
+
+      <div class="pipeline-number">
+        05
+      </div>
+
+      <div class="pipeline-copy">
+
+        <strong>
+          Publishing
+        </strong>
+
+        <span>
+          Controlled social distribution
+        </span>
+
+      </div>
+
+      <div class="pipeline-status">
+        NEXT
+      </div>
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      style="margin-top:5px"
+      onclick="runPipeline()">
+
+      RUN CONNECTED PIPELINE
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     CONTROL SURFACE
+======================================================= -->
+
+<section class="section">
+
+  <div class="section-heading">
+
+    <div class="section-kicker">
+      04 / CONTROL SURFACE
+    </div>
+
+    <h2 class="section-title">
+      System Modules
+    </h2>
+
+    <p class="section-description">
+      Reserved interfaces for the remaining backend modules.
+      These are deliberately not pretending to be connected yet.
+    </p>
+
+  </div>
+
+
+  <div class="module-grid">
+
+
+    <div class="module reveal">
+
+      <div class="module-icon">
+        ✦
+      </div>
+
+      <div class="module-head">
+
+        <div class="module-name">
+          CONTENT ENGINE
+        </div>
+
+        <div class="module-status">
+          API PENDING
+        </div>
+
+      </div>
+
+      <p>
+        Articles, captions, threads, scripts and platform variants.
+      </p>
+
+    </div>
+
+
+    <div class="module reveal">
+
+      <div class="module-icon">
+        ✓
+      </div>
+
+      <div class="module-head">
+
+        <div class="module-name">
+          APPROVAL QUEUE
+        </div>
+
+        <div class="module-status">
+          API PENDING
+        </div>
+
+      </div>
+
+      <p>
+        Human approval, rejection, revision and audit states.
+      </p>
+
+    </div>
+
+
+    <div class="module reveal">
+
+      <div class="module-icon">
+        ↑
+      </div>
+
+      <div class="module-head">
+
+        <div class="module-name">
+          PUBLISHING
+        </div>
+
+        <div class="module-status">
+          API PENDING
+        </div>
+
+      </div>
+
+      <p>
+        OAuth-connected publishing to supported platforms.
+      </p>
+
+    </div>
+
+
+    <div class="module reveal">
+
+      <div class="module-icon">
+        ◷
+      </div>
+
+      <div class="module-head">
+
+        <div class="module-name">
+          SCHEDULER
+        </div>
+
+        <div class="module-status">
+          API PENDING
+        </div>
+
+      </div>
+
+      <p>
+        Schedule approved content for future distribution.
+      </p>
+
+    </div>
+
+
+    <div class="module reveal">
+
+      <div class="module-icon">
+        ↗
+      </div>
+
+      <div class="module-head">
+
+        <div class="module-name">
+          ANALYTICS
+        </div>
+
+        <div class="module-status">
+          API PENDING
+        </div>
+
+      </div>
+
+      <p>
+        Engagement, reach, performance and publishing intelligence.
+      </p>
+
+    </div>
+
+
+    <div class="module reveal">
+
+      <div class="module-icon">
+        ◈
+      </div>
+
+      <div class="module-head">
+
+        <div class="module-name">
+          EDITORIAL MEMORY
+        </div>
+
+        <div class="module-status">
+          PLANNED
+        </div>
+
+      </div>
+
+      <p>
+        Brand voice, topic preferences and editorial history.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     ACTIVITY
+======================================================= -->
+
+<section class="section">
+
+  <div class="section-heading">
+
+    <div class="section-kicker">
+      05 / ACTIVITY
+    </div>
+
+    <h2 class="section-title">
+      System Activity
+    </h2>
+
+  </div>
+
+
+  <div
+    class="activity"
+    id="activity">
+
+
+    <div class="activity-item">
+
+      <span class="activity-dot"></span>
+
       <div>
-        <div class="kicker">04 / SYSTEM MODULES</div>
-        <h2 class="section-title">Control Surface</h2>
-        <p class="section-copy">
-          Backend endpoints are reserved now so the frontend does not need to be rebuilt
-          when publishing, scheduling and analytics are connected.
-        </p>
-      </div>
-    </div>
 
-    <div class="module-grid">
+        <strong>
+          NEWSFORGE interface initialized
+        </strong>
 
-      <div class="module reveal">
-        <div class="module-top">
-          <div class="module-name">CONTENT ENGINE</div>
-          <div class="module-status">API PENDING</div>
-        </div>
-        <p>Articles, captions, threads, video scripts and platform variants.</p>
-      </div>
+        <span>
+          Frontend control surface ready.
+        </span>
 
-      <div class="module reveal">
-        <div class="module-top">
-          <div class="module-name">APPROVAL QUEUE</div>
-          <div class="module-status">API PENDING</div>
-        </div>
-        <p>Human approval, rejection, revision and editorial audit states.</p>
-      </div>
-
-      <div class="module reveal">
-        <div class="module-top">
-          <div class="module-name">PUBLISHING</div>
-          <div class="module-status">API PENDING</div>
-        </div>
-        <p>OAuth-based publishing to supported social platforms.</p>
-      </div>
-
-      <div class="module reveal">
-        <div class="module-top">
-          <div class="module-name">SCHEDULER</div>
-          <div class="module-status">API PENDING</div>
-        </div>
-        <p>Queue approved content for scheduled distribution.</p>
-      </div>
-
-      <div class="module reveal">
-        <div class="module-top">
-          <div class="module-name">ANALYTICS</div>
-          <div class="module-status">API PENDING</div>
-        </div>
-        <p>Performance, engagement and publishing intelligence.</p>
-      </div>
-
-      <div class="module reveal">
-        <div class="module-top">
-          <div class="module-name">EDITORIAL MEMORY</div>
-          <div class="module-status">PLANNED</div>
-        </div>
-        <p>Brand voice, recurring topics, editorial preferences and history.</p>
       </div>
 
     </div>
 
-  </section>
 
+    <div class="activity-item">
 
-  <!-- ACTIVITY -->
-  <section class="section">
+      <span class="activity-dot"></span>
 
-    <div class="section-head">
       <div>
-        <div class="kicker">05 / ACTIVITY</div>
-        <h2 class="section-title">System Activity</h2>
-      </div>
-    </div>
 
-    <div class="activity" id="activity">
+        <strong>
+          Discovery engine waiting
+        </strong>
 
-      <div class="activity-item">
-        <span class="activity-dot"></span>
-        <div>
-          <strong>NEWSFORGE interface initialized</strong>
-          <span>Frontend control surface ready.</span>
-        </div>
-      </div>
+        <span>
+          No API request has been made yet.
+        </span>
 
-      <div class="activity-item">
-        <span class="activity-dot"></span>
-        <div>
-          <strong>Waiting for discovery</strong>
-          <span>No publishing action has been executed.</span>
-        </div>
       </div>
 
     </div>
 
-  </section>
 
+    <div class="activity-item">
 
-  <!-- ARCHITECTURE -->
-  <section class="section">
+      <span class="activity-dot"></span>
 
-    <div class="section-head">
       <div>
-        <div class="kicker">06 / ARCHITECTURE</div>
-        <h2 class="section-title">System Architecture</h2>
-      </div>
-    </div>
 
-    <div class="architecture">
+        <strong>
+          Publishing protection active
+        </strong>
 
-      <div class="arch-node">
-        <strong>NEWS API</strong>
-        <span>Current source discovery layer</span>
-      </div>
+        <span>
+          No social publication can occur from this frontend.
+        </span>
 
-      <div class="arch-node">
-        <strong>GEMINI</strong>
-        <span>Reasoning and research engine</span>
-      </div>
-
-      <div class="arch-node">
-        <strong>EDITORIAL</strong>
-        <span>Human verification and approval</span>
-      </div>
-
-      <div class="arch-node">
-        <strong>SOCIAL APIs</strong>
-        <span>Future controlled publishing layer</span>
       </div>
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <footer class="footer">
-    <strong>NEWSFORGE AI</strong> · News intelligence infrastructure.
-    Discovery and research are connected. Publishing remains controlled until
-    the required APIs and credentials are configured.
-  </footer>
+<!-- =======================================================
+     ARCHITECTURE
+======================================================= -->
+
+<section class="section">
+
+  <div class="section-heading">
+
+    <div class="section-kicker">
+      06 / ARCHITECTURE
+    </div>
+
+    <h2 class="section-title">
+      System Architecture
+    </h2>
+
+    <p class="section-description">
+      The frontend is intentionally structured around the final
+      NEWSFORGE backend architecture.
+    </p>
+
+  </div>
+
+
+  <div class="architecture">
+
+
+    <div class="arch-node">
+
+      <div class="arch-number">
+        LAYER 01
+      </div>
+
+      <strong>
+        NEWS SOURCES
+      </strong>
+
+      <span>
+        Current events, source metadata and article discovery.
+      </span>
+
+    </div>
+
+
+    <div class="arch-node">
+
+      <div class="arch-number">
+        LAYER 02
+      </div>
+
+      <strong>
+        AI RESEARCH
+      </strong>
+
+      <span>
+        Gemini analysis, web research and evidence extraction.
+      </span>
+
+    </div>
+
+
+    <div class="arch-node">
+
+      <div class="arch-number">
+        LAYER 03
+      </div>
+
+      <strong>
+        EDITORIAL CONTROL
+      </strong>
+
+      <span>
+        Verification, approval and risk management.
+      </span>
+
+    </div>
+
+
+    <div class="arch-node">
+
+      <div class="arch-number">
+        LAYER 04
+      </div>
+
+      <strong>
+        SOCIAL APIs
+      </strong>
+
+      <span>
+        Future authenticated distribution and scheduling.
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer class="footer">
+
+  <strong>
+    NEWSFORGE AI
+  </strong>
+
+  · News intelligence infrastructure.
+
+  Discovery and research are connected through backend
+  endpoints. Publishing remains controlled until the
+  required APIs, OAuth credentials and approval system
+  are configured.
+
+</footer>
+
+
+</div>
 
 </main>
 
 
-<!-- RESEARCH MODAL -->
+<!-- =======================================================
+     RESEARCH MODAL
+======================================================= -->
 
-<div class="modal" id="researchModal" onclick="handleResearchBackdrop(event)">
+<div
+  class="modal"
+  id="researchModal"
+  onclick="handleResearchBackdrop(event)">
+
 
   <div class="modal-card">
 
-    <div class="modal-head">
+
+    <div class="modal-header">
 
       <div>
-        <div class="modal-kicker">NEWSFORGE INTELLIGENCE WORKSPACE</div>
-        <div class="modal-title">STORY RESEARCH</div>
+
+        <div class="modal-kicker">
+          NEWSFORGE INTELLIGENCE WORKSPACE
+        </div>
+
+        <div class="modal-heading">
+          STORY RESEARCH
+        </div>
+
       </div>
 
-      <button class="close" onclick="closeResearch()">×</button>
+
+      <button
+        class="close-btn"
+        onclick="closeResearch()"
+        aria-label="Close research">
+
+        ×
+
+      </button>
 
     </div>
 
+
     <div class="modal-content">
+
 
       <div class="research-story">
 
-        <div class="news-meta">
-          <span id="researchSource">SOURCE</span>
-          <span id="researchPublished">DATE</span>
+        <div class="research-meta">
+
+          <span id="researchSource">
+            SOURCE
+          </span>
+
+          <span id="researchPublished">
+            DATE
+          </span>
+
         </div>
 
-        <h2 id="researchTitle">Select a story</h2>
 
-        <p id="researchDescription">
+        <h2
+          class="research-title"
+          id="researchTitle">
+
+          Select a story
+
+        </h2>
+
+
+        <p
+          class="research-description"
+          id="researchDescription">
+
           Research details will appear here.
+
         </p>
 
+
         <div class="badges">
-          <span class="badge purple" id="researchTrend">TREND --</span>
-          <span class="badge" id="researchCategory">CATEGORY --</span>
-          <span class="badge yellow" id="researchPriority">PRIORITY --</span>
+
+          <span
+            class="badge badge-purple"
+            id="researchTrend">
+
+            TREND --
+
+          </span>
+
+          <span
+            class="badge"
+            id="researchCategory">
+
+            CATEGORY --
+
+          </span>
+
+          <span
+            class="badge badge-yellow"
+            id="researchPriority">
+
+            PRIORITY --
+
+          </span>
+
         </div>
 
       </div>
 
 
-      <div class="research-state" id="researchState">
+      <div
+        class="research-state"
+        id="researchState">
 
-        <strong id="researchStateTitle">READY FOR RESEARCH</strong>
+        <strong
+          id="researchStateTitle">
 
-        <p id="researchStateText">
-          The research engine can cross-check this story using Gemini's
-          web-connected tools when configured.
+          READY FOR RESEARCH
+
+        </strong>
+
+        <p
+          id="researchStateText">
+
+          Run AI research to cross-check the selected story.
+
         </p>
 
       </div>
@@ -1774,73 +3702,167 @@ a:focus-visible{
 
       <div class="research-grid">
 
+
         <div class="research-box">
-          <div class="research-box-label">Verification Status</div>
-          <div class="research-box-value" id="researchStatus">
+
+          <div class="research-label">
+            VERIFICATION STATUS
+          </div>
+
+          <div
+            class="research-value"
+            id="researchStatus">
+
             Not researched
+
           </div>
+
         </div>
 
+
         <div class="research-box">
-          <div class="research-box-label">Confidence</div>
-          <div class="research-box-value" id="researchConfidence">
+
+          <div class="research-label">
+            CONFIDENCE
+          </div>
+
+          <div
+            class="research-value"
+            id="researchConfidence">
+
             --
+
           </div>
+
         </div>
 
+
         <div class="research-box">
-          <div class="research-box-label">Executive Summary</div>
-          <div class="research-box-value" id="researchSummary">
+
+          <div class="research-label">
+            EXECUTIVE SUMMARY
+          </div>
+
+          <div
+            class="research-value"
+            id="researchSummary">
+
             Research not started.
+
           </div>
+
         </div>
 
-        <div class="research-box">
-          <div class="research-box-label">Cross Check</div>
-          <div class="research-box-value" id="researchCrossCheck">
-            --
-          </div>
-        </div>
 
         <div class="research-box">
-          <div class="research-box-label">Key Claims</div>
-          <div class="research-box-value" id="researchClaims">
-            --
+
+          <div class="research-label">
+            CROSS CHECK
           </div>
+
+          <div
+            class="research-value"
+            id="researchCrossCheck">
+
+            --
+
+          </div>
+
         </div>
 
-        <div class="research-box">
-          <div class="research-box-label">Supporting Evidence</div>
-          <div class="research-box-value" id="researchEvidence">
-            --
-          </div>
-        </div>
 
         <div class="research-box">
-          <div class="research-box-label">Conflicting Evidence</div>
-          <div class="research-box-value" id="researchConflict">
-            --
+
+          <div class="research-label">
+            KEY CLAIMS
           </div>
+
+          <div
+            class="research-value"
+            id="researchClaims">
+
+            --
+
+          </div>
+
         </div>
 
-        <div class="research-box">
-          <div class="research-box-label">Risk Flags</div>
-          <div class="research-box-value" id="researchRisk">
-            --
-          </div>
-        </div>
 
         <div class="research-box">
-          <div class="research-box-label">Recommendation</div>
-          <div class="research-box-value" id="researchRecommendation">
-            --
+
+          <div class="research-label">
+            SUPPORTING EVIDENCE
           </div>
+
+          <div
+            class="research-value"
+            id="researchEvidence">
+
+            --
+
+          </div>
+
         </div>
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            CONFLICTING EVIDENCE
+          </div>
+
+          <div
+            class="research-value"
+            id="researchConflict">
+
+            --
+
+          </div>
+
+        </div>
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            RISK FLAGS
+          </div>
+
+          <div
+            class="research-value"
+            id="researchRisk">
+
+            --
+
+          </div>
+
+        </div>
+
+
+        <div class="research-box">
+
+          <div class="research-label">
+            RECOMMENDATION
+          </div>
+
+          <div
+            class="research-value"
+            id="researchRecommendation">
+
+            --
+
+          </div>
+
+        </div>
+
 
       </div>
 
 
-      <div class="sources" id="researchSources"></div>
+      <div
+        class="sources"
+        id="researchSources">
+      </div>
 
 
       <div class="modal-actions">
@@ -1851,14 +3873,19 @@ a:focus-visible{
           href="#"
           target="_blank"
           rel="noopener noreferrer">
+
           OPEN SOURCE
+
         </a>
+
 
         <button
           class="btn btn-primary"
           id="researchButton"
           onclick="startResearch()">
+
           RUN AI RESEARCH
+
         </button>
 
       </div>
@@ -1870,799 +3897,1579 @@ a:focus-visible{
 </div>
 
 
-<!-- TOAST -->
+<!-- =======================================================
+     TOAST
+======================================================= -->
 
-<div class="toast" id="toast">
-  <strong id="toastTitle">NEWSFORGE</strong>
-  <span id="toastText">System message.</span>
+<div
+  class="toast"
+  id="toast">
+
+  <strong id="toastTitle">
+    NEWSFORGE
+  </strong>
+
+  <span id="toastText">
+    System message.
+  </span>
+
 </div>
 
 
 <script>
+
+/* =========================================================
+   NEWSFORGE JAVASCRIPT CORE
+   ========================================================= */
+
 "use strict";
 
-/* ==========================================
-   NEWSFORGE FRONTEND CORE
-   ========================================== */
+
+/* =========================================================
+   STATE
+   ========================================================= */
 
 const state = {
+
   articles: [],
+
   category: "ALL",
+
   selectedArticle: null,
+
   discovering: false,
+
   researching: false,
+
   toastTimer: null
+
 };
 
 
-/* ==========================================
-   HELPERS
-   ========================================== */
+/* =========================================================
+   DOM HELPER
+   ========================================================= */
 
-const $ = id => document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
+
+
+/* =========================================================
+   MOBILE PROTECTION
+   =========================================================
+
+   Some mobile browsers / browser modes can report a very
+   large CSS viewport. When the device is clearly touch-first,
+   force the mobile layout.
+
+========================================================= */
+
+function detectMobile(){
+
+  const touchDevice =
+    navigator.maxTouchPoints > 0;
+
+  const narrowDevice =
+    window.innerWidth < 900;
+
+  const userAgent =
+    /Android|iPhone|iPad|iPod|Mobile/i
+      .test(navigator.userAgent);
+
+  if(
+    touchDevice &&
+    (narrowDevice || userAgent)
+  ){
+
+    document.body.classList.add(
+      "mobile-force"
+    );
+
+  }
+
+}
+
+detectMobile();
+
+window.addEventListener(
+  "resize",
+  detectMobile
+);
+
+
+/* =========================================================
+   HTML ESCAPE
+   ========================================================= */
 
 function escapeHTML(value){
+
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
+
+
+/* =========================================================
+   URL SAFETY
+   ========================================================= */
 
 function safeURL(value){
+
   try{
-    const url = new URL(value,window.location.origin);
+
+    const url =
+      new URL(
+        value,
+        window.location.origin
+      );
 
     if(
-      url.protocol === "http:" ||
-      url.protocol === "https:"
+      url.protocol === "https:" ||
+      url.protocol === "http:"
     ){
+
       return url.href;
+
     }
 
-    return "#";
-  }catch{
-    return "#";
-  }
+  }catch(error){}
+
+  return "#";
+
 }
 
-async function apiFetch(url,options={}){
-  const response = await fetch(url,{
-    ...options,
-    headers:{
-      "Content-Type":"application/json",
-      ...(options.headers || {})
-    }
-  });
+
+/* =========================================================
+   API FETCH
+   ========================================================= */
+
+async function apiFetch(
+  url,
+  options={}
+){
+
+  const response =
+    await fetch(
+      url,
+      {
+        ...options,
+
+        headers:{
+          ...(options.body
+            ? {"Content-Type":"application/json"}
+            : {}),
+          ...(options.headers || {})
+        }
+      }
+    );
+
 
   let data = null;
 
   try{
-    data = await response.json();
-  }catch{
+
+    data =
+      await response.json();
+
+  }catch(error){
+
     data = null;
+
   }
 
+
   if(!response.ok){
+
     const message =
       data?.error ||
       data?.message ||
       `Request failed with HTTP ${response.status}`;
 
-    const error = new Error(message);
-    error.status = response.status;
-    error.details = data?.details || data;
+
+    const error =
+      new Error(message);
+
+    error.status =
+      response.status;
+
+    error.details =
+      data?.details ||
+      data?.detail ||
+      null;
+
     throw error;
+
   }
 
+
   return data;
+
 }
 
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
 function formatDate(value){
-  if(!value) return "Unknown date";
 
-  const date = new Date(value);
-
-  if(Number.isNaN(date.getTime())){
+  if(!value){
     return "Unknown date";
   }
 
-  return date.toLocaleString("en-IN",{
-    day:"2-digit",
-    month:"short",
-    year:"numeric",
-    hour:"2-digit",
-    minute:"2-digit"
-  });
-}
+  const date =
+    new Date(value);
 
-function showToast(title,text){
-  const toast = $("toast");
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
 
-  $("toastTitle").textContent = title;
-  $("toastText").textContent = text;
+    return "Unknown date";
 
-  toast.classList.add("show");
+  }
 
-  clearTimeout(state.toastTimer);
+  return date.toLocaleString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
 
-  state.toastTimer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },3600);
-}
-
-function setStatus(text,loading=false){
-  const box = $("discoveryStatus");
-
-  box.innerHTML = loading
-    ? `<span class="spinner"></span><span>${escapeHTML(text)}</span>`
-    : `<span class="status-dot"></span><span>${escapeHTML(text)}</span>`;
 }
 
 
-/* ==========================================
-   SKELETONS
-   ========================================== */
+/* =========================================================
+   WAIT
+   ========================================================= */
 
-function renderSkeletons(count=4){
+function wait(ms){
 
-  const grid = $("newsGrid");
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
+  );
 
-  grid.innerHTML = Array.from(
-    {length:Math.min(count,6)},
-    ()=>`
-      <div class="skeleton">
-        <div class="skeleton-line" style="height:170px;margin:0;border-radius:0"></div>
-        <div class="skeleton-line" style="width:42%"></div>
-        <div class="skeleton-line" style="width:82%"></div>
-        <div class="skeleton-line" style="width:70%"></div>
-        <div class="skeleton-line" style="width:90%"></div>
-      </div>
-    `
-  ).join("");
 }
 
 
-/* ==========================================
-   METRICS
-   ========================================== */
+/* =========================================================
+   TOAST
+   ========================================================= */
 
-function animateNumber(element,target,suffix=""){
+function showToast(
+  title,
+  text
+){
 
-  const node = $(element);
+  const toast =
+    $("toast");
 
-  if(!node) return;
+  $("toastTitle")
+    .textContent =
+      title;
 
-  const start = Number(
-    String(node.textContent).replace(/\D/g,"")
-  ) || 0;
+  $("toastText")
+    .textContent =
+      text;
 
-  const duration = 500;
-  const startTime = performance.now();
+  toast.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    state.toastTimer
+  );
+
+  state.toastTimer =
+    setTimeout(
+      ()=>{
+        toast.classList.remove(
+          "show"
+        );
+      },
+      3800
+    );
+
+}
+
+
+/* =========================================================
+   DISCOVERY STATE
+   ========================================================= */
+
+function setDiscoveryState(
+  text,
+  loading=false
+){
+
+  const box =
+    $("discoveryState");
+
+  if(loading){
+
+    box.innerHTML = `
+      <span class="spinner"></span>
+      <span>${escapeHTML(text)}</span>
+    `;
+
+  }else{
+
+    box.innerHTML = `
+      <span class="state-dot"></span>
+      <span>${escapeHTML(text)}</span>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   NUMBER ANIMATION
+   ========================================================= */
+
+function animateNumber(
+  id,
+  target,
+  suffix=""
+){
+
+  const node =
+    $(id);
+
+  if(!node){
+    return;
+  }
+
+  const current =
+    Number(
+      node.textContent
+        .replace(/[^\d]/g,"")
+    ) || 0;
+
+
+  const duration = 650;
+
+  const startTime =
+    performance.now();
+
 
   function frame(now){
 
-    const progress = Math.min(
-      1,
-      (now-startTime)/duration
-    );
+    const progress =
+      Math.min(
+        1,
+        (now - startTime) /
+        duration
+      );
 
-    const eased = 1-Math.pow(1-progress,3);
 
-    const value = Math.round(
-      start+(target-start)*eased
-    );
+    const eased =
+      1 -
+      Math.pow(
+        1-progress,
+        3
+      );
 
-    node.textContent = value + suffix;
 
-    if(progress<1){
-      requestAnimationFrame(frame);
+    const value =
+      Math.round(
+        current +
+        (target-current) *
+        eased
+      );
+
+
+    node.textContent =
+      value + suffix;
+
+
+    if(progress < 1){
+
+      requestAnimationFrame(
+        frame
+      );
+
     }
+
   }
 
-  requestAnimationFrame(frame);
+
+  requestAnimationFrame(
+    frame
+  );
+
 }
 
-function updateMetrics(data){
 
-  const ai = data?.ai || {};
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+function updateMetrics(
+  data
+){
+
+  const ai =
+    data?.ai || {};
+
+
+  const total =
+    Number(
+      data?.totalResults ||
+      state.articles.length ||
+      0
+    );
+
+
+  const high =
+    Number(
+      ai.highPotential ||
+      0
+    );
+
+
+  const analyzed =
+    Number(
+      ai.analyzedStories ||
+      0
+    );
+
+
+  const verification =
+    analyzed > 0
+      ? Math.round(
+          (
+            Number(
+              ai.verificationRequired ||
+              0
+            ) /
+            analyzed
+          ) * 100
+        )
+      : 0;
+
+
+  const critical =
+    Number(
+      ai.criticalStories ||
+      0
+    );
+
 
   animateNumber(
     "metricStories",
-    Number(data?.totalResults || state.articles.length)
+    total
   );
 
   animateNumber(
     "metricHigh",
-    Number(ai.highPotential || 0)
+    high
   );
 
   animateNumber(
     "metricVerify",
-    Number(
-      ai.verificationRequired
-        ? Math.round(
-            (ai.verificationRequired /
-            Math.max(ai.analyzedStories || 1,1))*100
-          )
-        : 0
-    ),
+    verification,
     "%"
   );
 
   animateNumber(
     "metricCritical",
-    Number(ai.criticalStories || 0)
+    critical
   );
+
 }
 
 
-/* ==========================================
+/* =========================================================
    CATEGORY
-   ========================================== */
+   ========================================================= */
 
-function setCategory(category){
+function setCategory(
+  category
+){
 
-  state.category = category;
+  state.category =
+    category;
 
-  document.querySelectorAll(".filter")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.category === category
-      );
-    });
+
+  document
+    .querySelectorAll(
+      ".filter"
+    )
+    .forEach(
+      button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.category ===
+          category
+        );
+
+      }
+    );
+
 
   renderArticles();
+
 }
 
 
-/* ==========================================
-   CATEGORY MATCH
-   ========================================== */
+/* =========================================================
+   CATEGORY MATCHING
+   ========================================================= */
 
-function articleMatchesCategory(article){
+function articleMatchesCategory(
+  article
+){
 
-  if(state.category === "ALL"){
+  if(
+    state.category === "ALL"
+  ){
+
     return true;
+
   }
+
 
   const aiCategory =
-    String(article?.ai?.category || "")
-      .toUpperCase();
+    String(
+      article?.ai?.category ||
+      ""
+    ).toUpperCase();
 
-  const title =
-    String(article?.title || "")
-      .toUpperCase();
 
-  const description =
-    String(article?.description || "")
-      .toUpperCase();
+  const text =
+    (
+      String(
+        article?.title ||
+        ""
+      ) +
+      " " +
+      String(
+        article?.description ||
+        ""
+      )
+    ).toUpperCase();
 
-  const text = `${title} ${description}`;
 
-  if(state.category === "TECH"){
-    return (
-      aiCategory.includes("TECH") ||
-      /AI|TECH|SOFTWARE|CHIP|CYBER|STARTUP|GOOGLE|APPLE|MICROSOFT/.test(text)
-    );
+  switch(state.category){
+
+    case "TECH":
+
+      return (
+        aiCategory.includes("TECH") ||
+        /AI|TECH|SOFTWARE|CHIP|CYBER|STARTUP|GOOGLE|APPLE|MICROSOFT/
+          .test(text)
+      );
+
+
+    case "BUSINESS":
+
+      return (
+        aiCategory.includes("BUSINESS") ||
+        /MARKET|STOCK|ECONOMY|BANK|TRADE|BUSINESS|COMPANY|INVEST/
+          .test(text)
+      );
+
+
+    case "POLITICS":
+
+      return (
+        aiCategory.includes("POLIT") ||
+        /GOVERNMENT|MINISTER|ELECTION|POLITICAL|PARLIAMENT|PRESIDENT|PRIME MINISTER/
+          .test(text)
+      );
+
+
+    case "WORLD":
+
+      return (
+        aiCategory.includes("WORLD") ||
+        /RUSSIA|UKRAINE|CHINA|EUROPE|ISRAEL|IRAN|GLOBAL|UNITED STATES/
+          .test(text)
+      );
+
+
+    case "INDIA":
+
+      return (
+        aiCategory.includes("INDIA") ||
+        /INDIA|INDIAN|DELHI|MUMBAI|BENGALURU|BANGALORE|KOLKATA|HYDERABAD/
+          .test(text)
+      );
+
+
+    default:
+
+      return true;
+
   }
 
-  if(state.category === "BUSINESS"){
-    return (
-      aiCategory.includes("BUSINESS") ||
-      /MARKET|STOCK|ECONOMY|BANK|TRADE|BUSINESS|COMPANY|INVEST/.test(text)
-    );
-  }
-
-  if(state.category === "POLITICS"){
-    return (
-      aiCategory.includes("POLIT") ||
-      /GOVERNMENT|MINISTER|ELECTION|POLITICAL|PARLIAMENT|PRESIDENT|PM /.test(text)
-    );
-  }
-
-  if(state.category === "WORLD"){
-    return (
-      aiCategory.includes("WORLD") ||
-      /US |USA|RUSSIA|UKRAINE|CHINA|EUROPE|ISRAEL|IRAN|GLOBAL/.test(text)
-    );
-  }
-
-  if(state.category === "INDIA"){
-    return (
-      aiCategory.includes("INDIA") ||
-      /INDIA|INDIAN|DELHI|MUMBAI|BENGALURU|KOLKATA|HYDERABAD/.test(text)
-    );
-  }
-
-  return true;
 }
 
 
-/* ==========================================
+/* =========================================================
+   BADGE CLASS
+   ========================================================= */
+
+function priorityClass(
+  priority
+){
+
+  const value =
+    String(
+      priority ||
+      ""
+    ).toUpperCase();
+
+
+  if(
+    value === "CRITICAL"
+  ){
+
+    return "badge-red";
+
+  }
+
+
+  if(
+    value === "HIGH"
+  ){
+
+    return "badge-yellow";
+
+  }
+
+
+  return "badge-purple";
+
+}
+
+
+/* =========================================================
    NEWS CARD
-   ========================================== */
+   ========================================================= */
 
-function renderArticle(article,index){
+function renderArticle(
+  article,
+  index
+){
 
-  const ai = article.ai || {};
+  const ai =
+    article?.ai || {};
 
-  const trend = Number(ai.trendScore || 0);
+
+  const trend =
+    Number(
+      ai.trendScore ||
+      0
+    );
+
 
   const priority =
-    String(ai.priority || "normal").toUpperCase();
+    String(
+      ai.priority ||
+      "NORMAL"
+    ).toUpperCase();
+
 
   const category =
-    String(ai.category || "general").toUpperCase();
+    String(
+      ai.category ||
+      "GENERAL"
+    ).toUpperCase();
 
-  const review =
-    ai.humanVerificationRequired
-      ? `<span class="badge yellow">HUMAN REVIEW</span>`
-      : `<span class="badge green">LOWER RISK</span>`;
-
-  const priorityClass =
-    priority === "CRITICAL"
-      ? "red"
-      : priority === "HIGH"
-        ? "yellow"
-        : "purple";
-
-  const image =
-    safeURL(article.urlToImage || article.image);
 
   const source =
     escapeHTML(
-      article.source?.name ||
-      article.source ||
+      article?.source?.name ||
+      article?.source ||
       "Unknown source"
     );
 
+
   const title =
     escapeHTML(
-      article.title ||
+      article?.title ||
       "Untitled story"
     );
 
+
   const description =
     escapeHTML(
-      article.description ||
+      article?.description ||
       "No description available."
     );
+
 
   const reasoning =
     escapeHTML(
       ai.reasoning ||
-      "AI reasoning is unavailable for this story."
+      "AI reasoning unavailable."
     );
+
+
+  const image =
+    safeURL(
+      article?.urlToImage ||
+      article?.image
+    );
+
+
+  const articleURL =
+    safeURL(
+      article?.url
+    );
+
 
   const imageHTML =
     image !== "#"
-      ? `<img class="news-image"
-             src="${image}"
-             alt=""
-             loading="lazy"
-             decoding="async"
-             onerror="this.style.display='none'">`
-      : `<div class="news-image"></div>`;
+
+      ? `
+
+        <div class="news-image-wrap">
+
+          <img
+            class="news-image"
+            src="${image}"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            onerror="this.parentElement.style.display='none'">
+
+          <div class="image-overlay"></div>
+
+        </div>
+
+      `
+
+      : "";
+
+
+  const reviewBadge =
+    ai.humanVerificationRequired
+
+      ? `
+        <span class="badge badge-yellow">
+          HUMAN REVIEW
+        </span>
+      `
+
+      : `
+        <span class="badge badge-green">
+          LOWER RISK
+        </span>
+      `;
+
 
   return `
-    <article class="news-card reveal">
+
+    <article
+      class="news-card reveal">
+
 
       ${imageHTML}
 
+
       <div class="news-body">
 
-        <div class="news-meta">
-          <span>${source}</span>
-          <span>${formatDate(article.publishedAt)}</span>
+
+        <div class="news-top">
+
+          <span>
+            ${source}
+          </span>
+
+          <span>
+            ${escapeHTML(
+              formatDate(
+                article?.publishedAt
+              )
+            )}
+          </span>
+
         </div>
 
-        <h3 class="news-title">${title}</h3>
 
-        <p class="news-description">${description}</p>
+        <h3 class="news-title">
+
+          ${title}
+
+        </h3>
+
+
+        <p class="news-description">
+
+          ${description}
+
+        </p>
+
 
         <div class="badges">
 
-          <span class="badge purple">
+
+          <span
+            class="badge badge-purple">
+
             TREND ${trend}/100
+
           </span>
+
 
           <span class="badge">
+
             ${category}
+
           </span>
 
-          <span class="badge ${priorityClass}">
+
+          <span
+            class="badge ${priorityClass(priority)}">
+
             ${priority}
+
           </span>
 
-          ${review}
+
+          ${reviewBadge}
+
 
         </div>
 
-        <div class="ai-reason">
-          <strong>AI SIGNAL</strong><br>
+
+        <div class="ai-box">
+
+          <span class="ai-label">
+            AI SIGNAL
+          </span>
+
+          <br>
+
           ${reasoning}
+
         </div>
 
-        <div class="news-footer">
+
+        <div class="news-actions">
+
 
           <button
             class="small-btn"
             onclick="openResearch(${index})">
+
             RESEARCH STORY
+
           </button>
 
+
           ${
-            safeURL(article.url) !== "#"
+            articleURL !== "#"
+
               ? `
+
                 <a
                   class="small-btn"
-                  href="${safeURL(article.url)}"
+                  href="${articleURL}"
                   target="_blank"
                   rel="noopener noreferrer">
+
                   SOURCE
+
                 </a>
+
               `
+
               : ""
           }
 
+
         </div>
+
 
       </div>
 
     </article>
+
   `;
+
 }
 
 
-/* ==========================================
+/* =========================================================
    NEWS RENDER
-   ========================================== */
+   ========================================================= */
 
 function renderArticles(){
 
-  const grid = $("newsGrid");
+  const grid =
+    $("newsGrid");
 
-  const visible = state.articles
-    .filter(articleMatchesCategory)
-    .slice(0,20);
+
+  const visible =
+    state.articles
+      .filter(
+        articleMatchesCategory
+      )
+      .slice(0,20);
+
 
   if(!visible.length){
 
     grid.innerHTML = `
+
       <div class="panel">
-        <div class="panel-label">NO RESULTS</div>
-        <h3>No stories in this category</h3>
-        <p>
+
+        <div class="panel-label">
+          NO RESULTS
+        </div>
+
+        <h3 class="panel-title">
+          No stories in this category
+        </h3>
+
+        <p class="panel-text">
           Try another category or run discovery again.
         </p>
+
       </div>
+
     `;
 
     return;
+
   }
 
-  grid.innerHTML = visible
-    .map((article,index)=>renderArticle(article,index))
-    .join("");
+
+  grid.innerHTML =
+    visible
+      .map(
+        (article,index)=>
+          renderArticle(
+            article,
+            index
+          )
+      )
+      .join("");
+
 }
 
 
-/* ==========================================
+/* =========================================================
+   SKELETON
+   ========================================================= */
+
+function renderSkeletons(
+  count=6
+){
+
+  const grid =
+    $("newsGrid");
+
+
+  grid.innerHTML =
+    Array
+      .from(
+        {
+          length:Math.min(
+            count,
+            6
+          )
+        }
+      )
+      .map(
+        ()=>`
+
+          <div class="skeleton">
+
+            <div class="skeleton-image"></div>
+
+            <div
+              class="skeleton-line"
+              style="width:35%">
+            </div>
+
+            <div
+              class="skeleton-line"
+              style="width:85%">
+            </div>
+
+            <div
+              class="skeleton-line"
+              style="width:70%">
+            </div>
+
+            <div
+              class="skeleton-line"
+              style="width:90%">
+            </div>
+
+            <div
+              class="skeleton-line"
+              style="width:42%">
+            </div>
+
+          </div>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* =========================================================
    DISCOVERY
-   ========================================== */
+   ========================================================= */
 
 async function discoverNews(){
 
-  if(state.discovering){
+  if(
+    state.discovering
+  ){
+
     return;
+
   }
 
-  state.discovering = true;
+
+  state.discovering =
+    true;
+
 
   const button =
-    document.querySelector(".btn-primary");
+    $("discoverButton");
 
-  const originalText =
-    button?.textContent;
 
-  if(button){
-    button.disabled = true;
-    button.textContent = "DISCOVERING...";
-  }
+  button.disabled =
+    true;
 
-  setStatus(
+
+  button.textContent =
+    "DISCOVERING...";
+
+
+  setDiscoveryState(
     "Scanning current news sources and running AI analysis...",
     true
   );
 
-  renderSkeletons(4);
+
+  renderSkeletons(6);
+
 
   addActivity(
     "Discovery started",
-    "Request sent to the NEWSFORGE intelligence API."
+    "NEWSFORGE requested a fresh intelligence batch."
   );
+
 
   try{
 
-    const data = await apiFetch(
-      "/api/news?pageSize=20"
-    );
+    const data =
+      await apiFetch(
+        "/api/news?pageSize=20"
+      );
+
 
     state.articles =
-      Array.isArray(data?.articles)
+      Array.isArray(
+        data?.articles
+      )
         ? data.articles
         : [];
 
-    updateMetrics(data);
+
+    updateMetrics(
+      data
+    );
+
 
     renderArticles();
 
+
     updateSituationReport();
 
-    setStatus(
+
+    setDiscoveryState(
       `${state.articles.length} stories discovered and analyzed.`
     );
 
+
     addActivity(
       "Discovery completed",
-      `${state.articles.length} stories returned by the current backend.`
+      `${state.articles.length} stories returned by the backend.`
     );
+
 
     showToast(
       "DISCOVERY COMPLETE",
       `${state.articles.length} stories are ready for review.`
     );
 
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "NEWSFORGE discovery error:",
+      error
+    );
+
 
     $("newsGrid").innerHTML = `
+
       <div class="panel">
-        <div class="panel-label">DISCOVERY ERROR</div>
-        <h3>News discovery failed</h3>
-        <p>${escapeHTML(error.message)}</p>
+
+        <div class="panel-label">
+          DISCOVERY ERROR
+        </div>
+
+        <h3 class="panel-title">
+          News discovery failed
+        </h3>
+
+        <p class="panel-text">
+          ${escapeHTML(
+            error.message
+          )}
+        </p>
+
       </div>
+
     `;
 
-    setStatus(
+
+    setDiscoveryState(
       `Discovery failed: ${error.message}`
     );
+
 
     addActivity(
       "Discovery failed",
       error.message
     );
 
+
     showToast(
       "DISCOVERY FAILED",
       error.message
     );
 
+
   }finally{
 
-    state.discovering = false;
+    state.discovering =
+      false;
 
-    if(button){
-      button.disabled = false;
-      button.textContent =
-        originalText || "DISCOVER NEWS";
-    }
+
+    button.disabled =
+      false;
+
+
+    button.textContent =
+      "DISCOVER NEWS";
+
   }
+
 }
 
 
-/* ==========================================
+/* =========================================================
    SITUATION REPORT
-   ========================================== */
+   ========================================================= */
 
 function updateSituationReport(){
 
-  if(!state.articles.length){
+  if(
+    !state.articles.length
+  ){
+
     return;
+
   }
 
-  const sorted = [...state.articles]
-    .sort(
-      (a,b)=>
-        Number(b?.ai?.trendScore || 0) -
-        Number(a?.ai?.trendScore || 0)
-    );
 
-  const top = sorted[0];
+  const sorted =
+    [...state.articles]
+      .sort(
+        (a,b)=>
+          Number(
+            b?.ai?.trendScore ||
+            0
+          ) -
+          Number(
+            a?.ai?.trendScore ||
+            0
+          )
+      );
+
+
+  const top =
+    sorted[0];
+
 
   const score =
-    Number(top?.ai?.trendScore || 0);
+    Number(
+      top?.ai?.trendScore ||
+      0
+    );
 
-  const category =
-    top?.ai?.category ||
-    "General";
 
-  const priority =
-    top?.ai?.priority ||
-    "Normal";
+  $("reportHeadline")
+    .textContent =
+      top?.title ||
+      "Top signal detected";
 
-  $("reportHeadline").textContent =
-    top?.title ||
-    "Top signal detected";
 
-  $("reportText").textContent =
-    top?.ai?.reasoning ||
-    top?.description ||
-    "AI signal available.";
+  $("reportText")
+    .textContent =
+      top?.ai?.reasoning ||
+      top?.description ||
+      "AI signal available.";
 
-  $("reportScore").textContent =
-    `${score}/100`;
 
-  $("reportCategory").textContent =
-    String(category).toUpperCase();
+  $("reportScore")
+    .textContent =
+      `${score}/100`;
 
-  $("reportRisk").textContent =
-    String(priority).toUpperCase();
+
+  $("reportCategory")
+    .textContent =
+      String(
+        top?.ai?.category ||
+        "GENERAL"
+      ).toUpperCase();
+
+
+  $("reportRisk")
+    .textContent =
+      String(
+        top?.ai?.priority ||
+        "NORMAL"
+      ).toUpperCase();
+
 }
 
 
-/* ==========================================
-   RESEARCH
-   ========================================== */
+/* =========================================================
+   RESEARCH OPEN
+   ========================================================= */
 
-function openResearch(index){
+function openResearch(
+  index
+){
 
   const filtered =
     state.articles
-      .filter(articleMatchesCategory);
+      .filter(
+        articleMatchesCategory
+      );
 
-  const article = filtered[index];
+
+  const article =
+    filtered[index];
+
 
   if(!article){
+
     showToast(
       "RESEARCH",
-      "The selected story is no longer available."
+      "Selected story is unavailable."
     );
+
     return;
+
   }
 
-  state.selectedArticle = article;
 
-  $("researchTitle").textContent =
-    article.title || "Untitled story";
+  state.selectedArticle =
+    article;
 
-  $("researchDescription").textContent =
-    article.description ||
-    "No description available.";
 
-  $("researchSource").textContent =
-    article.source?.name ||
-    article.source ||
-    "SOURCE";
+  $("researchTitle")
+    .textContent =
+      article.title ||
+      "Untitled story";
 
-  $("researchPublished").textContent =
-    formatDate(article.publishedAt);
 
-  $("researchTrend").textContent =
-    `TREND ${article?.ai?.trendScore || 0}/100`;
+  $("researchDescription")
+    .textContent =
+      article.description ||
+      "No description available.";
 
-  $("researchCategory").textContent =
-    String(
-      article?.ai?.category ||
-      "GENERAL"
-    ).toUpperCase();
 
-  $("researchPriority").textContent =
-    `PRIORITY ${String(
-      article?.ai?.priority ||
-      "NORMAL"
-    ).toUpperCase()}`;
+  $("researchSource")
+    .textContent =
+      article?.source?.name ||
+      article?.source ||
+      "SOURCE";
 
-  const sourceURL =
-    safeURL(article.url);
 
-  $("originalSourceBtn").href =
-    sourceURL;
+  $("researchPublished")
+    .textContent =
+      formatDate(
+        article?.publishedAt
+      );
+
+
+  $("researchTrend")
+    .textContent =
+      `TREND ${
+        article?.ai?.trendScore ||
+        0
+      }/100`;
+
+
+  $("researchCategory")
+    .textContent =
+      String(
+        article?.ai?.category ||
+        "GENERAL"
+      ).toUpperCase();
+
+
+  $("researchPriority")
+    .textContent =
+      `PRIORITY ${
+        String(
+          article?.ai?.priority ||
+          "NORMAL"
+        ).toUpperCase()
+      }`;
+
+
+  $("originalSourceBtn")
+    .href =
+      safeURL(
+        article?.url
+      );
+
 
   resetResearch();
 
-  $("researchModal").classList.add("open");
 
-  document.body.style.overflow = "hidden";
+  $("researchModal")
+    .classList.add(
+      "open"
+    );
+
+
+  document.body.style.overflow =
+    "hidden";
+
 }
+
+
+/* =========================================================
+   CLOSE RESEARCH
+   ========================================================= */
 
 function closeResearch(){
 
-  $("researchModal").classList.remove("open");
+  $("researchModal")
+    .classList.remove(
+      "open"
+    );
 
-  document.body.style.overflow = "";
 
-  state.researching = false;
+  document.body.style.overflow =
+    "";
+
+
+  state.researching =
+    false;
+
 }
 
-function handleResearchBackdrop(event){
 
-  if(event.target === $("researchModal")){
+/* =========================================================
+   BACKDROP
+   ========================================================= */
+
+function handleResearchBackdrop(
+  event
+){
+
+  if(
+    event.target ===
+    $("researchModal")
+  ){
+
     closeResearch();
+
   }
+
 }
+
+
+/* =========================================================
+   RESET RESEARCH
+   ========================================================= */
 
 function resetResearch(){
 
-  $("researchStatus").textContent =
-    "Not researched";
+  $("researchStatus")
+    .textContent =
+      "Not researched";
 
-  $("researchConfidence").textContent =
-    "--";
 
-  $("researchSummary").textContent =
-    "Research not started.";
+  $("researchConfidence")
+    .textContent =
+      "--";
 
-  $("researchCrossCheck").textContent =
-    "--";
 
-  $("researchClaims").textContent =
-    "--";
+  $("researchSummary")
+    .textContent =
+      "Research not started.";
 
-  $("researchEvidence").textContent =
-    "--";
 
-  $("researchConflict").textContent =
-    "--";
+  $("researchCrossCheck")
+    .textContent =
+      "--";
 
-  $("researchRisk").textContent =
-    "--";
 
-  $("researchRecommendation").textContent =
-    "--";
+  $("researchClaims")
+    .textContent =
+      "--";
 
-  $("researchSources").innerHTML = "";
 
-  $("researchStateTitle").textContent =
-    "READY FOR RESEARCH";
+  $("researchEvidence")
+    .textContent =
+      "--";
 
-  $("researchStateText").textContent =
-    "Run AI research to cross-check this story.";
 
-  $("researchState").classList.remove("scanning");
+  $("researchConflict")
+    .textContent =
+      "--";
 
-  $("researchButton").disabled = false;
 
-  $("researchButton").textContent =
-    "RUN AI RESEARCH";
+  $("researchRisk")
+    .textContent =
+      "--";
+
+
+  $("researchRecommendation")
+    .textContent =
+      "--";
+
+
+  $("researchSources")
+    .innerHTML =
+      "";
+
+
+  $("researchStateTitle")
+    .textContent =
+      "READY FOR RESEARCH";
+
+
+  $("researchStateText")
+    .textContent =
+      "Run AI research to cross-check the selected story.";
+
+
+  $("researchState")
+    .classList.remove(
+      "scanning"
+    );
+
+
+  $("researchButton")
+    .disabled =
+      false;
+
+
+  $("researchButton")
+    .textContent =
+      "RUN AI RESEARCH";
+
 }
 
 
-/* ==========================================
-   RESEARCH VALUE FORMATTER
-   ========================================== */
+/* =========================================================
+   RESEARCH VALUE
+   ========================================================= */
 
-function formatResearchValue(value){
+function formatResearchValue(
+  value
+){
 
-  if(value === null || value === undefined){
+  if(
+    value === null ||
+    value === undefined
+  ){
+
     return "--";
+
   }
 
-  if(Array.isArray(value)){
-    return value.length
-      ? value.map((item,i)=>`${i+1}. ${formatResearchValue(item)}`).join("\n")
-      : "--";
-  }
 
-  if(typeof value === "object"){
-    return Object.entries(value)
-      .map(([key,val])=>{
-        return `${key}: ${formatResearchValue(val)}`;
-      })
+  if(
+    Array.isArray(value)
+  ){
+
+    if(!value.length){
+
+      return "--";
+
+    }
+
+
+    return value
+      .map(
+        (item,index)=>
+          `${index+1}. ${
+            formatResearchValue(
+              item
+            )
+          }`
+      )
       .join("\n");
+
   }
+
+
+  if(
+    typeof value ===
+    "object"
+  ){
+
+    return Object
+      .entries(value)
+      .map(
+        ([key,val])=>
+          `${key}: ${
+            formatResearchValue(
+              val
+            )
+          }`
+      )
+      .join("\n");
+
+  }
+
 
   return String(value);
+
 }
 
 
-/* ==========================================
-   RESEARCH REQUEST
-   ========================================== */
+/* =========================================================
+   RESEARCH
+   ========================================================= */
 
 async function startResearch(){
 
@@ -2670,101 +5477,150 @@ async function startResearch(){
     state.researching ||
     !state.selectedArticle
   ){
+
     return;
+
   }
 
-  state.researching = true;
+
+  state.researching =
+    true;
+
 
   const button =
     $("researchButton");
 
-  button.disabled = true;
+
+  button.disabled =
+    true;
+
+
   button.textContent =
     "RESEARCHING...";
 
-  $("researchStateTitle").textContent =
-    "RESEARCH ENGINE ACTIVE";
 
-  $("researchStateText").textContent =
-    "Gemini is analyzing the story and checking available web evidence.";
+  $("researchStateTitle")
+    .textContent =
+      "RESEARCH ENGINE ACTIVE";
 
-  $("researchState").classList.add("scanning");
 
-  $("researchStatus").textContent =
-    "Research in progress";
+  $("researchStateText")
+    .textContent =
+      "Gemini is analyzing the story and checking available web evidence.";
+
+
+  $("researchState")
+    .classList.add(
+      "scanning"
+    );
+
+
+  $("researchStatus")
+    .textContent =
+      "Research in progress";
+
 
   addActivity(
     "AI research started",
-    state.selectedArticle.title || "Selected story"
+    state.selectedArticle.title ||
+    "Selected story"
   );
+
 
   try{
 
-    const data = await apiFetch(
-      "/api/research",
-      {
-        method:"POST",
-        body:JSON.stringify({
-          article:state.selectedArticle
-        })
-      }
-    );
+    const data =
+      await apiFetch(
+        "/api/research",
+        {
+          method:"POST",
+
+          body:JSON.stringify({
+            article:
+              state.selectedArticle
+          })
+        }
+      );
+
 
     const result =
       data?.research ||
       data?.result ||
       data;
 
-    $("researchStateTitle").textContent =
-      "RESEARCH COMPLETE";
 
-    $("researchStateText").textContent =
-      "Research results returned by the backend.";
+    $("researchStateTitle")
+      .textContent =
+        "RESEARCH COMPLETE";
 
-    $("researchStatus").textContent =
-      result?.research_status ||
-      result?.status ||
-      "Completed";
 
-    $("researchConfidence").textContent =
-      result?.confidence !== undefined
-        ? `${result.confidence}/100`
-        : "--";
+    $("researchStateText")
+      .textContent =
+        "Research results returned by the backend.";
 
-    $("researchSummary").textContent =
-      formatResearchValue(
-        result?.executive_summary
-      );
 
-    $("researchCrossCheck").textContent =
-      formatResearchValue(
-        result?.cross_check_summary
-      );
+    $("researchStatus")
+      .textContent =
+        result?.research_status ||
+        result?.status ||
+        "Completed";
 
-    $("researchClaims").textContent =
-      formatResearchValue(
-        result?.key_claims
-      );
 
-    $("researchEvidence").textContent =
-      formatResearchValue(
-        result?.supporting_evidence
-      );
+    $("researchConfidence")
+      .textContent =
+        result?.confidence !== undefined
+          ? `${result.confidence}/100`
+          : "--";
 
-    $("researchConflict").textContent =
-      formatResearchValue(
-        result?.conflicting_evidence
-      );
 
-    $("researchRisk").textContent =
-      formatResearchValue(
-        result?.risk_flags
-      );
+    $("researchSummary")
+      .textContent =
+        formatResearchValue(
+          result?.executive_summary
+        );
 
-    $("researchRecommendation").textContent =
-      formatResearchValue(
-        result?.recommendation
-      );
+
+    $("researchCrossCheck")
+      .textContent =
+        formatResearchValue(
+          result?.cross_check_summary
+        );
+
+
+    $("researchClaims")
+      .textContent =
+        formatResearchValue(
+          result?.key_claims
+        );
+
+
+    $("researchEvidence")
+      .textContent =
+        formatResearchValue(
+          result?.supporting_evidence
+        );
+
+
+    $("researchConflict")
+      .textContent =
+        formatResearchValue(
+          result?.conflicting_evidence
+        );
+
+
+    $("researchRisk")
+      .textContent =
+        formatResearchValue(
+          result?.risk_flags
+        );
+
+
+    $("researchRecommendation")
+      .textContent =
+        formatResearchValue(
+          result?.recommendation
+        );
+
 
     renderSources(
       result?.sources ||
@@ -2772,142 +5628,203 @@ async function startResearch(){
       []
     );
 
-    $("researchState").classList.remove(
-      "scanning"
-    );
+
+    $("researchState")
+      .classList.remove(
+        "scanning"
+      );
+
 
     addActivity(
       "AI research completed",
       "Research results are ready for editorial review."
     );
 
+
     showToast(
       "RESEARCH COMPLETE",
       "Evidence and confidence analysis are available."
     );
 
+
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "NEWSFORGE research error:",
+      error
+    );
 
-    $("researchStateTitle").textContent =
-      "RESEARCH FAILED";
 
-    $("researchStateText").textContent =
-      error.message ||
-      "Gemini research request failed.";
+    $("researchStateTitle")
+      .textContent =
+        "RESEARCH FAILED";
 
-    $("researchStatus").textContent =
-      "Research failed";
 
-    $("researchSummary").textContent =
-      error.message ||
-      "The research backend returned an error.";
+    $("researchStateText")
+      .textContent =
+        error.message ||
+        "Gemini research request failed.";
 
-    $("researchCrossCheck").textContent =
-      formatResearchValue(
-        error.details
+
+    $("researchStatus")
+      .textContent =
+        "Research failed";
+
+
+    $("researchSummary")
+      .textContent =
+        error.message ||
+        "The research backend returned an error.";
+
+
+    $("researchCrossCheck")
+      .textContent =
+        formatResearchValue(
+          error.details
+        );
+
+
+    $("researchState")
+      .classList.remove(
+        "scanning"
       );
 
-    $("researchState").classList.remove(
-      "scanning"
-    );
 
     addActivity(
       "AI research failed",
       error.message
     );
 
+
     showToast(
       "RESEARCH FAILED",
       error.message
     );
 
+
   }finally{
 
-    state.researching = false;
+    state.researching =
+      false;
 
-    button.disabled = false;
+
+    button.disabled =
+      false;
+
 
     button.textContent =
       "RUN AI RESEARCH";
+
   }
+
 }
 
 
-/* ==========================================
+/* =========================================================
    SOURCES
-   ========================================== */
+   ========================================================= */
 
-function renderSources(sources){
+function renderSources(
+  sources
+){
 
   const box =
     $("researchSources");
 
-  if(!Array.isArray(sources) || !sources.length){
+
+  if(
+    !Array.isArray(sources) ||
+    !sources.length
+  ){
 
     box.innerHTML = `
+
       <div class="research-box">
-        <div class="research-box-label">
-          Research Sources
+
+        <div class="research-label">
+          RESEARCH SOURCES
         </div>
-        <div class="research-box-value">
+
+        <div class="research-value">
           No additional source list returned.
         </div>
+
       </div>
+
     `;
 
     return;
+
   }
 
-  box.innerHTML = sources
-    .slice(0,10)
-    .map(source=>{
 
-      const title =
-        escapeHTML(
-          source.title ||
-          source.name ||
-          source.url ||
-          "Research source"
-        );
+  box.innerHTML =
+    sources
+      .slice(0,10)
+      .map(
+        source => {
 
-      const url =
-        safeURL(
-          source.url ||
-          source.link
-        );
+          const title =
+            escapeHTML(
+              source?.title ||
+              source?.name ||
+              source?.url ||
+              "Research source"
+            );
 
-      return `
-        <div class="source">
-          <span>${title}</span>
-          ${
-            url !== "#"
-              ? `
-                <a
-                  href="${url}"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  OPEN
-                </a>
-              `
-              : ""
-          }
-        </div>
-      `;
 
-    })
-    .join("");
+          const url =
+            safeURL(
+              source?.url ||
+              source?.link
+            );
+
+
+          return `
+
+            <div class="source">
+
+              <span>
+                ${title}
+              </span>
+
+              ${
+                url !== "#"
+
+                  ? `
+
+                    <a
+                      href="${url}"
+                      target="_blank"
+                      rel="noopener noreferrer">
+
+                      OPEN
+
+                    </a>
+
+                  `
+
+                  : ""
+              }
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
 }
 
 
-/* ==========================================
-   PIPELINE VISUALIZATION
-   ========================================== */
+/* =========================================================
+   PIPELINE
+   ========================================================= */
 
 async function runPipeline(){
 
-  const ids = [
+  const steps = [
     "pipe1",
     "pipe2",
     "pipe3",
@@ -2915,158 +5832,273 @@ async function runPipeline(){
     "pipe5"
   ];
 
-  ids.forEach(id=>{
-    $(id).classList.remove("active");
-  });
 
-  for(let i=0;i<ids.length;i++){
+  steps.forEach(
+    id =>
+      $(id)
+        .classList
+        .remove("active")
+  );
 
-    $(ids[i]).classList.add("active");
 
-    await wait(180);
+  if(
+    !state.articles.length
+  ){
+
+    await discoverNews();
+
+  }
+
+
+  for(
+    let i=0;
+    i<steps.length;
+    i++
+  ){
+
+    $(steps[i])
+      .classList
+      .add("active");
+
 
     if(i === 0){
 
-      if(!state.articles.length){
-        await discoverNews();
-      }
-
-    }else if(i === 1){
-
-      if(state.articles.length){
-        showToast(
-          "PIPELINE",
-          "Research module is available from each story."
-        );
-      }
-
-    }else{
-
-      showToast(
-        "MODULE NOT CONNECTED",
-        "This backend module is reserved for the next implementation phase."
+      addActivity(
+        "Discovery module",
+        "Current news discovery is connected."
       );
 
     }
 
+
+    if(i === 1){
+
+      addActivity(
+        "Research module",
+        "AI research is available from individual stories."
+      );
+
+    }
+
+
+    if(i >= 2){
+
+      addActivity(
+        "Backend module pending",
+        "This stage is reserved for the next backend implementation."
+      );
+
+
+      showToast(
+        "MODULE NOT CONNECTED",
+        "This pipeline stage will become live after its API is implemented."
+      );
+
+    }
+
+
+    await wait(350);
+
   }
 
-  setTimeout(()=>{
-    ids.forEach(id=>{
-      $(id).classList.remove("active");
-    });
-  },600);
+
+  await wait(250);
+
+
+  steps.forEach(
+    id =>
+      $(id)
+        .classList
+        .remove("active")
+  );
+
 }
 
-function wait(ms){
-  return new Promise(resolve=>setTimeout(resolve,ms));
-}
 
-
-/* ==========================================
+/* =========================================================
    ACTIVITY
-   ========================================== */
+   ========================================================= */
 
-function addActivity(title,text){
+function addActivity(
+  title,
+  text
+){
 
   const container =
     $("activity");
 
+
   const item =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   item.className =
     "activity-item reveal";
 
+
   item.innerHTML = `
+
     <span class="activity-dot"></span>
+
     <div>
-      <strong>${escapeHTML(title)}</strong>
-      <span>${escapeHTML(text)}</span>
+
+      <strong>
+        ${escapeHTML(title)}
+      </strong>
+
+      <span>
+        ${escapeHTML(text)}
+      </span>
+
     </div>
+
   `;
 
-  container.prepend(item);
 
-  while(container.children.length > 8){
+  container.prepend(
+    item
+  );
+
+
+  while(
+    container.children.length >
+    8
+  ){
+
     container.removeChild(
       container.lastElementChild
     );
+
   }
+
 }
 
 
-/* ==========================================
+/* =========================================================
+   SCROLL
+   ========================================================= */
+
+function scrollToSection(
+  id
+){
+
+  const target =
+    $(id);
+
+
+  if(!target){
+    return;
+  }
+
+
+  target.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+}
+
+
+/* =========================================================
    KEYBOARD
-   ========================================== */
+   ========================================================= */
 
 document.addEventListener(
   "keydown",
-  event=>{
+  event => {
 
     if(
       event.key === "Escape" &&
-      $("researchModal").classList.contains("open")
+      $("researchModal")
+        .classList
+        .contains("open")
     ){
+
       closeResearch();
+
     }
 
   }
 );
 
 
-/* ==========================================
-   INITIAL STATE
-   ========================================== */
+/* =========================================================
+   FUTURE API CONTRACT
+   ========================================================= */
+
+window.NEWSFORGE_API = {
+
+  news:
+    "/api/news",
+
+  research:
+    "/api/research",
+
+  content:
+    "/api/content",
+
+  approval:
+    "/api/approval",
+
+  publish:
+    "/api/publish",
+
+  schedule:
+    "/api/schedule",
+
+  analytics:
+    "/api/analytics"
+
+};
+
+
+/* =========================================================
+   PUBLIC FUNCTIONS
+   ========================================================= */
+
+window.discoverNews =
+  discoverNews;
+
+window.setCategory =
+  setCategory;
+
+window.openResearch =
+  openResearch;
+
+window.closeResearch =
+  closeResearch;
+
+window.startResearch =
+  startResearch;
+
+window.runPipeline =
+  runPipeline;
+
+window.handleResearchBackdrop =
+  handleResearchBackdrop;
+
+window.scrollToSection =
+  scrollToSection;
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
   ()=>{
 
-    setStatus(
-      "Ready. Run discovery to load current intelligence."
+    detectMobile();
+
+    setDiscoveryState(
+      "Ready. Start discovery to load current intelligence."
     );
-
-    /*
-      We intentionally DO NOT auto-fetch here.
-
-      This prevents:
-      - unnecessary API calls
-      - Gemini usage on every page refresh
-      - rate-limit problems
-      - mobile browser lag
-      - repeated Vercel function execution
-
-      Discovery is user-triggered.
-    */
 
   }
 );
-
-
-/* ==========================================
-   FUTURE API HOOKS
-   ========================================== */
-
-window.NEWSFORGE_API = {
-
-  news:"/api/news",
-  research:"/api/research",
-  content:"/api/content",
-  approval:"/api/approval",
-  publish:"/api/publish",
-  schedule:"/api/schedule",
-  analytics:"/api/analytics"
-
-};
-
-window.discoverNews = discoverNews;
-window.setCategory = setCategory;
-window.openResearch = openResearch;
-window.closeResearch = closeResearch;
-window.startResearch = startResearch;
-window.runPipeline = runPipeline;
-window.handleResearchBackdrop = handleResearchBackdrop;
 
 </script>
 
