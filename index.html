@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#07090d">
-<meta name="description" content="NEWSFORGE AI - AI-powered news discovery, intelligence and content automation platform.">
+<meta name="description" content="NEWSFORGE AI - AI-powered news discovery, intelligence, research and verification platform.">
 
 <title>NEWSFORGE AI — News Intelligence Engine</title>
 
@@ -25,6 +25,7 @@
   --green:#22c55e;
   --yellow:#f59e0b;
   --red:#ef4444;
+  --orange:#f97316;
   --blue:#38bdf8;
   --cyan:#22d3ee;
   --shadow:0 20px 60px rgba(0,0,0,.35);
@@ -52,8 +53,13 @@ body{
   overflow-x:hidden;
 }
 
+body.modal-open{
+  overflow:hidden;
+}
+
 button{
   font:inherit;
+  cursor:pointer;
 }
 
 button,
@@ -61,8 +67,8 @@ a{
   -webkit-tap-highlight-color:transparent;
 }
 
-button{
-  cursor:pointer;
+button:disabled{
+  cursor:not-allowed;
 }
 
 a{
@@ -70,9 +76,9 @@ a{
   text-decoration:none;
 }
 
-/* =========================
+/* ============================================================
    BACKGROUND
-========================= */
+============================================================ */
 
 body::before{
   content:"";
@@ -110,9 +116,9 @@ body::before{
   top:35%;
 }
 
-/* =========================
+/* ============================================================
    HEADER
-========================= */
+============================================================ */
 
 header{
   position:sticky;
@@ -144,8 +150,7 @@ header{
   width:38px;
   height:38px;
   border-radius:12px;
-  background:
-    linear-gradient(135deg,#8b5cf6,#4f46e5);
+  background:linear-gradient(135deg,#8b5cf6,#4f46e5);
   display:grid;
   place-items:center;
   font-size:17px;
@@ -198,9 +203,35 @@ header{
   font-size:10px;
 }
 
-/* =========================
+.loading-bar{
+  height:2px;
+  width:100%;
+  background:rgba(255,255,255,.04);
+  overflow:hidden;
+  display:none;
+}
+
+.loading-bar.show{
+  display:block;
+}
+
+.loading-bar::after{
+  content:"";
+  display:block;
+  width:30%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,#8b5cf6,transparent);
+  animation:loading 1s infinite linear;
+}
+
+@keyframes loading{
+  from{transform:translateX(-150%)}
+  to{transform:translateX(450%)}
+}
+
+/* ============================================================
    LAYOUT
-========================= */
+============================================================ */
 
 .container{
   max-width:1400px;
@@ -212,9 +243,9 @@ main{
   padding-bottom:100px;
 }
 
-/* =========================
+/* ============================================================
    HERO
-========================= */
+============================================================ */
 
 .hero{
   min-height:620px;
@@ -403,9 +434,9 @@ main{
   100%{transform:translateY(-15px);opacity:.2}
 }
 
-/* =========================
+/* ============================================================
    METRICS
-========================= */
+============================================================ */
 
 .metrics{
   display:grid;
@@ -441,9 +472,9 @@ main{
   font-size:10px;
 }
 
-/* =========================
+/* ============================================================
    SECTION
-========================= */
+============================================================ */
 
 .section{
   margin-top:75px;
@@ -477,9 +508,9 @@ main{
   max-width:550px;
 }
 
-/* =========================
+/* ============================================================
    ENGINE BAR
-========================= */
+============================================================ */
 
 .engine{
   border:1px solid var(--line);
@@ -548,9 +579,9 @@ main{
   background:var(--green);
 }
 
-/* =========================
+/* ============================================================
    FILTERS
-========================= */
+============================================================ */
 
 .filters{
   display:flex;
@@ -577,9 +608,9 @@ main{
   background:rgba(139,92,246,.09);
 }
 
-/* =========================
-   NEWS
-========================= */
+/* ============================================================
+   NEWS GRID
+============================================================ */
 
 .news-grid{
   display:grid;
@@ -705,6 +736,12 @@ main{
   border-top:1px solid var(--line);
 }
 
+.news-footer-left{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
 .open-source{
   font-size:9px;
   color:#c4b5fd;
@@ -712,6 +749,24 @@ main{
 
 .open-source:hover{
   text-decoration:underline;
+}
+
+.research-btn{
+  border:1px solid rgba(139,92,246,.3);
+  background:rgba(139,92,246,.08);
+  color:#c4b5fd;
+  border-radius:9px;
+  padding:8px 10px;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.05em;
+  transition:.2s ease;
+}
+
+.research-btn:hover{
+  background:rgba(139,92,246,.16);
+  border-color:rgba(139,92,246,.55);
+  transform:translateY(-1px);
 }
 
 .empty{
@@ -745,9 +800,9 @@ main{
   margin-top:7px;
 }
 
-/* =========================
+/* ============================================================
    AI SUMMARY
-========================= */
+============================================================ */
 
 .ai-summary{
   display:grid;
@@ -805,9 +860,9 @@ main{
   font-weight:800;
 }
 
-/* =========================
+/* ============================================================
    PIPELINE
-========================= */
+============================================================ */
 
 .pipeline{
   display:grid;
@@ -876,9 +931,9 @@ main{
   color:var(--green);
 }
 
-/* =========================
+/* ============================================================
    ACTIVITY
-========================= */
+============================================================ */
 
 .activity{
   border:1px solid var(--line);
@@ -920,9 +975,9 @@ main{
   color:#d8dee8;
 }
 
-/* =========================
+/* ============================================================
    FOOTER
-========================= */
+============================================================ */
 
 footer{
   border-top:1px solid var(--line);
@@ -940,15 +995,15 @@ footer{
   gap:20px;
 }
 
-/* =========================
+/* ============================================================
    TOAST
-========================= */
+============================================================ */
 
 .toast{
   position:fixed;
   right:20px;
   bottom:20px;
-  z-index:999;
+  z-index:9999;
   max-width:360px;
   padding:14px 16px;
   border:1px solid var(--line2);
@@ -978,41 +1033,395 @@ footer{
   line-height:1.5;
 }
 
-/* =========================
-   LOADING
-========================= */
+/* ============================================================
+   RESEARCH MODAL
+============================================================ */
 
-.loading-bar{
-  height:2px;
-  width:100%;
-  background:rgba(255,255,255,.04);
-  overflow:hidden;
+.research-overlay{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:rgba(2,4,8,.78);
+  backdrop-filter:blur(18px);
   display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  opacity:0;
+  transition:opacity .25s ease;
 }
 
-.loading-bar.show{
-  display:block;
+.research-overlay.open{
+  display:flex;
+  opacity:1;
 }
 
-.loading-bar::after{
+.research-modal{
+  width:min(1100px,100%);
+  max-height:min(900px,92vh);
+  overflow:auto;
+  border:1px solid var(--line2);
+  border-radius:26px;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018)),
+    #0a0e14;
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.55),
+    0 0 80px rgba(99,102,241,.08);
+  transform:translateY(20px) scale(.985);
+  transition:.25s ease;
+}
+
+.research-overlay.open .research-modal{
+  transform:translateY(0) scale(1);
+}
+
+.research-header{
+  position:sticky;
+  top:0;
+  z-index:5;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  background:rgba(10,14,20,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+}
+
+.research-brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.research-brand-icon{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:#c4b5fd;
+  background:rgba(139,92,246,.1);
+  border:1px solid rgba(139,92,246,.25);
+  font-weight:900;
+}
+
+.research-brand-title{
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.1em;
+}
+
+.research-brand-sub{
+  margin-top:3px;
+  font-size:8px;
+  color:var(--muted2);
+  letter-spacing:.1em;
+}
+
+.close-research{
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+  color:var(--muted);
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  transition:.2s ease;
+}
+
+.close-research:hover{
+  color:#fff;
+  border-color:var(--line2);
+  background:rgba(255,255,255,.07);
+}
+
+.research-body{
+  padding:22px;
+}
+
+.research-story{
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:rgba(255,255,255,.025);
+  padding:22px;
+}
+
+.research-kicker{
+  color:#a78bfa;
+  font-size:8px;
+  font-weight:850;
+  letter-spacing:.16em;
+}
+
+.research-title{
+  margin-top:11px;
+  font-size:clamp(22px,4vw,34px);
+  line-height:1.18;
+  letter-spacing:-.035em;
+}
+
+.research-description{
+  margin-top:13px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.75;
+}
+
+.research-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:17px;
+}
+
+.research-meta-item{
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:rgba(255,255,255,.025);
+  padding:8px 10px;
+  font-size:8px;
+  color:var(--muted);
+}
+
+.research-meta-item strong{
+  color:#d9deea;
+}
+
+.research-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:14px;
+}
+
+.research-card{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:19px;
+  background:rgba(255,255,255,.02);
+}
+
+.research-card.full{
+  grid-column:1/-1;
+}
+
+.research-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.research-card-label{
+  font-size:9px;
+  font-weight:850;
+  letter-spacing:.12em;
+  color:#a78bfa;
+}
+
+.research-card-status{
+  font-size:8px;
+  color:var(--muted2);
+  letter-spacing:.08em;
+}
+
+.research-card h4{
+  margin-top:13px;
+  font-size:15px;
+}
+
+.research-card p{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.7;
+  margin-top:8px;
+}
+
+.status-panel{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:20px;
+}
+
+.status-big{
+  font-size:24px;
+  font-weight:850;
+  letter-spacing:-.03em;
+}
+
+.status-small{
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.6;
+  margin-top:5px;
+}
+
+.confidence-ring{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  position:relative;
+  background:
+    radial-gradient(circle,#0c1118 58%,transparent 60%),
+    conic-gradient(#8b5cf6 0deg,#6366f1 220deg,rgba(255,255,255,.08) 220deg);
+}
+
+.confidence-ring::after{
   content:"";
-  display:block;
-  width:30%;
-  height:100%;
-  background:linear-gradient(90deg,transparent,#8b5cf6,transparent);
-  animation:loading 1s infinite linear;
+  position:absolute;
+  inset:6px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.05);
 }
 
-@keyframes loading{
-  from{transform:translateX(-150%)}
-  to{transform:translateX(450%)}
+.confidence-value{
+  position:relative;
+  z-index:2;
+  font-size:17px;
+  font-weight:850;
 }
 
-/* =========================
+.claim-list{
+  display:grid;
+  gap:8px;
+  margin-top:14px;
+}
+
+.claim{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(0,0,0,.14);
+}
+
+.claim-icon{
+  width:20px;
+  height:20px;
+  border-radius:7px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  background:rgba(245,158,11,.08);
+  border:1px solid rgba(245,158,11,.18);
+  color:#fbbf24;
+  font-size:9px;
+  font-weight:900;
+}
+
+.claim-text{
+  color:#b5becb;
+  font-size:9px;
+  line-height:1.6;
+}
+
+.source-preview{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(0,0,0,.14);
+  margin-top:13px;
+}
+
+.source-preview-info{
+  min-width:0;
+}
+
+.source-preview-name{
+  font-size:10px;
+  font-weight:800;
+}
+
+.source-preview-url{
+  color:var(--muted2);
+  font-size:8px;
+  margin-top:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.source-preview a{
+  flex-shrink:0;
+  color:#c4b5fd;
+  font-size:8px;
+  font-weight:800;
+}
+
+.research-note{
+  margin-top:14px;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid rgba(245,158,11,.15);
+  background:rgba(245,158,11,.045);
+  color:#aeb7c5;
+  font-size:9px;
+  line-height:1.65;
+}
+
+.research-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:18px;
+}
+
+.research-actions .btn{
+  padding:11px 14px;
+  font-size:9px;
+}
+
+.research-placeholder{
+  min-height:120px;
+  border:1px dashed var(--line2);
+  border-radius:14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+
+.research-placeholder-icon{
+  font-size:22px;
+  color:#a78bfa;
+}
+
+.research-placeholder-title{
+  margin-top:8px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.research-placeholder-text{
+  margin-top:5px;
+  color:var(--muted2);
+  font-size:8px;
+  line-height:1.6;
+  max-width:430px;
+}
+
+/* ============================================================
    RESPONSIVE
-========================= */
+============================================================ */
 
 @media(max-width:1050px){
+
   .hero{
     grid-template-columns:1fr;
   }
@@ -1040,6 +1449,7 @@ footer{
 }
 
 @media(max-width:760px){
+
   .container{
     padding:0 15px;
   }
@@ -1145,9 +1555,58 @@ footer{
     flex-direction:column;
     padding:0 15px;
   }
+
+  .research-overlay{
+    padding:0;
+    align-items:flex-end;
+  }
+
+  .research-modal{
+    max-height:94vh;
+    border-radius:24px 24px 0 0;
+    width:100%;
+  }
+
+  .research-header{
+    padding:15px;
+  }
+
+  .research-body{
+    padding:15px;
+  }
+
+  .research-story{
+    padding:17px;
+  }
+
+  .research-grid{
+    grid-template-columns:1fr;
+  }
+
+  .research-card.full{
+    grid-column:auto;
+  }
+
+  .status-panel{
+    grid-template-columns:1fr;
+  }
+
+  .confidence-ring{
+    width:75px;
+    height:75px;
+  }
+
+  .research-actions{
+    flex-direction:column;
+  }
+
+  .research-actions .btn{
+    width:100%;
+  }
 }
 
 @media(max-width:430px){
+
   .hero h1{
     font-size:45px;
   }
@@ -1164,6 +1623,15 @@ footer{
   .metrics{
     grid-template-columns:1fr 1fr;
   }
+
+  .news-footer{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .research-title{
+    font-size:22px;
+  }
 }
 </style>
 </head>
@@ -1174,41 +1642,55 @@ footer{
 <div class="orb two"></div>
 
 <header>
+
   <div class="nav">
+
     <div class="brand">
+
       <div class="brand-mark">N</div>
+
       <div class="brand-text">
         <strong>NEWSFORGE</strong>
         <span>AI NEWS INTELLIGENCE</span>
       </div>
+
     </div>
 
     <div class="nav-right">
+
       <div class="status">
         <span class="status-dot"></span>
         ENGINE ONLINE
       </div>
-      <div class="version">V1.0</div>
+
+      <div class="version">
+        V1.1
+      </div>
+
     </div>
+
   </div>
 
   <div id="loadingBar" class="loading-bar"></div>
+
 </header>
+
 
 <main>
 
 <div class="container">
 
-<!-- =========================
+<!-- ========================================================
      HERO
-========================= -->
+========================================================= -->
 
 <section class="hero">
 
   <div>
+
     <div class="eyebrow">
       <i></i>
-      AI-POWERED NEWS AUTOMATION
+      AI-POWERED NEWS INTELLIGENCE
     </div>
 
     <h1>
@@ -1219,9 +1701,9 @@ footer{
     </h1>
 
     <p class="hero-copy">
-      NEWSFORGE continuously discovers news, analyzes its relevance,
-      scores its attention potential and prepares intelligence for the
-      next generation of automated content operations.
+      NEWSFORGE discovers news, analyzes relevance, identifies
+      high-attention signals and prepares every story for deeper
+      research and human verification.
     </p>
 
     <div class="hero-actions">
@@ -1241,14 +1723,16 @@ footer{
       </button>
 
     </div>
+
   </div>
+
 
   <div class="hero-system">
 
     <div class="node">NEWS SOURCES</div>
     <div class="node">AI ANALYSIS</div>
     <div class="node">TREND SIGNALS</div>
-    <div class="node">CONTENT ENGINE</div>
+    <div class="node">RESEARCH ENGINE</div>
 
     <div class="signal s1"></div>
     <div class="signal s2"></div>
@@ -1264,54 +1748,100 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ========================================================
      METRICS
-========================= -->
+========================================================= -->
 
 <section class="metrics">
 
   <div class="metric">
-    <div class="metric-label">STORIES DETECTED</div>
-    <div id="metricStories" class="metric-value">0</div>
+
+    <div class="metric-label">
+      STORIES DETECTED
+    </div>
+
+    <div id="metricStories" class="metric-value">
+      0
+    </div>
+
     <div id="metricStoriesSub" class="metric-sub">
       Awaiting discovery
     </div>
+
   </div>
 
-  <div class="metric">
-    <div class="metric-label">HIGH POTENTIAL</div>
-    <div id="metricPotential" class="metric-value">0</div>
-    <div class="metric-sub">AI attention score ≥ 70</div>
-  </div>
 
   <div class="metric">
-    <div class="metric-label">CONTENT GENERATED</div>
-    <div id="metricContent" class="metric-value">0</div>
-    <div class="metric-sub">Publishing engine pending</div>
+
+    <div class="metric-label">
+      HIGH POTENTIAL
+    </div>
+
+    <div id="metricPotential" class="metric-value">
+      0
+    </div>
+
+    <div class="metric-sub">
+      AI attention score ≥ 70
+    </div>
+
   </div>
 
+
   <div class="metric">
-    <div class="metric-label">VERIFICATION</div>
-    <div id="metricVerification" class="metric-value">--</div>
+
+    <div class="metric-label">
+      CONTENT GENERATED
+    </div>
+
+    <div id="metricContent" class="metric-value">
+      0
+    </div>
+
+    <div class="metric-sub">
+      Publishing engine pending
+    </div>
+
+  </div>
+
+
+  <div class="metric">
+
+    <div class="metric-label">
+      VERIFICATION
+    </div>
+
+    <div id="metricVerification" class="metric-value">
+      --
+    </div>
+
     <div id="metricVerificationSub" class="metric-sub">
       Human approval required
     </div>
+
   </div>
 
 </section>
 
 
-<!-- =========================
-     NEWS INTELLIGENCE
-========================= -->
+<!-- ========================================================
+     DISCOVERY
+========================================================= -->
 
 <section class="section">
 
   <div class="section-head">
 
     <div>
-      <div class="section-kicker">01 / DISCOVERY</div>
-      <h2 class="section-title">Trending Intelligence</h2>
+
+      <div class="section-kicker">
+        01 / DISCOVERY
+      </div>
+
+      <h2 class="section-title">
+        Trending Intelligence
+      </h2>
+
     </div>
 
     <p class="section-desc">
@@ -1327,16 +1857,24 @@ footer{
 
     <div class="engine-left">
 
-      <div class="engine-icon">✦</div>
+      <div class="engine-icon">
+        ✦
+      </div>
 
       <div>
-        <div class="engine-title">NEWS INTELLIGENCE ENGINE</div>
+
+        <div class="engine-title">
+          NEWS INTELLIGENCE ENGINE
+        </div>
+
         <div id="engineStatus" class="engine-sub">
           Ready for discovery
         </div>
+
       </div>
 
     </div>
+
 
     <div class="engine-badges">
 
@@ -1348,6 +1886,11 @@ footer{
       <div class="badge">
         <span class="mini-dot"></span>
         GEMINI · READY
+      </div>
+
+      <div class="badge">
+        <span class="mini-dot"></span>
+        RESEARCH · READY
       </div>
 
       <div class="badge">
@@ -1425,7 +1968,9 @@ footer{
 
     <div class="empty">
 
-      <div class="empty-icon">⌁</div>
+      <div class="empty-icon">
+        ⌁
+      </div>
 
       <div class="empty-title">
         No intelligence loaded
@@ -1443,17 +1988,24 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ========================================================
      AI SUMMARY
-========================= -->
+========================================================= -->
 
 <section class="section">
 
   <div class="section-head">
 
     <div>
-      <div class="section-kicker">02 / AI INTELLIGENCE</div>
-      <h2 class="section-title">AI Situation Report</h2>
+
+      <div class="section-kicker">
+        02 / AI INTELLIGENCE
+      </div>
+
+      <h2 class="section-title">
+        AI Situation Report
+      </h2>
+
     </div>
 
   </div>
@@ -1516,23 +2068,30 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ========================================================
      PIPELINE
-========================= -->
+========================================================= -->
 
 <section class="section">
 
   <div class="section-head">
 
     <div>
-      <div class="section-kicker">03 / AUTOMATION</div>
-      <h2 class="section-title">AI Automation Pipeline</h2>
+
+      <div class="section-kicker">
+        03 / AUTOMATION
+      </div>
+
+      <h2 class="section-title">
+        AI Automation Pipeline
+      </h2>
+
     </div>
 
     <p class="section-desc">
-      The pipeline is intentionally approval-aware.
-      NEWSFORGE does not pretend that an AI-generated headline is
-      automatically trustworthy. Humanity has suffered enough from that idea.
+      NEWSFORGE separates discovery, research, verification,
+      creation and publishing so that downstream automation
+      never silently treats an unverified story as fact.
     </p>
 
   </div>
@@ -1542,9 +2101,13 @@ footer{
 
     <div id="step1" class="step">
 
-      <div class="step-number">01</div>
+      <div class="step-number">
+        01
+      </div>
 
-      <div class="step-title">DISCOVER</div>
+      <div class="step-title">
+        DISCOVER
+      </div>
 
       <div class="step-desc">
         Collect relevant news from configured sources.
@@ -1559,12 +2122,16 @@ footer{
 
     <div id="step2" class="step">
 
-      <div class="step-number">02</div>
+      <div class="step-number">
+        02
+      </div>
 
-      <div class="step-title">RESEARCH</div>
+      <div class="step-title">
+        RESEARCH
+      </div>
 
       <div class="step-desc">
-        Analyze story relevance, topic and potential.
+        Analyze story relevance, context and supporting evidence.
       </div>
 
       <div id="step2Status" class="step-status">
@@ -1576,9 +2143,13 @@ footer{
 
     <div id="step3" class="step">
 
-      <div class="step-number">03</div>
+      <div class="step-number">
+        03
+      </div>
 
-      <div class="step-title">VERIFY</div>
+      <div class="step-title">
+        VERIFY
+      </div>
 
       <div class="step-desc">
         Flag stories requiring human verification.
@@ -1593,9 +2164,13 @@ footer{
 
     <div id="step4" class="step">
 
-      <div class="step-number">04</div>
+      <div class="step-number">
+        04
+      </div>
 
-      <div class="step-title">CREATE</div>
+      <div class="step-title">
+        CREATE
+      </div>
 
       <div class="step-desc">
         Generate platform-specific content from approved intelligence.
@@ -1610,9 +2185,13 @@ footer{
 
     <div id="step5" class="step">
 
-      <div class="step-number">05</div>
+      <div class="step-number">
+        05
+      </div>
 
-      <div class="step-title">PUBLISH</div>
+      <div class="step-title">
+        PUBLISH
+      </div>
 
       <div class="step-desc">
         Distribute approved content through connected social channels.
@@ -1629,17 +2208,24 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ========================================================
      ACTIVITY
-========================= -->
+========================================================= -->
 
 <section class="section">
 
   <div class="section-head">
 
     <div>
-      <div class="section-kicker">04 / SYSTEM</div>
-      <h2 class="section-title">System Activity</h2>
+
+      <div class="section-kicker">
+        04 / SYSTEM
+      </div>
+
+      <h2 class="section-title">
+        System Activity
+      </h2>
+
     </div>
 
   </div>
@@ -1648,19 +2234,32 @@ footer{
   <div id="activity" class="activity">
 
     <div class="activity-line">
-      <div class="activity-time">SYSTEM</div>
+
+      <div class="activity-time">
+        SYSTEM
+      </div>
+
       <div class="activity-dot"></div>
+
       <div class="activity-text">
         <strong>NEWSFORGE</strong> initialized.
       </div>
+
     </div>
 
+
     <div class="activity-line">
-      <div class="activity-time">READY</div>
+
+      <div class="activity-time">
+        READY
+      </div>
+
       <div class="activity-dot"></div>
+
       <div class="activity-text">
         Waiting for news discovery command.
       </div>
+
     </div>
 
   </div>
@@ -1668,17 +2267,24 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ========================================================
      ARCHITECTURE
-========================= -->
+========================================================= -->
 
 <section class="section">
 
   <div class="section-head">
 
     <div>
-      <div class="section-kicker">05 / ARCHITECTURE</div>
-      <h2 class="section-title">NEWSFORGE Flow</h2>
+
+      <div class="section-kicker">
+        05 / ARCHITECTURE
+      </div>
+
+      <h2 class="section-title">
+        NEWSFORGE Flow
+      </h2>
+
     </div>
 
   </div>
@@ -1688,16 +2294,20 @@ footer{
 
     <div class="engine-left">
 
-      <div class="engine-icon">01</div>
+      <div class="engine-icon">
+        01
+      </div>
 
       <div>
+
         <div class="engine-title">
-          DISCOVERY → INTELLIGENCE → APPROVAL → CONTENT
+          DISCOVERY → RESEARCH → VERIFICATION → CONTENT
         </div>
 
         <div class="engine-sub">
-          Modular architecture designed for future automation.
+          Modular architecture designed for approval-aware automation.
         </div>
+
       </div>
 
     </div>
@@ -1728,6 +2338,10 @@ footer{
 </footer>
 
 
+<!-- ========================================================
+     TOAST
+========================================================= -->
+
 <div id="toast" class="toast">
 
   <div id="toastTitle" class="toast-title">
@@ -1741,29 +2355,495 @@ footer{
 </div>
 
 
+<!-- ========================================================
+     RESEARCH WORKSPACE
+========================================================= -->
+
+<div
+  id="researchOverlay"
+  class="research-overlay"
+  onclick="window.handleResearchBackdrop(event)">
+
+  <div
+    class="research-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="researchModalTitle">
+
+    <div class="research-header">
+
+      <div class="research-brand">
+
+        <div class="research-brand-icon">
+          ✦
+        </div>
+
+        <div>
+
+          <div
+            id="researchModalTitle"
+            class="research-brand-title">
+            STORY RESEARCH
+          </div>
+
+          <div class="research-brand-sub">
+            NEWSFORGE INTELLIGENCE WORKSPACE
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="close-research"
+        aria-label="Close research"
+        onclick="window.closeResearch()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="research-body">
+
+      <div class="research-story">
+
+        <div class="research-kicker">
+          SELECTED STORY
+        </div>
+
+        <h2
+          id="researchTitle"
+          class="research-title">
+          Waiting for story
+        </h2>
+
+        <p
+          id="researchDescription"
+          class="research-description">
+          Select a discovered story to begin research.
+        </p>
+
+
+        <div class="research-meta">
+
+          <div class="research-meta-item">
+            SOURCE:
+            <strong id="researchSource">
+              —
+            </strong>
+          </div>
+
+          <div class="research-meta-item">
+            PUBLISHED:
+            <strong id="researchPublished">
+              —
+            </strong>
+          </div>
+
+          <div class="research-meta-item">
+            TREND:
+            <strong id="researchTrend">
+              —
+            </strong>
+          </div>
+
+          <div class="research-meta-item">
+            CATEGORY:
+            <strong id="researchCategory">
+              —
+            </strong>
+          </div>
+
+          <div class="research-meta-item">
+            PRIORITY:
+            <strong id="researchPriority">
+              —
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="research-grid">
+
+        <!-- VERIFICATION -->
+
+        <div class="research-card">
+
+          <div class="research-card-head">
+
+            <div class="research-card-label">
+              VERIFICATION STATUS
+            </div>
+
+            <div
+              id="researchVerificationLabel"
+              class="research-card-status">
+              PENDING
+            </div>
+
+          </div>
+
+
+          <div class="status-panel">
+
+            <div>
+
+              <div
+                id="researchStatusBig"
+                class="status-big">
+                HUMAN REVIEW
+              </div>
+
+              <div
+                id="researchStatusSmall"
+                class="status-small">
+                Research evidence has not yet been independently gathered.
+              </div>
+
+            </div>
+
+
+            <div class="confidence-ring">
+
+              <div
+                id="researchConfidence"
+                class="confidence-value">
+                --
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- AI SIGNAL -->
+
+        <div class="research-card">
+
+          <div class="research-card-head">
+
+            <div class="research-card-label">
+              AI SIGNAL
+            </div>
+
+            <div class="research-card-status">
+              CURRENT MODEL OUTPUT
+            </div>
+
+          </div>
+
+
+          <h4>
+            AI reasoning
+          </h4>
+
+          <p id="researchReasoning">
+            No reasoning available.
+          </p>
+
+
+          <div class="research-meta">
+
+            <div class="research-meta-item">
+              ATTENTION:
+              <strong id="researchAttention">
+                —
+              </strong>
+            </div>
+
+            <div class="research-meta-item">
+              REVIEW:
+              <strong id="researchReview">
+                —
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CLAIMS -->
+
+        <div class="research-card">
+
+          <div class="research-card-head">
+
+            <div class="research-card-label">
+              CLAIM ANALYSIS
+            </div>
+
+            <div class="research-card-status">
+              RESEARCH REQUIRED
+            </div>
+
+          </div>
+
+
+          <div class="research-placeholder">
+
+            <div class="research-placeholder-icon">
+              ◇
+            </div>
+
+            <div class="research-placeholder-title">
+              CLAIM EXTRACTION READY
+            </div>
+
+            <div class="research-placeholder-text">
+              The selected story is ready for the next research
+              stage, where claims will be extracted and evaluated
+              against independent evidence.
+            </div>
+
+          </div>
+
+          <div
+            id="claimList"
+            class="claim-list"
+            style="display:none">
+          </div>
+
+        </div>
+
+
+        <!-- SOURCE ANALYSIS -->
+
+        <div class="research-card">
+
+          <div class="research-card-head">
+
+            <div class="research-card-label">
+              SOURCE ANALYSIS
+            </div>
+
+            <div class="research-card-status">
+              PRIMARY ARTICLE
+            </div>
+
+          </div>
+
+
+          <h4>
+            Original source
+          </h4>
+
+          <p>
+            This is the source currently associated with the
+            discovered article. Independent source cross-checking
+            will be added in the next research-engine stage.
+          </p>
+
+
+          <div class="source-preview">
+
+            <div class="source-preview-info">
+
+              <div
+                id="researchSourceName"
+                class="source-preview-name">
+                Unknown source
+              </div>
+
+              <div
+                id="researchSourceUrl"
+                class="source-preview-url">
+                No source URL available
+              </div>
+
+            </div>
+
+
+            <a
+              id="researchOpenSource"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer">
+              OPEN ↗
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- RESEARCH ROADMAP -->
+
+        <div class="research-card full">
+
+          <div class="research-card-head">
+
+            <div class="research-card-label">
+              RESEARCH ENGINE
+            </div>
+
+            <div class="research-card-status">
+              STAGE 01
+            </div>
+
+          </div>
+
+
+          <div class="research-grid" style="margin-top:13px">
+
+            <div class="research-card">
+
+              <div class="research-card-label">
+                01
+              </div>
+
+              <h4>
+                Source Discovery
+              </h4>
+
+              <p>
+                Locate additional coverage and independent
+                reporting related to the same event.
+              </p>
+
+            </div>
+
+
+            <div class="research-card">
+
+              <div class="research-card-label">
+                02
+              </div>
+
+              <h4>
+                Cross-Check
+              </h4>
+
+              <p>
+                Compare claims, dates, entities and factual
+                details across available sources.
+              </p>
+
+            </div>
+
+
+            <div class="research-card">
+
+              <div class="research-card-label">
+                03
+              </div>
+
+              <h4>
+                Evidence
+              </h4>
+
+              <p>
+                Separate directly supported information from
+                assumptions, speculation and unsupported claims.
+              </p>
+
+            </div>
+
+
+            <div class="research-card">
+
+              <div class="research-card-label">
+                04
+              </div>
+
+              <h4>
+                Confidence
+              </h4>
+
+              <p>
+                Produce a research confidence assessment and
+                determine whether human verification is required.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="research-note">
+            <strong>EDITORIAL SAFETY:</strong>
+            This workspace does not currently claim that a story
+            has been independently verified. It displays the
+            intelligence already returned by the NEWSFORGE analysis
+            engine. Actual external cross-checking will be connected
+            in the next backend stage.
+          </div>
+
+
+          <div class="research-actions">
+
+            <a
+              id="researchBottomSource"
+              class="btn"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer">
+              OPEN ORIGINAL SOURCE ↗
+            </a>
+
+            <button
+              class="btn btn-primary"
+              onclick="window.prepareResearchStage()">
+              PREPARE AI RESEARCH
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
 
 /* ============================================================
    NEWSFORGE AI
-   FRONTEND ENGINE
+   FRONTEND ENGINE V1.1
 ============================================================ */
 
 (function(){
 
   "use strict";
 
+
+  /* ==========================================================
+     STATE
+  ========================================================== */
+
   let allArticles = [];
+
   let currentCategory = "ALL";
+
   let isDiscovering = false;
+
+  let isResearchOpen = false;
+
+  let selectedArticle = null;
+
   let contentGenerated = 0;
 
 
   /* ==========================================================
-     BASIC HELPERS
+     HELPERS
   ========================================================== */
 
   function el(id){
+
     return document.getElementById(id);
+
   }
 
 
@@ -1779,6 +2859,7 @@ footer{
       .replace(/>/g,"&gt;")
       .replace(/"/g,"&quot;")
       .replace(/'/g,"&#039;");
+
   }
 
 
@@ -1795,6 +2876,7 @@ footer{
     }
 
     return text.substring(0,length).trim() + "...";
+
   }
 
 
@@ -1807,6 +2889,7 @@ footer{
     }
 
     el("toastTitle").textContent = title;
+
     el("toastText").textContent = text;
 
     toast.classList.add("show");
@@ -1814,8 +2897,11 @@ footer{
     clearTimeout(window.__newsforgeToast);
 
     window.__newsforgeToast = setTimeout(function(){
+
       toast.classList.remove("show");
+
     },4000);
+
   }
 
 
@@ -1827,9 +2913,11 @@ footer{
       return;
     }
 
+
     const row = document.createElement("div");
 
     row.className = "activity-line";
+
 
     const time = new Date().toLocaleTimeString([],{
       hour:"2-digit",
@@ -1837,23 +2925,48 @@ footer{
       second:"2-digit"
     });
 
+
+    let dotColor = "#22c55e";
+
+    if(type === "error"){
+      dotColor = "#ef4444";
+    }
+
+    if(type === "warn"){
+      dotColor = "#f59e0b";
+    }
+
+
     row.innerHTML = `
-      <div class="activity-time">${escapeHTML(time)}</div>
-      <div class="activity-dot" style="background:${
-        type === "error"
-          ? "#ef4444"
-          : type === "warn"
-            ? "#f59e0b"
-            : "#22c55e"
-      }"></div>
-      <div class="activity-text">${escapeHTML(text)}</div>
+      <div class="activity-time">
+        ${escapeHTML(time)}
+      </div>
+
+      <div
+        class="activity-dot"
+        style="background:${dotColor}">
+      </div>
+
+      <div class="activity-text">
+        ${escapeHTML(text)}
+      </div>
     `;
 
-    activity.insertBefore(row,activity.firstChild);
+
+    activity.insertBefore(
+      row,
+      activity.firstChild
+    );
+
 
     while(activity.children.length > 8){
-      activity.removeChild(activity.lastChild);
+
+      activity.removeChild(
+        activity.lastChild
+      );
+
     }
+
   }
 
 
@@ -1864,6 +2977,18 @@ footer{
     if(bar){
       bar.classList.toggle("show",state);
     }
+
+  }
+
+
+  function wait(ms){
+
+    return new Promise(function(resolve){
+
+      setTimeout(resolve,ms);
+
+    });
+
   }
 
 
@@ -1877,32 +3002,42 @@ footer{
       return "Unknown time";
     }
 
+
     const date = new Date(value);
+
 
     if(Number.isNaN(date.getTime())){
       return "Unknown time";
     }
 
+
     return date.toLocaleString("en-IN",{
       day:"2-digit",
       month:"short",
+      year:"numeric",
       hour:"2-digit",
       minute:"2-digit"
     });
+
   }
 
 
   /* ==========================================================
-     AI DATA NORMALIZATION
+     AI NORMALIZATION
   ========================================================== */
 
   function getAI(article){
 
-    if(article && article.ai && typeof article.ai === "object"){
+    if(
+      article &&
+      article.ai &&
+      typeof article.ai === "object"
+    ){
       return article.ai;
     }
 
     return {};
+
   }
 
 
@@ -1912,11 +3047,22 @@ footer{
 
     const score = Number(ai.trendScore);
 
+
     if(Number.isFinite(score)){
-      return Math.max(0,Math.min(100,Math.round(score)));
+
+      return Math.max(
+        0,
+        Math.min(
+          100,
+          Math.round(score)
+        )
+      );
+
     }
 
+
     return 0;
+
   }
 
 
@@ -1924,10 +3070,12 @@ footer{
 
     const ai = getAI(article);
 
+
     const category = String(
       ai.category ||
       "OTHER"
     ).toUpperCase().trim();
+
 
     const allowed = [
       "BUSINESS",
@@ -1939,11 +3087,14 @@ footer{
       "OTHER"
     ];
 
+
     if(allowed.includes(category)){
       return category;
     }
 
+
     return "OTHER";
+
   }
 
 
@@ -1951,10 +3102,12 @@ footer{
 
     const ai = getAI(article);
 
+
     return String(
       ai.priority ||
       "NORMAL"
     ).toUpperCase();
+
   }
 
 
@@ -1962,10 +3115,32 @@ footer{
 
     const ai = getAI(article);
 
-    return String(
+
+    const raw = String(
       ai.attentionPotential ||
       "UNKNOWN"
     ).toUpperCase();
+
+
+    if(
+      raw === "TRUE" ||
+      raw === "HIGH" ||
+      raw === "VERY_HIGH"
+    ){
+      return "HIGH";
+    }
+
+
+    if(
+      raw === "FALSE" ||
+      raw === "LOW"
+    ){
+      return "NORMAL";
+    }
+
+
+    return raw;
+
   }
 
 
@@ -1973,7 +3148,10 @@ footer{
 
     const ai = getAI(article);
 
-    return Boolean(ai.humanVerificationRequired);
+    return Boolean(
+      ai.humanVerificationRequired
+    );
+
   }
 
 
@@ -1981,8 +3159,10 @@ footer{
 
     const ai = getAI(article);
 
+
     return ai.reasoning ||
       "AI analysis did not provide additional reasoning.";
+
   }
 
 
@@ -1996,57 +3176,74 @@ footer{
       return;
     }
 
+
     isDiscovering = true;
+
 
     const button = el("discoverBtn");
 
+
     if(button){
+
       button.disabled = true;
-      button.textContent = "SCANNING INTELLIGENCE...";
+
+      button.textContent =
+        "SCANNING INTELLIGENCE...";
+
     }
+
 
     el("engineStatus").textContent =
       "Connecting to NEWSFORGE news engine...";
 
+
     setLoading(true);
+
 
     addActivity(
       "Discovery command received. Connecting to /api/news."
     );
 
+
     resetPipeline();
 
-    try{
 
-      /*
-       * IMPORTANT:
-       * Relative API URL keeps frontend and backend on the
-       * same Vercel deployment.
-       */
+    try{
 
       const response = await fetch(
         "/api/news?pageSize=20",
         {
           method:"GET",
+
           headers:{
             "Accept":"application/json"
           },
+
           cache:"no-store"
         }
       );
 
 
-      const rawText = await response.text();
+      const rawText =
+        await response.text();
+
 
       let data = null;
 
+
       try{
-        data = rawText ? JSON.parse(rawText) : null;
+
+        data =
+          rawText
+            ? JSON.parse(rawText)
+            : null;
+
       }catch(parseError){
 
         throw new Error(
           "Backend returned invalid JSON."
         );
+
       }
 
 
@@ -2060,10 +3257,13 @@ footer{
             data.details
           );
 
+
         throw new Error(
           message ||
-          "News engine returned HTTP " + response.status
+          "News engine returned HTTP " +
+          response.status
         );
+
       }
 
 
@@ -2072,6 +3272,7 @@ footer{
         throw new Error(
           "News engine returned an empty response."
         );
+
       }
 
 
@@ -2081,12 +3282,14 @@ footer{
           data.message ||
           "NEWSFORGE backend reported an error."
         );
+
       }
 
 
-      allArticles = Array.isArray(data.articles)
-        ? data.articles
-        : [];
+      allArticles =
+        Array.isArray(data.articles)
+          ? data.articles
+          : [];
 
 
       if(allArticles.length === 0){
@@ -2095,26 +3298,33 @@ footer{
 
         updateMetrics(data);
 
+
         el("engineStatus").textContent =
           "Engine connected, but no stories were returned.";
+
 
         el("summaryTitle").textContent =
           "No stories detected";
 
+
         el("summaryText").textContent =
           "The backend responded successfully, but the news provider returned no usable articles for this request.";
+
 
         addActivity(
           "Backend connected successfully, but returned zero stories.",
           "warn"
         );
 
+
         showToast(
           "No stories",
           "The news engine responded, but there were no articles to display."
         );
 
+
         return;
+
       }
 
 
@@ -2126,13 +3336,18 @@ footer{
 
       markDiscoveryComplete();
 
+
       addActivity(
         "Discovery completed. " +
         allArticles.length +
         " stories received from the news engine."
       );
 
-      if(data.ai && data.ai.enabled){
+
+      if(
+        data.ai &&
+        data.ai.enabled
+      ){
 
         addActivity(
           "Gemini intelligence analysis completed for " +
@@ -2160,6 +3375,7 @@ footer{
         " stories analyzed by NEWSFORGE."
       );
 
+
     }catch(error){
 
       console.error(
@@ -2167,7 +3383,9 @@ footer{
         error
       );
 
+
       allArticles = [];
+
 
       renderError(
         error && error.message
@@ -2175,16 +3393,20 @@ footer{
           : "Unknown discovery error."
       );
 
+
       el("engineStatus").textContent =
         "Discovery failed.";
 
+
       el("summaryTitle").textContent =
         "News engine error";
+
 
       el("summaryText").textContent =
         error && error.message
           ? error.message
           : "Unable to connect to the NEWSFORGE backend.";
+
 
       addActivity(
         "Discovery failed: " +
@@ -2196,6 +3418,7 @@ footer{
         "error"
       );
 
+
       showToast(
         "Discovery failed",
         error && error.message
@@ -2203,15 +3426,21 @@ footer{
           : "Unable to connect to backend."
       );
 
+
     }finally{
 
       isDiscovering = false;
 
       setLoading(false);
 
+
       if(button){
+
         button.disabled = false;
-        button.textContent = "DISCOVER TRENDING NEWS";
+
+        button.textContent =
+          "DISCOVER TRENDING NEWS";
+
       }
 
     }
@@ -2220,35 +3449,42 @@ footer{
 
 
   /* ==========================================================
-     RENDER NEWS
+     NEWS RENDER
   ========================================================== */
 
   function renderNews(){
 
     const grid = el("newsGrid");
 
+
     if(!grid){
       return;
     }
 
 
-    let visible = allArticles.slice();
+    let visible =
+      allArticles.slice();
 
 
     if(currentCategory !== "ALL"){
 
-      visible = visible.filter(function(article){
+      visible =
+        visible.filter(function(article){
 
-        return getCategory(article) === currentCategory;
+          return (
+            getCategory(article) ===
+            currentCategory
+          );
 
-      });
+        });
 
     }
 
 
     visible.sort(function(a,b){
 
-      return getScore(b) - getScore(a);
+      return getScore(b) -
+        getScore(a);
 
     });
 
@@ -2258,7 +3494,9 @@ footer{
       grid.innerHTML = `
         <div class="empty">
 
-          <div class="empty-icon">⌁</div>
+          <div class="empty-icon">
+            ⌁
+          </div>
 
           <div class="empty-title">
             No matching stories
@@ -2272,28 +3510,42 @@ footer{
       `;
 
       return;
+
     }
 
 
-    grid.innerHTML = visible
-      .map(createNewsCard)
-      .join("");
+    grid.innerHTML =
+      visible
+        .map(function(article,index){
+
+          return createNewsCard(
+            article,
+            index
+          );
+
+        })
+        .join("");
 
   }
 
 
   function renderError(message){
 
-    const grid = el("newsGrid");
+    const grid =
+      el("newsGrid");
+
 
     if(!grid){
       return;
     }
 
+
     grid.innerHTML = `
       <div class="empty">
 
-        <div class="empty-icon">!</div>
+        <div class="empty-icon">
+          !
+        </div>
 
         <div class="empty-title">
           NEWS ENGINE ERROR
@@ -2318,26 +3570,43 @@ footer{
 
   function createNewsCard(article,index){
 
-    const ai = getAI(article);
+    const score =
+      getScore(article);
 
-    const score = getScore(article);
 
-    const category = getCategory(article);
+    const category =
+      getCategory(article);
 
-    const priority = getPriority(article);
 
-    const attention = getAttention(article);
+    const priority =
+      getPriority(article);
 
-    const review = needsReview(article);
 
-    const reason = getReason(article);
+    const attention =
+      getAttention(article);
+
+
+    const review =
+      needsReview(article);
+
+
+    const reason =
+      getReason(article);
+
 
     let scoreClass = "";
 
+
     if(score >= 80){
-      scoreClass = "critical";
+
+      scoreClass =
+        "critical";
+
     }else if(score >= 70){
-      scoreClass = "hot";
+
+      scoreClass =
+        "hot";
+
     }
 
 
@@ -2375,6 +3644,10 @@ footer{
       "#";
 
 
+    const articleIndex =
+      allArticles.indexOf(article);
+
+
     return `
       <article class="news-card">
 
@@ -2385,7 +3658,9 @@ footer{
           </div>
 
           <div class="news-time">
-            ${escapeHTML(formatDate(article.publishedAt))}
+            ${escapeHTML(
+              formatDate(article.publishedAt)
+            )}
           </div>
 
         </div>
@@ -2397,7 +3672,9 @@ footer{
 
 
         <div class="news-description">
-          ${escapeHTML(truncate(description,240))}
+          ${escapeHTML(
+            truncate(description,240)
+          )}
         </div>
 
 
@@ -2439,7 +3716,9 @@ footer{
           </div>
 
           <div class="ai-reason-text">
-            ${escapeHTML(truncate(reason,260))}
+            ${escapeHTML(
+              truncate(reason,260)
+            )}
           </div>
 
         </div>
@@ -2447,13 +3726,31 @@ footer{
 
         <div class="news-footer">
 
-          <div>
+          <div class="news-footer-left">
+
             ${
               review
-                ? `<span class="badge">APPROVAL REQUIRED</span>`
-                : `<span class="badge">AI ANALYZED</span>`
+                ? `
+                  <span class="badge">
+                    APPROVAL REQUIRED
+                  </span>
+                `
+                : `
+                  <span class="badge">
+                    AI ANALYZED
+                  </span>
+                `
             }
+
+
+            <button
+              class="research-btn"
+              onclick="window.openResearch(${articleIndex})">
+              RESEARCH STORY
+            </button>
+
           </div>
+
 
           ${
             url && url !== "#"
@@ -2487,24 +3784,29 @@ footer{
 
   function updateMetrics(data){
 
-    const total = allArticles.length;
-
-    const high = allArticles.filter(function(article){
-      return getScore(article) >= 70;
-    }).length;
+    const total =
+      allArticles.length;
 
 
-    const critical = allArticles.filter(function(article){
-      return getScore(article) >= 85;
-    }).length;
+    const high =
+      allArticles.filter(function(article){
+
+        return getScore(article) >= 70;
+
+      }).length;
 
 
-    const review = allArticles.filter(function(article){
-      return needsReview(article);
-    }).length;
+    const review =
+      allArticles.filter(function(article){
+
+        return needsReview(article);
+
+      }).length;
 
 
-    el("metricStories").textContent = total;
+    el("metricStories").textContent =
+      total;
+
 
     el("metricStoriesSub").textContent =
       total
@@ -2512,7 +3814,8 @@ footer{
         : "Awaiting discovery";
 
 
-    el("metricPotential").textContent = high;
+    el("metricPotential").textContent =
+      high;
 
 
     el("metricContent").textContent =
@@ -2522,7 +3825,10 @@ footer{
     if(total > 0){
 
       el("metricVerification").textContent =
-        Math.round((review / total) * 100) + "%";
+        Math.round(
+          (review / total) * 100
+        ) + "%";
+
 
       el("metricVerificationSub").textContent =
         review +
@@ -2530,7 +3836,9 @@ footer{
 
     }else{
 
-      el("metricVerification").textContent = "--";
+      el("metricVerification").textContent =
+        "--";
+
 
       el("metricVerificationSub").textContent =
         "Human approval required";
@@ -2538,15 +3846,19 @@ footer{
     }
 
 
-    if(data && data.ai){
-
-      const ai = data.ai;
+    if(
+      data &&
+      data.ai
+    ){
 
       if(
-        typeof ai.highPotential === "number"
+        typeof data.ai.highPotential ===
+        "number"
       ){
+
         el("metricPotential").textContent =
-          ai.highPotential;
+          data.ai.highPotential;
+
       }
 
     }
@@ -2560,21 +3872,32 @@ footer{
 
   function updateSummary(data){
 
-    const total = allArticles.length;
-
-    const high = allArticles.filter(function(article){
-      return getScore(article) >= 70;
-    }).length;
+    const total =
+      allArticles.length;
 
 
-    const critical = allArticles.filter(function(article){
-      return getScore(article) >= 85;
-    }).length;
+    const high =
+      allArticles.filter(function(article){
+
+        return getScore(article) >= 70;
+
+      }).length;
 
 
-    const review = allArticles.filter(function(article){
-      return needsReview(article);
-    }).length;
+    const critical =
+      allArticles.filter(function(article){
+
+        return getScore(article) >= 85;
+
+      }).length;
+
+
+    const review =
+      allArticles.filter(function(article){
+
+        return needsReview(article);
+
+      }).length;
 
 
     el("summaryAnalyzed").textContent =
@@ -2593,11 +3916,15 @@ footer{
       review;
 
 
-    let top = allArticles
-      .slice()
-      .sort(function(a,b){
-        return getScore(b) - getScore(a);
-      })[0];
+    const top =
+      allArticles
+        .slice()
+        .sort(function(a,b){
+
+          return getScore(b) -
+            getScore(a);
+
+        })[0];
 
 
     if(!top){
@@ -2605,8 +3932,10 @@ footer{
       el("summaryTitle").textContent =
         "Waiting for discovery";
 
+
       el("summaryText").textContent =
         "No stories are currently available for AI analysis.";
+
 
       return;
 
@@ -2615,21 +3944,33 @@ footer{
 
     el("summaryTitle").textContent =
       "Top signal: " +
-      truncate(top.title || "Untitled story",90);
+      truncate(
+        top.title ||
+        "Untitled story",
+        90
+      );
 
 
     let summary = [
+
       "NEWSFORGE analyzed " +
       total +
       " discovered stories.",
+
       high +
       " stories currently have high attention potential.",
+
       review +
       " stories require human verification before downstream publishing."
+
     ];
 
 
-    if(data && data.ai && data.ai.provider){
+    if(
+      data &&
+      data.ai &&
+      data.ai.provider
+    ){
 
       summary.push(
         "Analysis provider: " +
@@ -2653,7 +3994,10 @@ footer{
   function setCategory(category){
 
     currentCategory =
-      String(category || "ALL").toUpperCase();
+      String(
+        category ||
+        "ALL"
+      ).toUpperCase();
 
 
     document
@@ -2662,7 +4006,8 @@ footer{
 
         button.classList.toggle(
           "active",
-          button.dataset.category === currentCategory
+          button.dataset.category ===
+          currentCategory
         );
 
       });
@@ -2690,20 +4035,40 @@ footer{
 
     steps.forEach(function(id){
 
-      const node = el(id);
+      const node =
+        el(id);
+
 
       if(node){
-        node.classList.remove("active","done");
+
+        node.classList.remove(
+          "active",
+          "done"
+        );
+
       }
 
     });
 
 
-    el("step1Status").textContent = "READY";
-    el("step2Status").textContent = "WAITING";
-    el("step3Status").textContent = "WAITING";
-    el("step4Status").textContent = "NOT ACTIVE";
-    el("step5Status").textContent = "PAUSED";
+    el("step1Status").textContent =
+      "READY";
+
+
+    el("step2Status").textContent =
+      "WAITING";
+
+
+    el("step3Status").textContent =
+      "WAITING";
+
+
+    el("step4Status").textContent =
+      "NOT ACTIVE";
+
+
+    el("step5Status").textContent =
+      "PAUSED";
 
   }
 
@@ -2711,17 +4076,25 @@ footer{
   function markDiscoveryComplete(){
 
     el("step1").classList.add("done");
-    el("step1Status").textContent = "COMPLETE";
+
+    el("step1Status").textContent =
+      "COMPLETE";
+
 
     el("step2").classList.add("done");
-    el("step2Status").textContent = "COMPLETE";
+
+    el("step2Status").textContent =
+      "COMPLETE";
+
 
     el("step3").classList.add("active");
+
     el("step3Status").textContent =
       "REVIEW FLAGS READY";
 
+
     el("engineStatus").textContent =
-      "AI intelligence ready for human review.";
+      "AI intelligence ready for research.";
 
   }
 
@@ -2735,7 +4108,9 @@ footer{
         "Run discovery first so the AI pipeline has actual stories to analyze."
       );
 
+
       await discoverNews();
+
 
       if(allArticles.length === 0){
         return;
@@ -2744,15 +4119,22 @@ footer{
     }
 
 
-    const button = el("pipelineBtn");
+    const button =
+      el("pipelineBtn");
+
 
     if(button){
+
       button.disabled = true;
-      button.textContent = "RUNNING PIPELINE...";
+
+      button.textContent =
+        "RUNNING PIPELINE...";
+
     }
 
 
     resetPipeline();
+
 
     addActivity(
       "AI pipeline started."
@@ -2762,47 +4144,70 @@ footer{
     /* STEP 1 */
 
     el("step1").classList.add("active");
-    el("step1Status").textContent = "PROCESSING";
+
+    el("step1Status").textContent =
+      "PROCESSING";
+
 
     await wait(500);
 
+
     el("step1").classList.remove("active");
+
     el("step1").classList.add("done");
-    el("step1Status").textContent = "COMPLETE";
+
+    el("step1Status").textContent =
+      "COMPLETE";
 
 
     /* STEP 2 */
 
     el("step2").classList.add("active");
-    el("step2Status").textContent = "ANALYZING";
+
+    el("step2Status").textContent =
+      "ANALYZING";
+
 
     addActivity(
-      "Analyzing trend signals and audience relevance."
+      "Preparing discovered stories for research."
     );
+
 
     await wait(700);
 
+
     el("step2").classList.remove("active");
+
     el("step2").classList.add("done");
-    el("step2Status").textContent = "COMPLETE";
+
+    el("step2Status").textContent =
+      "READY";
 
 
     /* STEP 3 */
 
     el("step3").classList.add("active");
-    el("step3Status").textContent = "VERIFY FLAGS";
+
+    el("step3Status").textContent =
+      "VERIFY FLAGS";
+
 
     await wait(600);
 
 
     const reviewCount =
       allArticles.filter(function(article){
+
         return needsReview(article);
+
       }).length;
 
 
     el("step3").classList.remove("active");
+
     el("step3").classList.add("done");
+
+
     el("step3Status").textContent =
       reviewCount +
       " FLAGGED";
@@ -2817,6 +4222,7 @@ footer{
     /* STEP 4 */
 
     el("step4").classList.add("active");
+
     el("step4Status").textContent =
       "WAITING FOR APPROVAL";
 
@@ -2835,6 +4241,7 @@ footer{
     /* STEP 5 */
 
     el("step5").classList.add("active");
+
     el("step5Status").textContent =
       "PAUSED";
 
@@ -2846,44 +4253,437 @@ footer{
 
 
     if(button){
+
       button.disabled = false;
-      button.textContent = "RUN AI PIPELINE";
+
+      button.textContent =
+        "RUN AI PIPELINE";
+
     }
 
 
     showToast(
       "Pipeline complete",
-      "Discovery and intelligence analysis completed. Publishing remains approval-gated."
+      "Discovery and intelligence analysis completed. Research is available per story."
     );
 
   }
 
 
-  function wait(ms){
+  /* ==========================================================
+     RESEARCH WORKSPACE
+  ========================================================== */
 
-    return new Promise(function(resolve){
-      setTimeout(resolve,ms);
-    });
+  function openResearch(index){
+
+    const article =
+      allArticles[index];
+
+
+    if(!article){
+
+      showToast(
+        "Research unavailable",
+        "The selected story could not be found."
+      );
+
+      return;
+
+    }
+
+
+    selectedArticle =
+      article;
+
+
+    isResearchOpen = true;
+
+
+    populateResearch(article);
+
+
+    const overlay =
+      el("researchOverlay");
+
+
+    if(overlay){
+
+      overlay.classList.add("open");
+
+    }
+
+
+    document.body.classList.add(
+      "modal-open"
+    );
+
+
+    addActivity(
+      "Research workspace opened for: " +
+      truncate(
+        article.title ||
+        "selected story",
+        90
+      )
+    );
 
   }
+
+
+  function populateResearch(article){
+
+    const ai =
+      getAI(article);
+
+
+    const score =
+      getScore(article);
+
+
+    const category =
+      getCategory(article);
+
+
+    const priority =
+      getPriority(article);
+
+
+    const attention =
+      getAttention(article);
+
+
+    const review =
+      needsReview(article);
+
+
+    const reason =
+      getReason(article);
+
+
+    const source =
+      article.source ||
+      "Unknown source";
+
+
+    const url =
+      article.url ||
+      "#";
+
+
+    const description =
+      article.description ||
+      "No description supplied by source.";
+
+
+    el("researchTitle").textContent =
+      article.title ||
+      "Untitled story";
+
+
+    el("researchDescription").textContent =
+      description;
+
+
+    el("researchSource").textContent =
+      source;
+
+
+    el("researchPublished").textContent =
+      formatDate(
+        article.publishedAt
+      );
+
+
+    el("researchTrend").textContent =
+      score + "/100";
+
+
+    el("researchCategory").textContent =
+      category;
+
+
+    el("researchPriority").textContent =
+      priority;
+
+
+    el("researchReasoning").textContent =
+      reason;
+
+
+    el("researchAttention").textContent =
+      attention;
+
+
+    el("researchReview").textContent =
+      review
+        ? "REQUIRED"
+        : "NOT FLAGGED";
+
+
+    el("researchSourceName").textContent =
+      source;
+
+
+    el("researchSourceUrl").textContent =
+      url === "#"
+        ? "No source URL available"
+        : url;
+
+
+    const openSource =
+      el("researchOpenSource");
+
+
+    const bottomSource =
+      el("researchBottomSource");
+
+
+    if(url !== "#"){
+
+      openSource.href = url;
+
+      openSource.style.display =
+        "block";
+
+
+      bottomSource.href = url;
+
+      bottomSource.style.display =
+        "inline-flex";
+
+    }else{
+
+      openSource.removeAttribute(
+        "href"
+      );
+
+      openSource.style.display =
+        "none";
+
+
+      bottomSource.style.display =
+        "none";
+
+    }
+
+
+    /* --------------------------------------------------------
+       Current confidence is deliberately conservative.
+       It is NOT claimed as external verification.
+    -------------------------------------------------------- */
+
+    let confidence = 0;
+
+
+    if(score > 0){
+
+      confidence =
+        Math.max(
+          20,
+          Math.min(
+            95,
+            Math.round(
+              score * .72
+            )
+          )
+        );
+
+    }
+
+
+    if(review){
+
+      confidence =
+        Math.min(
+          confidence,
+          65
+        );
+
+    }
+
+
+    el("researchConfidence").textContent =
+      confidence
+        ? confidence + "%"
+        : "--";
+
+
+    if(review){
+
+      el("researchStatusBig").textContent =
+        "HUMAN REVIEW";
+
+
+      el("researchStatusSmall").textContent =
+        "AI analysis indicates that this story should not proceed downstream without human verification.";
+
+
+      el("researchVerificationLabel").textContent =
+        "REVIEW REQUIRED";
+
+    }else{
+
+      el("researchStatusBig").textContent =
+        "NOT YET VERIFIED";
+
+
+      el("researchStatusSmall").textContent =
+        "No independent verification has been performed by the NEWSFORGE research engine yet.";
+
+
+      el("researchVerificationLabel").textContent =
+        "PENDING RESEARCH";
+
+    }
+
+
+    /* --------------------------------------------------------
+       Reset claims area
+    -------------------------------------------------------- */
+
+    const claimList =
+      el("claimList");
+
+
+    claimList.innerHTML = "";
+
+    claimList.style.display =
+      "none";
+
+  }
+
+
+  function closeResearch(){
+
+    const overlay =
+      el("researchOverlay");
+
+
+    if(overlay){
+
+      overlay.classList.remove(
+        "open"
+      );
+
+    }
+
+
+    document.body.classList.remove(
+      "modal-open"
+    );
+
+
+    isResearchOpen = false;
+
+    selectedArticle = null;
+
+  }
+
+
+  function handleResearchBackdrop(event){
+
+    if(
+      event.target ===
+      el("researchOverlay")
+    ){
+
+      closeResearch();
+
+    }
+
+  }
+
+
+  function prepareResearchStage(){
+
+    if(!selectedArticle){
+
+      showToast(
+        "No story selected",
+        "Open a story before preparing research."
+      );
+
+      return;
+
+    }
+
+
+    showToast(
+      "Research stage ready",
+      "The selected story is prepared for the next backend research-engine integration."
+    );
+
+
+    addActivity(
+      "Research preparation requested for selected story."
+    );
+
+
+    const status =
+      el("researchVerificationLabel");
+
+
+    if(status){
+
+      status.textContent =
+        "RESEARCH QUEUED";
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     KEYBOARD
+  ========================================================== */
+
+  document.addEventListener(
+    "keydown",
+    function(event){
+
+      if(
+        event.key === "Escape" &&
+        isResearchOpen
+      ){
+
+        closeResearch();
+
+      }
+
+    }
+  );
 
 
   /* ==========================================================
      PUBLIC API
   ========================================================== */
 
-  /*
-   * These are deliberately exposed on window.
-   * The HTML buttons call these functions directly.
-   * This avoids the classic "page looks beautiful,
-   * button has decided to become decorative" problem.
-   */
+  window.discoverNews =
+    discoverNews;
 
-  window.discoverNews = discoverNews;
 
-  window.runPipeline = runPipeline;
+  window.runPipeline =
+    runPipeline;
 
-  window.setCategory = setCategory;
+
+  window.setCategory =
+    setCategory;
+
+
+  window.openResearch =
+    openResearch;
+
+
+  window.closeResearch =
+    closeResearch;
+
+
+  window.handleResearchBackdrop =
+    handleResearchBackdrop;
+
+
+  window.prepareResearchStage =
+    prepareResearchStage;
 
 
   /* ==========================================================
@@ -2894,9 +4694,16 @@ footer{
     "Frontend intelligence interface loaded."
   );
 
+
   addActivity(
     "NEWSFORGE backend endpoint configured at /api/news."
   );
+
+
+  addActivity(
+    "Story research workspace initialized."
+  );
+
 
 })();
 
