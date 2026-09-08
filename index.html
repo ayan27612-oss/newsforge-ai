@@ -3883,7 +3883,11 @@
 
       if (normalized.url) {
         sourceUrl.textContent = normalized.url;
-        sourceLink.href = normalized.url;
+        sourceLink.href = /^https?:\/\//i.test(normalized.url)
+          ? normalized.url
+          : `https://${normalized.url}`;
+        sourceLink.target = "_blank";
+        sourceLink.rel = "noopener noreferrer";
         sourceLink.hidden = false;
       } else {
         sourceUrl.textContent = "No source URL is available.";
