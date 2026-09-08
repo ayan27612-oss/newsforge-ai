@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#08090c">
-<meta name="description" content="NEWSFORGE AI - intelligent news discovery, verification and content automation platform">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
+<meta
+  name="theme-color"
+  content="#08090c"
+>
+
+<meta
+  name="description"
+  content="NEWSFORGE AI - intelligent news discovery, trend analysis, verification and content automation platform"
+>
+
 <title>NEWSFORGE AI</title>
 
+
 <style>
+
+/* =========================================================
+   NEWSFORGE AI
+   AI NEWS INTELLIGENCE INTERFACE
+   ========================================================= */
 
 *{
   box-sizing:border-box;
@@ -16,20 +36,30 @@
 }
 
 :root{
+
   --bg:#08090c;
+
   --panel:#0f1116;
   --panel2:#14171e;
   --panel3:#191c23;
+
   --border:rgba(255,255,255,.08);
-  --border2:rgba(255,255,255,.13);
+  --border2:rgba(255,255,255,.14);
+
   --text:#f4f5f7;
   --muted:#8d929d;
   --muted2:#666c77;
+
   --green:#7cff9b;
+  --green2:#42e878;
+
   --red:#ff5d6c;
   --yellow:#ffd166;
   --blue:#6ea8ff;
   --cyan:#61e7ff;
+
+  --shadow:
+    0 20px 70px rgba(0,0,0,.18);
 }
 
 html{
@@ -37,6 +67,7 @@ html{
 }
 
 body{
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -47,20 +78,31 @@ body{
     sans-serif;
 
   background:
+
     radial-gradient(
       circle at 80% 0%,
       rgba(124,255,155,.09),
       transparent 28%
     ),
+
     radial-gradient(
       circle at 10% 30%,
       rgba(110,168,255,.07),
       transparent 25%
     ),
+
+    radial-gradient(
+      circle at 90% 70%,
+      rgba(97,231,255,.035),
+      transparent 25%
+    ),
+
     var(--bg);
 
   color:var(--text);
+
   min-height:100vh;
+
   overflow-x:hidden;
 }
 
@@ -88,10 +130,15 @@ a{
    ========================================================= */
 
 .app{
+
   width:100%;
+
   max-width:1500px;
+
   margin:auto;
-  padding:22px;
+
+  padding:
+    22px;
 }
 
 
@@ -100,8 +147,11 @@ a{
    ========================================================= */
 
 header{
+
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
 
   padding:
@@ -109,27 +159,34 @@ header{
     0
     28px;
 
-  border-bottom:1px solid var(--border);
+  border-bottom:
+    1px solid var(--border);
 
   position:relative;
 }
 
 .brand{
+
   display:flex;
+
   align-items:center;
+
   gap:12px;
 }
 
 .logo{
+
   width:42px;
   height:42px;
 
-  border:1px solid
+  border:
+    1px solid
     rgba(124,255,155,.35);
 
   border-radius:12px;
 
   display:grid;
+
   place-items:center;
 
   background:
@@ -140,10 +197,12 @@ header{
     rgba(124,255,155,.08);
 
   position:relative;
+
   overflow:hidden;
 }
 
 .logo::before{
+
   content:"";
 
   position:absolute;
@@ -161,11 +220,15 @@ header{
     );
 
   animation:
-    logoPulse 2.5s ease-in-out infinite;
+    logoPulse 2.5s
+    ease-in-out
+    infinite;
 }
 
 .logo span{
+
   position:relative;
+
   z-index:2;
 
   width:9px;
@@ -180,29 +243,37 @@ header{
     var(--green);
 
   animation:
-    dotPulse 1.5s infinite;
+    dotPulse 1.5s
+    infinite;
 }
 
 @keyframes logoPulse{
+
   50%{
     transform:scale(1.5);
     opacity:.4;
   }
+
 }
 
 @keyframes dotPulse{
+
   50%{
     transform:scale(.65);
     opacity:.65;
   }
+
 }
 
 .brand h1{
+
   font-size:18px;
+
   letter-spacing:.14em;
 }
 
 .brand small{
+
   display:block;
 
   color:var(--muted);
@@ -215,16 +286,24 @@ header{
 }
 
 .status{
+
   display:flex;
+
   align-items:center;
+
   gap:8px;
 
   color:var(--muted);
 
   font-size:12px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
 }
 
 .status-dot{
+
   width:7px;
   height:7px;
 
@@ -238,8 +317,21 @@ header{
 }
 
 .status-dot.error{
+
   background:var(--red);
-  box-shadow:0 0 12px var(--red);
+
+  box-shadow:
+    0 0 12px
+    var(--red);
+}
+
+.status-dot.ai{
+
+  background:var(--cyan);
+
+  box-shadow:
+    0 0 12px
+    var(--cyan);
 }
 
 
@@ -248,10 +340,15 @@ header{
    ========================================================= */
 
 .hero{
-  padding:55px 0 40px;
+
+  padding:
+    55px
+    0
+    40px;
 }
 
 .eyebrow{
+
   color:var(--green);
 
   text-transform:uppercase;
@@ -263,11 +360,14 @@ header{
   margin-bottom:14px;
 
   display:flex;
+
   align-items:center;
+
   gap:9px;
 }
 
 .eyebrow::before{
+
   content:"";
 
   width:22px;
@@ -277,20 +377,22 @@ header{
 }
 
 .hero h2{
+
   font-size:
     clamp(38px,7vw,78px);
 
   line-height:.95;
 
-  max-width:900px;
+  max-width:1000px;
 
   letter-spacing:-.055em;
 }
 
 .hero p{
+
   color:var(--muted);
 
-  max-width:650px;
+  max-width:700px;
 
   margin-top:20px;
 
@@ -300,6 +402,7 @@ header{
 }
 
 .hero-actions{
+
   display:flex;
 
   gap:12px;
@@ -311,7 +414,10 @@ header{
 
 .primary,
 .secondary{
-  padding:14px 20px;
+
+  padding:
+    14px
+    20px;
 
   border-radius:10px;
 
@@ -323,6 +429,7 @@ header{
 }
 
 .primary{
+
   border:0;
 
   background:var(--green);
@@ -333,7 +440,9 @@ header{
 }
 
 .primary:hover{
-  transform:translateY(-2px);
+
+  transform:
+    translateY(-2px);
 
   box-shadow:
     0 12px 35px
@@ -341,13 +450,19 @@ header{
 }
 
 .primary:disabled{
+
   opacity:.55;
+
   cursor:wait;
+
   transform:none;
 }
 
 .secondary{
-  border:1px solid var(--border);
+
+  border:
+    1px solid
+    var(--border);
 
   background:var(--panel);
 
@@ -355,26 +470,36 @@ header{
 }
 
 .secondary:hover{
-  border-color:var(--border2);
 
-  transform:translateY(-2px);
+  border-color:
+    var(--border2);
+
+  transform:
+    translateY(-2px);
 }
 
 
 /* =========================================================
-   TOP LIVE STRIP
+   ENGINE STATUS STRIP
    ========================================================= */
 
 .live-strip{
+
   margin-top:10px;
 
   display:flex;
+
   align-items:center;
+
   gap:12px;
 
-  padding:10px 14px;
+  padding:
+    10px
+    14px;
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   border-radius:10px;
 
@@ -392,9 +517,12 @@ header{
   width:max-content;
 
   max-width:100%;
+
+  backdrop-filter:blur(12px);
 }
 
 .live-strip-dot{
+
   width:6px;
   height:6px;
 
@@ -407,15 +535,88 @@ header{
     var(--green);
 
   animation:
-    pulse 1.5s infinite;
+    pulse 1.5s
+    infinite;
+}
+
+.live-strip-dot.ai{
+
+  background:var(--cyan);
+
+  box-shadow:
+    0 0 12px
+    var(--cyan);
 }
 
 
 /* =========================================================
-   GRID
+   ENGINE BADGES
+   ========================================================= */
+
+.engine-badges{
+
+  display:flex;
+
+  gap:7px;
+
+  flex-wrap:wrap;
+
+  margin-top:10px;
+}
+
+.engine-badge{
+
+  border:
+    1px solid
+    var(--border);
+
+  background:
+    rgba(255,255,255,.025);
+
+  border-radius:7px;
+
+  padding:
+    6px
+    8px;
+
+  color:var(--muted);
+
+  font-size:9px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+}
+
+.engine-badge.online{
+
+  color:var(--green);
+
+  border-color:
+    rgba(124,255,155,.18);
+
+  background:
+    rgba(124,255,155,.035);
+}
+
+.engine-badge.ai-online{
+
+  color:var(--cyan);
+
+  border-color:
+    rgba(97,231,255,.18);
+
+  background:
+    rgba(97,231,255,.035);
+}
+
+
+/* =========================================================
+   METRIC GRID
    ========================================================= */
 
 .grid{
+
   display:grid;
 
   grid-template-columns:
@@ -425,10 +626,13 @@ header{
 }
 
 .card{
+
   background:
     rgba(15,17,22,.82);
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   border-radius:16px;
 
@@ -442,31 +646,66 @@ header{
 }
 
 .metric{
-  min-height:130px;
+
+  min-height:140px;
 
   position:relative;
 
   overflow:hidden;
+
+  transition:
+    border-color .25s,
+    transform .25s;
+}
+
+.metric:hover{
+
+  border-color:
+    rgba(124,255,155,.16);
+
+  transform:
+    translateY(-2px);
 }
 
 .metric::after{
+
   content:"";
 
   position:absolute;
 
-  width:80px;
-  height:80px;
+  width:90px;
+  height:90px;
 
-  right:-35px;
-  bottom:-35px;
+  right:-40px;
+  bottom:-40px;
 
   border-radius:50%;
 
-  border:1px solid
+  border:
+    1px solid
     rgba(124,255,155,.1);
 }
 
+.metric::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:3px;
+  height:38px;
+
+  left:0;
+  top:22px;
+
+  background:
+    var(--green);
+
+  opacity:.6;
+}
+
 .metric-label{
+
   color:var(--muted);
 
   font-size:11px;
@@ -477,6 +716,7 @@ header{
 }
 
 .metric-value{
+
   font-size:34px;
 
   font-weight:800;
@@ -487,11 +727,22 @@ header{
 }
 
 .metric-change{
+
   color:var(--green);
 
   font-size:11px;
 
   margin-top:4px;
+}
+
+.metric-change.muted{
+
+  color:var(--muted);
+}
+
+.metric-change.ai{
+
+  color:var(--cyan);
 }
 
 
@@ -500,10 +751,12 @@ header{
    ========================================================= */
 
 .section{
+
   margin-top:35px;
 }
 
 .section-head{
+
   display:flex;
 
   justify-content:space-between;
@@ -516,10 +769,14 @@ header{
 }
 
 .section-head h3{
+
   font-size:20px;
+
+  letter-spacing:-.02em;
 }
 
 .section-head span{
+
   color:var(--muted);
 
   font-size:10px;
@@ -527,6 +784,8 @@ header{
   text-transform:uppercase;
 
   letter-spacing:.12em;
+
+  text-align:right;
 }
 
 
@@ -535,6 +794,7 @@ header{
    ========================================================= */
 
 .toolbar{
+
   display:flex;
 
   align-items:center;
@@ -547,7 +807,10 @@ header{
 }
 
 .category-btn{
-  border:1px solid var(--border);
+
+  border:
+    1px solid
+    var(--border);
 
   background:var(--panel);
 
@@ -569,6 +832,7 @@ header{
 }
 
 .category-btn:hover{
+
   color:var(--text);
 
   border-color:
@@ -576,6 +840,7 @@ header{
 }
 
 .category-btn.active{
+
   color:#071009;
 
   background:var(--green);
@@ -586,9 +851,12 @@ header{
 }
 
 .refresh-btn{
+
   margin-left:auto;
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   background:transparent;
 
@@ -605,13 +873,17 @@ header{
 }
 
 .refresh-btn:hover{
+
   color:var(--text);
 
-  border-color:var(--border2);
+  border-color:
+    var(--border2);
 }
 
 .refresh-btn.loading{
+
   opacity:.5;
+
   cursor:wait;
 }
 
@@ -621,15 +893,19 @@ header{
    ========================================================= */
 
 .news-layout{
+
   display:grid;
 
   grid-template-columns:
-    1.5fr 1fr;
+    1.55fr 1fr;
 
   gap:14px;
+
+  align-items:start;
 }
 
 .news-list{
+
   display:flex;
 
   flex-direction:column;
@@ -643,58 +919,118 @@ header{
    ========================================================= */
 
 .news{
+
   display:grid;
 
   grid-template-columns:
-    60px 1fr auto;
+    60px
+    1fr
+    90px;
 
   gap:15px;
 
-  align-items:center;
+  align-items:start;
 
-  padding:16px;
+  padding:17px;
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   border-radius:14px;
 
-  background:var(--panel);
+  background:
+    rgba(15,17,22,.94);
 
   transition:
     transform .2s,
     border-color .2s,
-    background .2s;
+    background .2s,
+    box-shadow .2s;
 
   animation:
-    newsIn .4s ease both;
+    newsIn .4s
+    ease both;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.news::before{
+
+  content:"";
+
+  position:absolute;
+
+  left:0;
+  top:0;
+  bottom:0;
+
+  width:2px;
+
+  background:
+    rgba(124,255,155,.18);
+}
+
+.news.high::before{
+
+  background:
+    var(--green);
+
+  box-shadow:
+    0 0 15px
+    rgba(124,255,155,.5);
+}
+
+.news.critical::before{
+
+  background:
+    var(--red);
+
+  box-shadow:
+    0 0 15px
+    rgba(255,93,108,.5);
 }
 
 .news:hover{
+
   border-color:
     rgba(124,255,155,.22);
 
   background:
-    rgba(20,23,30,.95);
+    rgba(20,23,30,.98);
 
   transform:
     translateY(-2px);
+
+  box-shadow:
+    0 15px 40px
+    rgba(0,0,0,.15);
 }
 
 @keyframes newsIn{
+
   from{
+
     opacity:0;
+
     transform:
       translateY(8px);
   }
 
   to{
+
     opacity:1;
+
     transform:
       translateY(0);
   }
+
 }
 
 .rank{
+
   font-size:24px;
 
   color:#4d525c;
@@ -707,10 +1043,12 @@ header{
 }
 
 .news-main{
+
   min-width:0;
 }
 
 .news h4{
+
   font-size:14px;
 
   line-height:1.45;
@@ -719,6 +1057,7 @@ header{
 }
 
 .news-source{
+
   color:var(--muted);
 
   font-size:10px;
@@ -735,50 +1074,29 @@ header{
 }
 
 .news-description{
+
   color:var(--muted);
 
   font-size:11px;
 
-  margin-top:7px;
+  margin-top:8px;
 
   line-height:1.5;
 
   display:
     -webkit-box;
 
-  -webkit-line-clamp:2;
+  -webkit-line-clamp:3;
 
   -webkit-box-orient:vertical;
 
   overflow:hidden;
 }
 
-.score{
-  text-align:right;
-
-  min-width:55px;
-}
-
-.score strong{
-  display:block;
-
-  color:var(--green);
-
-  font-size:20px;
-}
-
-.score span{
-  color:var(--muted);
-
-  font-size:8px;
-
-  text-transform:uppercase;
-
-  letter-spacing:.1em;
-}
-
 .source-pill{
-  padding:3px 6px;
+
+  padding:
+    3px 6px;
 
   border-radius:5px;
 
@@ -789,9 +1107,10 @@ header{
 }
 
 .story-open{
+
   display:inline-block;
 
-  margin-top:9px;
+  margin-top:10px;
 
   color:var(--green);
 
@@ -804,11 +1123,227 @@ header{
 
 
 /* =========================================================
+   AI STORY META
+   ========================================================= */
+
+.ai-meta{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:6px;
+
+  margin-top:11px;
+}
+
+.ai-badge{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:4px;
+
+  padding:
+    4px
+    7px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:6px;
+
+  background:
+    rgba(255,255,255,.025);
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.07em;
+}
+
+.ai-badge.category{
+
+  color:var(--blue);
+
+  border-color:
+    rgba(110,168,255,.18);
+}
+
+.ai-badge.critical{
+
+  color:var(--red);
+
+  border-color:
+    rgba(255,93,108,.2);
+
+  background:
+    rgba(255,93,108,.035);
+}
+
+.ai-badge.high{
+
+  color:var(--green);
+
+  border-color:
+    rgba(124,255,155,.2);
+
+  background:
+    rgba(124,255,155,.035);
+}
+
+.ai-badge.medium{
+
+  color:var(--yellow);
+
+  border-color:
+    rgba(255,209,102,.18);
+}
+
+.ai-badge.review{
+
+  color:var(--yellow);
+
+  border-color:
+    rgba(255,209,102,.2);
+
+  background:
+    rgba(255,209,102,.035);
+}
+
+.ai-badge.attention{
+
+  color:var(--cyan);
+
+  border-color:
+    rgba(97,231,255,.18);
+}
+
+
+/* =========================================================
+   AI REASONING
+   ========================================================= */
+
+.ai-reasoning{
+
+  margin-top:11px;
+
+  padding:
+    9px
+    10px;
+
+  border-left:
+    2px solid
+    rgba(97,231,255,.35);
+
+  background:
+    rgba(97,231,255,.025);
+
+  color:
+    #969ca7;
+
+  font-size:10px;
+
+  line-height:1.55;
+}
+
+.ai-reasoning strong{
+
+  color:var(--cyan);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.1em;
+
+  display:block;
+
+  margin-bottom:4px;
+}
+
+
+/* =========================================================
+   SCORE
+   ========================================================= */
+
+.score{
+
+  text-align:right;
+
+  min-width:70px;
+}
+
+.score strong{
+
+  display:block;
+
+  color:var(--green);
+
+  font-size:25px;
+
+  letter-spacing:-.04em;
+}
+
+.score.high strong{
+
+  color:var(--green);
+}
+
+.score.critical strong{
+
+  color:var(--red);
+}
+
+.score.medium strong{
+
+  color:var(--yellow);
+}
+
+.score.pending strong{
+
+  color:var(--muted2);
+}
+
+.score span{
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.1em;
+}
+
+.score-label{
+
+  display:block;
+
+  margin-top:7px;
+
+  font-size:7px;
+
+  color:var(--muted2);
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+}
+
+
+/* =========================================================
    LOADING
    ========================================================= */
 
 .loading-card{
-  min-height:120px;
+
+  min-height:150px;
 
   display:flex;
 
@@ -818,7 +1353,9 @@ header{
 
   padding:20px;
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   border-radius:14px;
 
@@ -826,6 +1363,7 @@ header{
 }
 
 .spinner{
+
   width:25px;
   height:25px;
 
@@ -839,16 +1377,20 @@ header{
     var(--green);
 
   animation:
-    spin .8s linear infinite;
+    spin .8s
+    linear infinite;
 }
 
 @keyframes spin{
+
   to{
     transform:rotate(360deg);
   }
+
 }
 
 .loading-text{
+
   color:var(--muted);
 
   font-size:11px;
@@ -862,6 +1404,7 @@ header{
    ========================================================= */
 
 .categories{
+
   display:grid;
 
   grid-template-columns:
@@ -871,7 +1414,10 @@ header{
 }
 
 .category{
-  border:1px solid var(--border);
+
+  border:
+    1px solid
+    var(--border);
 
   border-radius:13px;
 
@@ -883,27 +1429,37 @@ header{
 }
 
 .category:hover{
+
   border-color:
     rgba(255,255,255,.13);
 
-  transform:translateY(-1px);
+  transform:
+    translateY(-1px);
 }
 
 .cat-top{
+
   display:flex;
 
   justify-content:space-between;
+
+  gap:8px;
 }
 
 .cat-name{
+
   font-size:12px;
 }
 
 .cat-score{
+
   font-weight:800;
+
+  font-size:12px;
 }
 
 .bar{
+
   height:4px;
 
   background:#20232a;
@@ -916,6 +1472,7 @@ header{
 }
 
 .bar i{
+
   display:block;
 
   height:100%;
@@ -932,10 +1489,29 @@ header{
 
 
 /* =========================================================
+   CATEGORY SUBTEXT
+   ========================================================= */
+
+.cat-sub{
+
+  color:var(--muted2);
+
+  font-size:8px;
+
+  margin-top:7px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.07em;
+}
+
+
+/* =========================================================
    PIPELINE
    ========================================================= */
 
 .pipeline{
+
   display:grid;
 
   grid-template-columns:
@@ -945,9 +1521,12 @@ header{
 }
 
 .step{
+
   padding:18px;
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   background:var(--panel);
 
@@ -957,10 +1536,12 @@ header{
 
   transition:
     border-color .2s,
-    transform .2s;
+    transform .2s,
+    background .2s;
 }
 
 .step:hover{
+
   border-color:
     rgba(124,255,155,.15);
 
@@ -968,13 +1549,30 @@ header{
     translateY(-2px);
 }
 
+.step.running{
+
+  border-color:
+    rgba(124,255,155,.25);
+
+  background:
+    rgba(124,255,155,.025);
+}
+
+.step.complete{
+
+  border-color:
+    rgba(124,255,155,.15);
+}
+
 .step-number{
+
   font-size:10px;
 
   color:var(--muted);
 }
 
 .step h4{
+
   margin-top:16px;
 
   font-size:13px;
@@ -983,6 +1581,7 @@ header{
 }
 
 .step p{
+
   color:var(--muted);
 
   font-size:10px;
@@ -993,6 +1592,7 @@ header{
 }
 
 .step-status{
+
   margin-top:15px;
 
   font-size:9px;
@@ -1005,17 +1605,20 @@ header{
 }
 
 .step-status.paused{
+
   color:var(--yellow);
 }
 
-.live{
-  animation:pulse 1.5s infinite;
+.step-status.not-ready{
+
+  color:var(--muted2);
 }
 
-@keyframes pulse{
-  50%{
-    opacity:.45;
-  }
+.live{
+
+  animation:
+    pulse 1.5s
+    infinite;
 }
 
 
@@ -1024,6 +1627,7 @@ header{
    ========================================================= */
 
 .activity{
+
   display:grid;
 
   grid-template-columns:
@@ -1033,6 +1637,7 @@ header{
 }
 
 .log{
+
   font-family:
     "SFMono-Regular",
     Consolas,
@@ -1042,24 +1647,28 @@ header{
 
   line-height:2;
 
-  max-height:300px;
+  max-height:330px;
 
   overflow:auto;
 }
 
 .log span{
+
   color:var(--muted);
 }
 
 .ok{
+
   color:var(--green);
 }
 
 .warn{
+
   color:var(--yellow);
 }
 
 .error-text{
+
   color:var(--red);
 }
 
@@ -1069,6 +1678,7 @@ header{
    ========================================================= */
 
 .architecture{
+
   margin-top:20px;
 
   display:flex;
@@ -1087,9 +1697,10 @@ header{
 }
 
 .arch-node{
+
   width:100%;
 
-  padding:8px;
+  padding:9px;
 
   border:
     1px solid
@@ -1101,9 +1712,36 @@ header{
 
   background:
     rgba(255,255,255,.025);
+
+  transition:
+    border-color .2s,
+    background .2s;
+}
+
+.arch-node.active{
+
+  color:var(--green);
+
+  border-color:
+    rgba(124,255,155,.2);
+
+  background:
+    rgba(124,255,155,.03);
+}
+
+.arch-node.ai{
+
+  color:var(--cyan);
+
+  border-color:
+    rgba(97,231,255,.2);
+
+  background:
+    rgba(97,231,255,.025);
 }
 
 .arch-arrow{
+
   color:var(--green);
 
   opacity:.7;
@@ -1115,9 +1753,11 @@ header{
    ========================================================= */
 
 .error-card{
+
   padding:20px;
 
-  border:1px solid
+  border:
+    1px solid
     rgba(255,93,108,.2);
 
   background:
@@ -1127,12 +1767,14 @@ header{
 }
 
 .error-card h4{
+
   color:var(--red);
 
   font-size:14px;
 }
 
 .error-card p{
+
   color:var(--muted);
 
   font-size:11px;
@@ -1148,11 +1790,16 @@ header{
    ========================================================= */
 
 .empty-card{
-  padding:30px 20px;
+
+  padding:
+    30px
+    20px;
 
   text-align:center;
 
-  border:1px solid var(--border);
+  border:
+    1px solid
+    var(--border);
 
   border-radius:14px;
 
@@ -1160,10 +1807,12 @@ header{
 }
 
 .empty-card h4{
+
   font-size:14px;
 }
 
 .empty-card p{
+
   color:var(--muted);
 
   font-size:11px;
@@ -1175,15 +1824,128 @@ header{
 
 
 /* =========================================================
+   AI SUMMARY PANEL
+   ========================================================= */
+
+.ai-summary{
+
+  margin-top:14px;
+
+  padding:16px;
+
+  border:
+    1px solid
+    rgba(97,231,255,.1);
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(97,231,255,.035),
+      rgba(124,255,155,.025)
+    );
+}
+
+.ai-summary-top{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.ai-summary-title{
+
+  font-size:11px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.1em;
+
+  color:var(--cyan);
+}
+
+.ai-summary-model{
+
+  font-size:8px;
+
+  color:var(--muted);
+
+  text-transform:uppercase;
+
+  letter-spacing:.08em;
+}
+
+.ai-summary-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:8px;
+
+  margin-top:12px;
+}
+
+.ai-stat{
+
+  padding:10px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:9px;
+
+  background:
+    rgba(255,255,255,.018);
+}
+
+.ai-stat strong{
+
+  display:block;
+
+  font-size:18px;
+
+  color:var(--text);
+}
+
+.ai-stat span{
+
+  display:block;
+
+  color:var(--muted);
+
+  font-size:8px;
+
+  margin-top:3px;
+
+  text-transform:uppercase;
+
+  letter-spacing:.07em;
+}
+
+
+/* =========================================================
    FOOTER
    ========================================================= */
 
 footer{
+
   margin-top:50px;
 
-  padding:22px 0;
+  padding:
+    22px
+    0;
 
-  border-top:1px solid var(--border);
+  border-top:
+    1px solid
+    var(--border);
 
   color:var(--muted);
 
@@ -1202,6 +1964,7 @@ footer{
    ========================================================= */
 
 .toast{
+
   position:fixed;
 
   left:50%;
@@ -1212,7 +1975,8 @@ footer{
     translate(-50%,20px);
 
   padding:
-    12px 16px;
+    12px
+    16px;
 
   border:
     1px solid
@@ -1241,6 +2005,7 @@ footer{
 }
 
 .toast.show{
+
   opacity:1;
 
   transform:
@@ -1255,8 +2020,15 @@ footer{
 @media(max-width:1100px){
 
   .pipeline{
+
     grid-template-columns:
       repeat(3,1fr);
+  }
+
+  .ai-summary-grid{
+
+    grid-template-columns:
+      repeat(2,1fr);
   }
 
 }
@@ -1264,16 +2036,19 @@ footer{
 @media(max-width:900px){
 
   .grid{
+
     grid-template-columns:
       1fr 1fr;
   }
 
   .news-layout,
   .activity{
+
     grid-template-columns:1fr;
   }
 
   .pipeline{
+
     grid-template-columns:
       1fr 1fr;
   }
@@ -1283,60 +2058,115 @@ footer{
 @media(max-width:600px){
 
   .app{
+
     padding:15px;
   }
 
   header{
+
     padding-bottom:18px;
   }
 
   .status{
+
     display:none;
   }
 
   .hero{
-    padding:40px 0 30px;
+
+    padding:
+      40px
+      0
+      30px;
   }
 
   .hero h2{
+
     font-size:43px;
   }
 
   .hero p{
+
     font-size:13px;
   }
 
+  .hero-actions{
+
+    flex-direction:column;
+  }
+
+  .primary,
+  .secondary{
+
+    width:100%;
+
+    text-align:center;
+  }
+
   .grid{
+
     grid-template-columns:
       1fr 1fr;
+
+    gap:9px;
   }
 
   .metric{
-    min-height:115px;
+
+    min-height:120px;
+
+    padding:16px;
   }
 
   .metric-value{
+
     font-size:27px;
   }
 
+  .metric-label{
+
+    font-size:9px;
+  }
+
   .news{
+
     grid-template-columns:
-      38px 1fr;
+      38px
+      1fr;
+
+    gap:11px;
+
+    padding:15px;
   }
 
   .score{
+
     display:none;
   }
 
+  .news h4{
+
+    font-size:13px;
+  }
+
+  .news-description{
+
+    font-size:10px;
+  }
+
   .pipeline{
+
     grid-template-columns:1fr;
   }
 
   .categories{
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+      1fr 1fr;
   }
 
   .toolbar{
+
     overflow-x:auto;
 
     flex-wrap:nowrap;
@@ -1345,15 +2175,25 @@ footer{
   }
 
   .category-btn{
+
     flex-shrink:0;
   }
 
   .refresh-btn{
+
     margin-left:0;
+
     flex-shrink:0;
   }
 
+  .ai-summary-grid{
+
+    grid-template-columns:
+      1fr 1fr;
+  }
+
   footer{
+
     flex-direction:column;
 
     gap:8px;
@@ -1361,11 +2201,50 @@ footer{
 
 }
 
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media(max-width:390px){
+
+  .grid{
+
+    grid-template-columns:1fr;
+  }
+
+  .categories{
+
+    grid-template-columns:1fr;
+  }
+
+  .hero h2{
+
+    font-size:39px;
+  }
+
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes pulse{
+
+  50%{
+    opacity:.45;
+  }
+
+}
+
 </style>
+
 </head>
 
 
 <body>
+
 
 <div class="app">
 
@@ -1429,11 +2308,11 @@ footer{
 
 
   <p>
-    NEWSFORGE is an AI-powered intelligence engine
-    designed to discover emerging stories, analyze
-    what is happening, verify information, create
-    platform-specific content and eventually
-    distribute it automatically.
+    NEWSFORGE discovers live stories, sends them
+    through AI intelligence, scores their attention
+    potential, classifies their category and flags
+    stories that require human verification before
+    publication.
   </p>
 
 
@@ -1442,14 +2321,18 @@ footer{
     <button
       class="primary"
       id="discoverBtn">
+
       Discover Trending News
+
     </button>
 
 
     <button
       class="secondary"
       id="pipelineBtn">
+
       Run AI Pipeline
+
     </button>
 
   </div>
@@ -1457,10 +2340,41 @@ footer{
 
   <div class="live-strip">
 
-    <i class="live-strip-dot"></i>
+    <i
+      class="live-strip-dot"
+      id="liveDot">
+    </i>
 
     <span id="feedStatus">
       NEWS INTELLIGENCE ENGINE READY
+    </span>
+
+  </div>
+
+
+  <div class="engine-badges">
+
+    <span
+      class="engine-badge"
+      id="newsBadge">
+
+      NEWSAPI · READY
+
+    </span>
+
+    <span
+      class="engine-badge"
+      id="aiBadge">
+
+      GEMINI · READY
+
+    </span>
+
+    <span
+      class="engine-badge">
+
+      HUMAN APPROVAL · REQUIRED
+
     </span>
 
   </div>
@@ -1474,6 +2388,7 @@ footer{
 
 <section class="grid">
 
+
   <div class="card metric">
 
     <div class="metric-label">
@@ -1483,13 +2398,17 @@ footer{
     <div
       class="metric-value"
       id="stories">
+
       0
+
     </div>
 
     <div
       class="metric-change"
       id="storiesChange">
+
       Awaiting discovery
+
     </div>
 
   </div>
@@ -1504,13 +2423,17 @@ footer{
     <div
       class="metric-value"
       id="potential">
+
       0
+
     </div>
 
     <div
-      class="metric-change"
+      class="metric-change ai"
       id="potentialChange">
-      Trend scoring offline
+
+      AI scoring offline
+
     </div>
 
   </div>
@@ -1525,11 +2448,16 @@ footer{
     <div
       class="metric-value"
       id="contentGenerated">
+
       0
+
     </div>
 
-    <div class="metric-change">
-      This cycle
+    <div
+      class="metric-change muted">
+
+      Content engine pending
+
     </div>
 
   </div>
@@ -1543,14 +2471,20 @@ footer{
 
     <div
       class="metric-value">
-      78%
+
+      --
+
     </div>
 
-    <div class="metric-change">
-      Operational
+    <div
+      class="metric-change muted">
+
+      Production automation pending
+
     </div>
 
   </div>
+
 
 </section>
 
@@ -1560,6 +2494,7 @@ footer{
      ======================================================= -->
 
 <section class="section">
+
 
   <div class="section-head">
 
@@ -1574,58 +2509,98 @@ footer{
   </div>
 
 
-  <!-- CATEGORY TOOLBAR -->
-
   <div class="toolbar">
+
 
     <button
       class="category-btn active"
       data-category="all">
+
       All
+
     </button>
+
 
     <button
       class="category-btn"
       data-category="business">
+
       Business
+
     </button>
+
 
     <button
       class="category-btn"
       data-category="technology">
+
       Technology
+
     </button>
+
+
+    <button
+      class="category-btn"
+      data-category="politics">
+
+      Politics
+
+    </button>
+
 
     <button
       class="category-btn"
       data-category="sports">
+
       Sports
+
     </button>
+
 
     <button
       class="category-btn"
       data-category="science">
+
       Science
+
     </button>
+
 
     <button
       class="category-btn"
       data-category="health">
+
       Health
+
     </button>
+
 
     <button
       class="category-btn"
       data-category="entertainment">
+
       Entertainment
+
+    </button>
+
+
+    <button
+      class="category-btn"
+      data-category="finance">
+
+      Finance
+
     </button>
 
 
     <button
       class="refresh-btn"
       id="refreshBtn">
+
       ↻ Refresh
+
     </button>
+
 
   </div>
 
@@ -1633,7 +2608,9 @@ footer{
   <div class="news-layout">
 
 
-    <!-- NEWS LIST -->
+    <!-- ===================================================
+         NEWS LIST
+         =================================================== -->
 
     <div
       class="news-list"
@@ -1647,9 +2624,9 @@ footer{
         </h4>
 
         <p>
-          Press “Discover Trending News” to
-          retrieve live Indian headlines from
-          the NEWSFORGE backend.
+          Press “Discover Trending News” to retrieve
+          live Indian headlines and send them through
+          the NEWSFORGE AI intelligence engine.
         </p>
 
       </div>
@@ -1658,150 +2635,302 @@ footer{
     </div>
 
 
-    <!-- CATEGORY INTELLIGENCE -->
+    <!-- ===================================================
+         CATEGORY INTELLIGENCE
+         =================================================== -->
 
-    <div class="categories">
+    <div>
 
 
-      <div class="category">
+      <div class="categories">
 
-        <div class="cat-top">
 
-          <span class="cat-name">
-            Politics
-          </span>
+        <div class="category">
 
-          <b
-            class="cat-score"
-            id="catPolitics">
-            --
-          </b>
+          <div class="cat-top">
+
+            <span class="cat-name">
+              Politics
+            </span>
+
+            <b
+              class="cat-score"
+              id="catPolitics">
+
+              --
+
+            </b>
+
+          </div>
+
+          <div class="bar">
+            <i id="barPolitics"></i>
+          </div>
+
+          <div
+            class="cat-sub"
+            id="subPolitics">
+
+            Awaiting AI
+
+          </div>
 
         </div>
 
-        <div class="bar">
-          <i id="barPolitics"></i>
+
+        <div class="category">
+
+          <div class="cat-top">
+
+            <span class="cat-name">
+              Technology
+            </span>
+
+            <b
+              class="cat-score"
+              id="catTechnology">
+
+              --
+
+            </b>
+
+          </div>
+
+          <div class="bar">
+            <i id="barTechnology"></i>
+          </div>
+
+          <div
+            class="cat-sub"
+            id="subTechnology">
+
+            Awaiting AI
+
+          </div>
+
         </div>
+
+
+        <div class="category">
+
+          <div class="cat-top">
+
+            <span class="cat-name">
+              Business
+            </span>
+
+            <b
+              class="cat-score"
+              id="catBusiness">
+
+              --
+
+            </b>
+
+          </div>
+
+          <div class="bar">
+            <i id="barBusiness"></i>
+          </div>
+
+          <div
+            class="cat-sub"
+            id="subBusiness">
+
+            Awaiting AI
+
+          </div>
+
+        </div>
+
+
+        <div class="category">
+
+          <div class="cat-top">
+
+            <span class="cat-name">
+              Sports
+            </span>
+
+            <b
+              class="cat-score"
+              id="catSports">
+
+              --
+
+            </b>
+
+          </div>
+
+          <div class="bar">
+            <i id="barSports"></i>
+          </div>
+
+          <div
+            class="cat-sub"
+            id="subSports">
+
+            Awaiting AI
+
+          </div>
+
+        </div>
+
+
+        <div class="category">
+
+          <div class="cat-top">
+
+            <span class="cat-name">
+              Science
+            </span>
+
+            <b
+              class="cat-score"
+              id="catScience">
+
+              --
+
+            </b>
+
+          </div>
+
+          <div class="bar">
+            <i id="barScience"></i>
+          </div>
+
+          <div
+            class="cat-sub"
+            id="subScience">
+
+            Awaiting AI
+
+          </div>
+
+        </div>
+
+
+        <div class="category">
+
+          <div class="cat-top">
+
+            <span class="cat-name">
+              World
+            </span>
+
+            <b
+              class="cat-score"
+              id="catWorld">
+
+              --
+
+            </b>
+
+          </div>
+
+          <div class="bar">
+            <i id="barWorld"></i>
+          </div>
+
+          <div
+            class="cat-sub"
+            id="subWorld">
+
+            Awaiting AI
+
+          </div>
+
+        </div>
+
 
       </div>
 
 
-      <div class="category">
+      <!-- =================================================
+           AI SUMMARY
+           ================================================= -->
 
-        <div class="cat-top">
+      <div class="ai-summary">
 
-          <span class="cat-name">
-            Technology
+        <div class="ai-summary-top">
+
+          <span class="ai-summary-title">
+            AI Intelligence
           </span>
 
-          <b
-            class="cat-score"
-            id="catTechnology">
-            --
-          </b>
+          <span
+            class="ai-summary-model"
+            id="aiModel">
 
-        </div>
+            GEMINI · WAITING
 
-        <div class="bar">
-          <i id="barTechnology"></i>
-        </div>
-
-      </div>
-
-
-      <div class="category">
-
-        <div class="cat-top">
-
-          <span class="cat-name">
-            Business
           </span>
 
-          <b
-            class="cat-score"
-            id="catBusiness">
-            --
-          </b>
-
         </div>
 
-        <div class="bar">
-          <i id="barBusiness"></i>
-        </div>
 
-      </div>
+        <div class="ai-summary-grid">
 
 
-      <div class="category">
+          <div class="ai-stat">
 
-        <div class="cat-top">
+            <strong id="aiAnalyzed">
+              0
+            </strong>
 
-          <span class="cat-name">
-            Sports
-          </span>
+            <span>
+              Stories analyzed
+            </span>
 
-          <b
-            class="cat-score"
-            id="catSports">
-            --
-          </b>
-
-        </div>
-
-        <div class="bar">
-          <i id="barSports"></i>
-        </div>
-
-      </div>
+          </div>
 
 
-      <div class="category">
+          <div class="ai-stat">
 
-        <div class="cat-top">
+            <strong id="aiHigh">
+              0
+            </strong>
 
-          <span class="cat-name">
-            Science
-          </span>
+            <span>
+              High potential
+            </span>
 
-          <b
-            class="cat-score"
-            id="catScience">
-            --
-          </b>
-
-        </div>
-
-        <div class="bar">
-          <i id="barScience"></i>
-        </div>
-
-      </div>
+          </div>
 
 
-      <div class="category">
+          <div class="ai-stat">
 
-        <div class="cat-top">
+            <strong id="aiCritical">
+              0
+            </strong>
 
-          <span class="cat-name">
-            World
-          </span>
+            <span>
+              Critical
+            </span>
 
-          <b
-            class="cat-score"
-            id="catWorld">
-            --
-          </b>
+          </div>
 
-        </div>
 
-        <div class="bar">
-          <i id="barWorld"></i>
+          <div class="ai-stat">
+
+            <strong id="aiReview">
+              0
+            </strong>
+
+            <span>
+              Review required
+            </span>
+
+          </div>
+
+
         </div>
 
       </div>
 
 
     </div>
+
 
   </div>
 
@@ -1813,6 +2942,7 @@ footer{
      ======================================================= -->
 
 <section class="section">
+
 
   <div class="section-head">
 
@@ -1830,7 +2960,9 @@ footer{
   <div class="pipeline">
 
 
-    <div class="step">
+    <div
+      class="step"
+      id="step1">
 
       <div class="step-number">
         01
@@ -1841,20 +2973,24 @@ footer{
       </h4>
 
       <p>
-        Scan available news and emerging
-        trend signals.
+        Retrieve live stories from the
+        configured news intelligence source.
       </p>
 
       <div
         class="step-status"
         id="s1">
+
         READY
+
       </div>
 
     </div>
 
 
-    <div class="step">
+    <div
+      class="step"
+      id="step2">
 
       <div class="step-number">
         02
@@ -1865,20 +3001,24 @@ footer{
       </h4>
 
       <p>
-        Collect sources and understand
-        the story context.
+        Send story context to Gemini for
+        editorial intelligence analysis.
       </p>
 
       <div
         class="step-status"
         id="s2">
+
         READY
+
       </div>
 
     </div>
 
 
-    <div class="step">
+    <div
+      class="step"
+      id="step3">
 
       <div class="step-number">
         03
@@ -1889,20 +3029,24 @@ footer{
       </h4>
 
       <p>
-        Compare claims and identify
-        conflicting information.
+        Flag sensitive stories that require
+        human verification before publishing.
       </p>
 
       <div
         class="step-status"
         id="s3">
+
         READY
+
       </div>
 
     </div>
 
 
-    <div class="step">
+    <div
+      class="step"
+      id="step4">
 
       <div class="step-number">
         04
@@ -1918,15 +3062,19 @@ footer{
       </p>
 
       <div
-        class="step-status"
+        class="step-status not-ready"
         id="s4">
-        READY
+
+        NOT IMPLEMENTED
+
       </div>
 
     </div>
 
 
-    <div class="step">
+    <div
+      class="step"
+      id="step5">
 
       <div class="step-number">
         05
@@ -1937,14 +3085,16 @@ footer{
       </h4>
 
       <p>
-        Prepare approved content for
-        social distribution.
+        Distribute approved content through
+        connected social publishing APIs.
       </p>
 
       <div
         class="step-status paused"
         id="s5">
+
         PAUSED
+
       </div>
 
     </div>
@@ -1960,6 +3110,7 @@ footer{
      ======================================================= -->
 
 <section class="section">
+
 
   <div class="section-head">
 
@@ -1981,7 +3132,9 @@ footer{
       class="card log"
       id="log">
 
+
       <div>
+
         <span>
           [SYSTEM]
         </span>
@@ -1989,42 +3142,67 @@ footer{
         <b class="ok">
           NEWSFORGE initialized
         </b>
+
       </div>
 
+
       <div>
+
         <span>
           [ENGINE]
         </span>
 
         <b class="ok">
-          News discovery engine ready
+          Intelligence interface ready
         </b>
+
       </div>
 
+
       <div>
+
         <span>
           [API]
         </span>
 
         <b class="ok">
-          Backend endpoint available
+          News backend configured
         </b>
+
       </div>
 
+
       <div>
+
+        <span>
+          [AI]
+        </span>
+
+        <b class="warn">
+          Waiting for discovery
+        </b>
+
+      </div>
+
+
+      <div>
+
         <span>
           [PUBLISH]
         </span>
 
         <b class="warn">
-          Waiting for approval
+          Human approval required
         </b>
+
       </div>
+
 
     </div>
 
 
     <div class="card">
+
 
       <div class="metric-label">
         Architecture
@@ -2033,59 +3211,84 @@ footer{
 
       <div class="architecture">
 
-        <div class="arch-node">
+
+        <div class="arch-node active">
           USER
         </div>
 
+
         <div class="arch-arrow">
           ↓
         </div>
 
-        <div class="arch-node">
+
+        <div class="arch-node active">
           NEWS DISCOVERY
         </div>
 
-        <div class="arch-arrow">
-          ↓
-        </div>
-
-        <div class="arch-node">
-          AI RESEARCH
-        </div>
 
         <div class="arch-arrow">
           ↓
         </div>
 
-        <div class="arch-node">
-          FACT VERIFICATION
+
+        <div class="arch-node ai">
+          GEMINI AI INTELLIGENCE
         </div>
+
 
         <div class="arch-arrow">
           ↓
         </div>
+
+
+        <div class="arch-node ai">
+          TREND SCORING
+        </div>
+
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
+
+        <div class="arch-node ai">
+          VERIFICATION FLAGS
+        </div>
+
+
+        <div class="arch-arrow">
+          ↓
+        </div>
+
 
         <div class="arch-node">
           CONTENT ENGINE
         </div>
 
+
         <div class="arch-arrow">
           ↓
         </div>
+
 
         <div class="arch-node">
           HUMAN APPROVAL
         </div>
 
+
         <div class="arch-arrow">
           ↓
         </div>
+
 
         <div class="arch-node">
           PUBLISHING
         </div>
 
+
       </div>
+
 
     </div>
 
@@ -2102,7 +3305,7 @@ footer{
   </span>
 
   <span>
-    DISCOVER · VERIFY · CREATE · PUBLISH
+    DISCOVER · ANALYZE · VERIFY · CREATE · PUBLISH
   </span>
 
 </footer>
@@ -2119,99 +3322,160 @@ footer{
 
 <script>
 
-
 /* =========================================================
    NEWSFORGE AI
-   LIVE FRONTEND ENGINE
+   FRONTEND INTELLIGENCE ENGINE
    ========================================================= */
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    GLOBAL STATE
-   --------------------------------------------------------- */
+   ========================================================= */
 
 const state = {
 
   articles: [],
 
-  category: "all",
+  category:"all",
 
-  loading: false,
+  loading:false,
 
-  lastUpdated: null,
+  lastUpdated:null,
 
-  contentGenerated: 0
+  aiEnabled:false,
+
+  aiAnalyzed:false,
+
+  aiModel:null,
+
+  aiStats:{
+
+    analyzed:0,
+
+    highPotential:0,
+
+    critical:0,
+
+    verificationRequired:0
+
+  }
 
 };
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    DOM HELPERS
-   --------------------------------------------------------- */
+   ========================================================= */
 
-const $ = selector =>
-  document.querySelector(selector);
+const $ =
+  selector =>
+    document.querySelector(
+      selector
+    );
 
-const $$ = selector =>
-  document.querySelectorAll(selector);
+
+const $$ =
+  selector =>
+    document.querySelectorAll(
+      selector
+    );
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    ESCAPE HTML
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function escapeHTML(value){
 
-  return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(
+    value ?? ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    TOAST
-   --------------------------------------------------------- */
+   ========================================================= */
 
 let toastTimer;
+
 
 function showToast(message){
 
   const toast =
     $("#toast");
 
-  if(!toast) return;
+  if(!toast){
+    return;
+  }
 
   toast.textContent =
     message;
 
-  toast.classList.add("show");
+  toast.classList.add(
+    "show"
+  );
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
 
   toastTimer =
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      toast.classList.remove("show");
+        toast.classList.remove(
+          "show"
+        );
 
-    },3000);
+      },
+      3000
+    );
 
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    ACTIVITY LOG
-   --------------------------------------------------------- */
+   ========================================================= */
 
-function addLog(message,type="ok"){
+function addLog(
+  message,
+  type="ok"
+){
 
   const log =
     $("#log");
 
-  if(!log) return;
+  if(!log){
+    return;
+  }
 
 
   const time =
@@ -2225,18 +3489,23 @@ function addLog(message,type="ok"){
 
 
   const row =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
 
   row.innerHTML =
 
     `<span>[${time}]</span>
-     <b class="${type}">
+     <b class="${escapeHTML(type)}">
        ${escapeHTML(message)}
      </b>`;
 
 
-  log.appendChild(row);
+  log.appendChild(
+    row
+  );
+
 
   log.scrollTop =
     log.scrollHeight;
@@ -2244,39 +3513,57 @@ function addLog(message,type="ok"){
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    FORMAT TIME
-   --------------------------------------------------------- */
+   ========================================================= */
 
-function formatTime(dateString){
+function formatTime(
+  dateString
+){
 
   if(!dateString){
+
     return "Time unavailable";
+
   }
 
 
   const date =
-    new Date(dateString);
+    new Date(
+      dateString
+    );
 
 
-  if(Number.isNaN(date.getTime())){
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+
     return "Recently";
+
   }
 
 
   const difference =
-    Date.now() -
-    date.getTime();
+    Math.max(
+      0,
+      Date.now() -
+      date.getTime()
+    );
 
 
   const minutes =
     Math.floor(
-      difference / 60000
+      difference /
+      60000
     );
 
 
   if(minutes < 1){
+
     return "Just now";
+
   }
 
 
@@ -2292,7 +3579,8 @@ function formatTime(dateString){
 
   const hours =
     Math.floor(
-      minutes / 60
+      minutes /
+      60
     );
 
 
@@ -2308,150 +3596,377 @@ function formatTime(dateString){
 
   const days =
     Math.floor(
-      hours / 24
+      hours /
+      24
     );
 
 
   return (
+
     days +
     " day" +
-    (days === 1 ? "" : "s") +
+    (
+      days === 1
+      ? ""
+      : "s"
+    ) +
     " ago"
+
   );
 
 }
 
 
-/* ---------------------------------------------------------
-   TREND SCORE
-   --------------------------------------------------------- */
+/* =========================================================
+   AI SCORE
+   ========================================================= */
 
-function calculateTrendScore(article,index){
+function getAIScore(
+  article
+){
 
-  let score = 65;
-
-
-  const text = (
-
-    (article.title || "") +
-    " " +
-    (article.description || "")
-
-  ).toLowerCase();
+  const score =
+    Number(
+      article?.ai?.trendScore
+    );
 
 
-  /* RECENCY */
+  if(
+    Number.isFinite(score)
+  ){
 
-  if(article.publishedAt){
-
-    const age =
-      (
-        Date.now() -
-        new Date(
-          article.publishedAt
-        ).getTime()
-      ) / 3600000;
-
-
-    if(age < 1){
-
-      score += 18;
-
-    }else if(age < 3){
-
-      score += 14;
-
-    }else if(age < 6){
-
-      score += 10;
-
-    }else if(age < 12){
-
-      score += 6;
-
-    }else if(age < 24){
-
-      score += 3;
-
-    }
+    return Math.min(
+      100,
+      Math.max(
+        0,
+        Math.round(score)
+      )
+    );
 
   }
 
 
-  /* HIGH-INTEREST SIGNALS */
+  return null;
 
-  const signals = [
-
-    "breaking",
-    "latest",
-    "india",
-    "government",
-    "minister",
-    "prime minister",
-    "president",
-    "election",
-    "supreme court",
-    "policy",
-    "economy",
-    "market",
-    "stock",
-    "technology",
-    "artificial intelligence",
-    "ai",
-    "startup",
-    "cricket",
-    "sports",
-    "space",
-    "isro",
-    "nasa",
-    "science",
-    "health",
-    "business"
-
-  ];
+}
 
 
-  signals.forEach(signal => {
+/* =========================================================
+   AI PRIORITY
+   ========================================================= */
 
-    if(text.includes(signal)){
+function getPriority(
+  article
+){
 
-      score += 1;
+  const priority =
+    String(
+      article?.ai?.priority ||
+      ""
+    ).toLowerCase();
 
-    }
 
-  });
+  if(
+    [
+      "critical",
+      "high",
+      "medium",
+      "low"
+    ].includes(
+      priority
+    )
+  ){
+
+    return priority;
+
+  }
 
 
-  /*
-    Slight ranking normalization.
-  */
-
-  score -=
-    Math.min(
-      index * .6,
-      10
+  const score =
+    getAIScore(
+      article
     );
 
 
-  return Math.max(
-    50,
-    Math.min(
-      99,
-      Math.round(score)
-    )
+  if(score === null){
+    return "pending";
+  }
+
+
+  if(score >= 90){
+    return "critical";
+  }
+
+
+  if(score >= 80){
+    return "high";
+  }
+
+
+  if(score >= 60){
+    return "medium";
+  }
+
+
+  return "low";
+
+}
+
+
+/* =========================================================
+   CATEGORY NORMALIZATION
+   ========================================================= */
+
+function normalizeCategory(
+  article
+){
+
+  const value =
+    String(
+      article?.ai?.category ||
+      "Other"
+    );
+
+
+  return value;
+
+}
+
+
+/* =========================================================
+   FILTER ARTICLES
+   ========================================================= */
+
+function getFilteredArticles(){
+
+  if(
+    state.category ===
+    "all"
+  ){
+
+    return [
+      ...state.articles
+    ];
+
+  }
+
+
+  const wanted =
+    state.category
+      .toLowerCase();
+
+
+  return state.articles
+    .filter(
+      article => {
+
+        const aiCategory =
+          normalizeCategory(
+            article
+          )
+          .toLowerCase();
+
+
+        if(
+          aiCategory ===
+          wanted
+        ){
+
+          return true;
+
+        }
+
+
+        /*
+          Fallback keyword matching
+          only when AI classification
+          is unavailable.
+        */
+
+        const text = (
+
+          (article.title || "") +
+          " " +
+          (article.description || "")
+
+        )
+        .toLowerCase();
+
+
+        const words = {
+
+          business:[
+            "business",
+            "market",
+            "economy",
+            "company",
+            "startup",
+            "bank",
+            "finance"
+          ],
+
+          technology:[
+            "technology",
+            "tech",
+            "artificial intelligence",
+            "ai",
+            "software",
+            "google",
+            "microsoft",
+            "apple"
+          ],
+
+          politics:[
+            "politics",
+            "government",
+            "minister",
+            "election",
+            "parliament",
+            "policy",
+            "president"
+          ],
+
+          sports:[
+            "sports",
+            "cricket",
+            "football",
+            "tennis",
+            "match",
+            "player",
+            "ipl"
+          ],
+
+          science:[
+            "science",
+            "space",
+            "isro",
+            "nasa",
+            "research",
+            "scientist",
+            "satellite"
+          ],
+
+          health:[
+            "health",
+            "medical",
+            "medicine",
+            "hospital",
+            "doctor",
+            "disease",
+            "healthcare"
+          ],
+
+          entertainment:[
+            "movie",
+            "film",
+            "actor",
+            "actress",
+            "music",
+            "entertainment",
+            "bollywood"
+          ],
+
+          finance:[
+            "finance",
+            "stock",
+            "market",
+            "bank",
+            "investment",
+            "rupee",
+            "economy"
+          ]
+
+        };
+
+
+        return (
+          words[wanted] || []
+        )
+        .some(
+          word =>
+            text.includes(
+              word
+            )
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   SORT ARTICLES
+   ========================================================= */
+
+function sortArticles(
+  articles
+){
+
+  return [
+    ...articles
+  ].sort(
+    (a,b) => {
+
+      const scoreA =
+        getAIScore(a);
+
+
+      const scoreB =
+        getAIScore(b);
+
+
+      if(
+        scoreA !== null &&
+        scoreB !== null
+      ){
+
+        return (
+          scoreB -
+          scoreA
+        );
+
+      }
+
+
+      if(
+        scoreA !== null
+      ){
+
+        return -1;
+
+      }
+
+
+      if(
+        scoreB !== null
+      ){
+
+        return 1;
+
+      }
+
+
+      return 0;
+
+    }
   );
 
 }
 
 
-/* ---------------------------------------------------------
-   FETCH LIVE NEWS
-   --------------------------------------------------------- */
+/* =========================================================
+   FETCH LIVE NEWS + AI
+   ========================================================= */
 
 async function fetchNews(){
 
-  if(state.loading){
+  if(
+    state.loading
+  ){
+
     return;
+
   }
 
 
@@ -2462,14 +3977,29 @@ async function fetchNews(){
   const button =
     $("#discoverBtn");
 
+
   const refresh =
     $("#refreshBtn");
+
 
   const status =
     $("#feedStatus");
 
+
   const newsLabel =
     $("#newsCountLabel");
+
+
+  const newsBadge =
+    $("#newsBadge");
+
+
+  const aiBadge =
+    $("#aiBadge");
+
+
+  const liveDot =
+    $("#liveDot");
 
 
   if(button){
@@ -2478,7 +4008,7 @@ async function fetchNews(){
       true;
 
     button.textContent =
-      "Scanning News...";
+      "Scanning Intelligence...";
 
   }
 
@@ -2501,7 +4031,7 @@ async function fetchNews(){
   if(status){
 
     status.textContent =
-      "CONNECTING TO LIVE NEWS ENGINE";
+      "CONNECTING TO NEWS + AI ENGINE";
 
   }
 
@@ -2509,7 +4039,40 @@ async function fetchNews(){
   if(newsLabel){
 
     newsLabel.textContent =
-      "INDIA · FETCHING";
+      "INDIA · ANALYZING";
+
+  }
+
+
+  if(liveDot){
+
+    liveDot.classList.add(
+      "ai"
+    );
+
+  }
+
+
+  if(newsBadge){
+
+    newsBadge.textContent =
+      "NEWSAPI · CONNECTING";
+
+    newsBadge.classList.remove(
+      "online"
+    );
+
+  }
+
+
+  if(aiBadge){
+
+    aiBadge.textContent =
+      "GEMINI · ANALYZING";
+
+    aiBadge.classList.remove(
+      "ai-online"
+    );
 
   }
 
@@ -2518,51 +4081,36 @@ async function fetchNews(){
 
 
   addLog(
-    "Live news discovery started",
+    "News discovery request started",
+    "ok"
+  );
+
+
+  addLog(
+    "Connecting to NEWSFORGE backend",
     "ok"
   );
 
 
   try{
 
+
     /*
-      IMPORTANT:
+      The backend owns the API keys.
 
-      We use a relative URL.
-
-      The browser automatically calls:
+      The browser only calls:
 
       /api/news
 
-      on the SAME Vercel domain.
-
-      No domain is hard-coded.
+      This keeps NEWS_API_KEY and
+      GEMINI_API_KEY server-side.
     */
 
-    let url =
-      "/api/news?country=in&pageSize=20";
+    const url =
+      "/api/news?pageSize=20";
 
 
-    /*
-      If a category is selected,
-      NewsAPI top-headlines supports
-      category filtering.
-    */
-
-    if(
-      state.category !== "all"
-    ){
-
-      url +=
-        "&category=" +
-        encodeURIComponent(
-          state.category
-        );
-
-    }
-
-
-    let response =
+    const response =
       await fetch(
         url,
         {
@@ -2578,80 +4126,41 @@ async function fetchNews(){
       );
 
 
-    let data =
-      await response.json();
+    let data;
 
 
-    /*
-      If no articles are returned,
-      try a broader India query.
-    */
-
-    if(
-      response.ok &&
-      data.status === "success" &&
-      (
-        !Array.isArray(
-          data.articles
-        ) ||
-        data.articles.length === 0
-      )
-    ){
-
-      addLog(
-        "Headline feed returned zero stories. Expanding discovery...",
-        "warn"
-      );
-
-
-      let fallbackUrl =
-        "/api/news?country=in&q=India&pageSize=20";
-
-
-      response =
-        await fetch(
-          fallbackUrl,
-          {
-            method:"GET",
-
-            headers:{
-              "Accept":
-                "application/json"
-            },
-
-            cache:"no-store"
-          }
-        );
-
+    try{
 
       data =
         await response.json();
 
+    }catch(error){
+
+      throw new Error(
+        "Backend returned an invalid JSON response."
+      );
+
     }
 
-
-    /*
-      API-level failure.
-    */
 
     if(!response.ok){
 
       throw new Error(
-        data.message ||
-        "News service returned an error."
+        data?.message ||
+        "News intelligence backend returned an error."
       );
 
     }
 
 
     if(
-      data.status !==
+      data?.status !==
       "success"
     ){
 
       throw new Error(
-        data.message ||
-        "News service failed."
+        data?.message ||
+        "NEWSFORGE backend failed."
       );
 
     }
@@ -2668,44 +4177,123 @@ async function fetchNews(){
 
 
     state.articles =
-      articles;
+      sortArticles(
+        articles
+      );
+
 
     state.lastUpdated =
       new Date();
 
 
     /*
-      Update interface.
+      Read actual AI metadata
+      returned by api/news.js.
     */
+
+    state.aiEnabled =
+      data?.ai?.enabled === true;
+
+
+    state.aiAnalyzed =
+      data?.ai?.analyzed === true;
+
+
+    state.aiModel =
+      data?.ai?.model ||
+      null;
+
+
+    state.aiStats = {
+
+      analyzed:
+        Number(
+          data?.ai?.analyzedStories
+        ) || 0,
+
+      highPotential:
+        Number(
+          data?.ai?.highPotential
+        ) || 0,
+
+      critical:
+        Number(
+          data?.ai?.criticalStories
+        ) || 0,
+
+      verificationRequired:
+        Number(
+          data?.ai?.verificationRequired
+        ) || 0
+
+    };
+
 
     renderNews();
 
+
     updateMetrics();
+
 
     updateCategoryIntelligence();
 
 
+    updateAISummary();
+
+
     /*
-      Success logging.
+      Backend success.
     */
 
     addLog(
-      `${articles.length} live stories received`,
+      `${articles.length} stories received from NewsAPI`,
       "ok"
     );
 
 
-    if(articles.length){
+    if(
+      state.aiEnabled &&
+      state.aiAnalyzed
+    ){
 
       addLog(
-        "NEWSFORGE intelligence feed updated",
+        `${state.aiStats.analyzed} stories analyzed by Gemini`,
         "ok"
       );
 
 
+      addLog(
+        `${state.aiStats.highPotential} high-potential stories identified`,
+        "ok"
+      );
+
+
+      addLog(
+        `${state.aiStats.verificationRequired} stories require human review`,
+        "warn"
+      );
+
+    }else{
+
+      addLog(
+        "AI analysis metadata unavailable",
+        "warn"
+      );
+
+    }
+
+
+    if(
+      articles.length
+    ){
+
       if(status){
 
         status.textContent =
+          state.aiAnalyzed
+          ?
+          "LIVE · NEWSAPI + GEMINI CONNECTED"
+          :
           "LIVE · NEWSAPI CONNECTED";
 
       }
@@ -2719,18 +4307,59 @@ async function fetchNews(){
       }
 
 
+      if(newsBadge){
+
+        newsBadge.textContent =
+          "NEWSAPI · ONLINE";
+
+        newsBadge.classList.add(
+          "online"
+        );
+
+      }
+
+
+      if(aiBadge){
+
+        aiBadge.textContent =
+          state.aiAnalyzed
+          ?
+          `GEMINI · ${state.aiModel || "ONLINE"}`
+          :
+          "GEMINI · NOT ANALYZED";
+
+        if(
+          state.aiAnalyzed
+        ){
+
+          aiBadge.classList.add(
+            "ai-online"
+          );
+
+        }
+
+      }
+
+
+      if(liveDot){
+
+        liveDot.classList.toggle(
+          "ai",
+          state.aiAnalyzed
+        );
+
+      }
+
+
       showToast(
+        state.aiAnalyzed
+        ?
+        `${articles.length} stories analyzed by Gemini`
+        :
         `${articles.length} live stories loaded`
       );
 
-
     }else{
-
-      addLog(
-        "NewsAPI responded successfully but returned zero stories",
-        "warn"
-      );
-
 
       if(status){
 
@@ -2746,6 +4375,9 @@ async function fetchNews(){
           "INDIA · NO STORIES";
 
       }
+
+
+      renderEmpty();
 
     }
 
@@ -2764,7 +4396,7 @@ async function fetchNews(){
 
 
     addLog(
-      "News engine error: " +
+      "Intelligence engine error: " +
       error.message,
       "warn"
     );
@@ -2775,31 +4407,53 @@ async function fetchNews(){
     );
 
 
-    const status =
+    const statusElement =
       $("#feedStatus");
 
 
-    if(status){
+    if(statusElement){
 
-      status.textContent =
-        "NEWS ENGINE ERROR";
+      statusElement.textContent =
+        "NEWS INTELLIGENCE ENGINE ERROR";
 
     }
 
 
-    const newsLabel =
+    const newsLabelElement =
       $("#newsCountLabel");
 
 
-    if(newsLabel){
+    if(newsLabelElement){
 
-      newsLabel.textContent =
+      newsLabelElement.textContent =
         "INDIA · ERROR";
 
     }
 
 
     setSystemError();
+
+
+    if(
+      $("#newsBadge")
+    ){
+
+      $("#newsBadge")
+        .textContent =
+        "NEWSAPI · ERROR";
+
+    }
+
+
+    if(
+      $("#aiBadge")
+    ){
+
+      $("#aiBadge")
+        .textContent =
+        "GEMINI · ERROR";
+
+    }
 
   }
 
@@ -2840,16 +4494,18 @@ async function fetchNews(){
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    LOADING UI
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function renderLoading(){
 
   const list =
     $("#newsList");
 
-  if(!list) return;
+  if(!list){
+    return;
+  }
 
 
   list.innerHTML = `
@@ -2861,13 +4517,14 @@ function renderLoading(){
       <div class="loading-text">
 
         <strong>
-          Discovering live stories...
+          Discovering and analyzing stories...
         </strong>
 
         <br>
 
-        NEWSFORGE is querying the
-        news intelligence backend.
+        NEWSAPI is supplying the stories.
+        Gemini is evaluating their trend potential,
+        category, priority and verification requirements.
 
       </div>
 
@@ -2878,16 +4535,20 @@ function renderLoading(){
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    ERROR UI
-   --------------------------------------------------------- */
+   ========================================================= */
 
-function renderError(message){
+function renderError(
+  message
+){
 
   const list =
     $("#newsList");
 
-  if(!list) return;
+  if(!list){
+    return;
+  }
 
 
   list.innerHTML = `
@@ -2895,7 +4556,7 @@ function renderError(message){
     <div class="error-card">
 
       <h4>
-        News engine connection failed
+        News intelligence engine failed
       </h4>
 
       <p>
@@ -2903,9 +4564,10 @@ function renderError(message){
       </p>
 
       <p style="margin-top:10px">
-        The frontend is running, but the
-        backend did not return a valid
-        news response.
+
+        The frontend is running, but the backend
+        did not return a valid intelligence response.
+
       </p>
 
     </div>
@@ -2915,16 +4577,18 @@ function renderError(message){
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    EMPTY UI
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function renderEmpty(){
 
   const list =
     $("#newsList");
 
-  if(!list) return;
+  if(!list){
+    return;
+  }
 
 
   list.innerHTML = `
@@ -2936,9 +4600,10 @@ function renderEmpty(){
       </h4>
 
       <p>
+
         The news source responded successfully,
-        but no articles were returned for the
-        current request.
+        but no articles were returned for this request.
+
       </p>
 
     </div>
@@ -2948,201 +4613,9 @@ function renderEmpty(){
 }
 
 
-/* ---------------------------------------------------------
-   RENDER NEWS
-   --------------------------------------------------------- */
-
-function renderNews(){
-
-  const list =
-    $("#newsList");
-
-  if(!list) return;
-
-
-  if(
-    !state.articles.length
-  ){
-
-    renderEmpty();
-
-    return;
-
-  }
-
-
-  const visible =
-    getFilteredArticles();
-
-
-  if(!visible.length){
-
-    list.innerHTML = `
-
-      <div class="empty-card">
-
-        <h4>
-          No matching stories
-        </h4>
-
-        <p>
-          No returned articles match
-          the selected category.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  list.innerHTML = "";
-
-
-  visible
-    .slice(0,20)
-    .forEach(
-      (article,index) => {
-
-        const card =
-          createNewsCard(
-            article,
-            index
-          );
-
-        list.appendChild(
-          card
-        );
-
-      }
-    );
-
-}
-
-
-/* ---------------------------------------------------------
-   FILTER ARTICLES
-   --------------------------------------------------------- */
-
-function getFilteredArticles(){
-
-  if(
-    state.category ===
-    "all"
-  ){
-
-    return state.articles;
-
-  }
-
-
-  const keyword =
-    state.category
-      .toLowerCase();
-
-
-  return state.articles
-    .filter(article => {
-
-      const text = (
-
-        (article.title || "") +
-        " " +
-        (article.description || "")
-
-      ).toLowerCase();
-
-
-      const categoryWords = {
-
-        business:[
-          "business",
-          "market",
-          "economy",
-          "finance",
-          "stock",
-          "company",
-          "startup",
-          "bank"
-        ],
-
-        technology:[
-          "technology",
-          "tech",
-          "artificial intelligence",
-          "ai",
-          "software",
-          "google",
-          "microsoft",
-          "apple",
-          "internet"
-        ],
-
-        sports:[
-          "sports",
-          "cricket",
-          "football",
-          "tennis",
-          "match",
-          "player",
-          "ipl"
-        ],
-
-        science:[
-          "science",
-          "space",
-          "isro",
-          "nasa",
-          "research",
-          "scientist",
-          "satellite"
-        ],
-
-        health:[
-          "health",
-          "medical",
-          "medicine",
-          "hospital",
-          "doctor",
-          "disease",
-          "healthcare"
-        ],
-
-        entertainment:[
-          "movie",
-          "film",
-          "actor",
-          "actress",
-          "music",
-          "entertainment",
-          "bollywood"
-        ]
-
-      };
-
-
-      const words =
-        categoryWords[
-          keyword
-        ] || [];
-
-
-      return words.some(
-        word =>
-          text.includes(word)
-      );
-
-    });
-
-}
-
-
-/* ---------------------------------------------------------
+/* =========================================================
    CREATE NEWS CARD
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function createNewsCard(
   article,
@@ -3150,25 +4623,68 @@ function createNewsCard(
 ){
 
   const score =
-    calculateTrendScore(
-      article,
-      index
+    getAIScore(
+      article
     );
+
+
+  const priority =
+    getPriority(
+      article
+    );
+
+
+  const category =
+    normalizeCategory(
+      article
+    );
+
+
+  const verification =
+    article?.ai
+      ?.humanVerificationRequired !==
+      false;
+
+
+  const attention =
+    article?.ai
+      ?.attentionPotential ===
+      true;
+
+
+  const reasoning =
+    article?.ai
+      ?.reasoning ||
+    "";
 
 
   const card =
     document.createElement(
-      "div"
+      "article"
     );
 
 
   card.className =
-    "news";
+    "news " +
+    (
+      priority === "critical"
+      ||
+      priority === "high"
+      ?
+      priority
+      :
+      ""
+    );
 
 
   const rank =
-    String(index + 1)
-      .padStart(2,"0");
+    String(
+      index + 1
+    )
+    .padStart(
+      2,
+      "0"
+    );
 
 
   const source =
@@ -3192,17 +4708,147 @@ function createNewsCard(
     );
 
 
+  let scoreHTML;
+
+
+  if(
+    score !== null
+  ){
+
+    scoreHTML = `
+
+      <div class="score ${priority}">
+
+        <strong>
+          ${score}
+        </strong>
+
+        <span>
+          AI score
+        </span>
+
+        <span class="score-label">
+          ${escapeHTML(priority)}
+        </span>
+
+      </div>
+
+    `;
+
+  }else{
+
+    scoreHTML = `
+
+      <div class="score pending">
+
+        <strong>
+          --
+        </strong>
+
+        <span>
+          AI score
+        </span>
+
+        <span class="score-label">
+          pending
+        </span>
+
+      </div>
+
+    `;
+
+  }
+
+
+  const categoryBadge =
+    category &&
+    category !== "Other"
+    ?
+    `
+      <span class="ai-badge category">
+        ${escapeHTML(category)}
+      </span>
+    `
+    :
+    "";
+
+
+  const priorityBadge =
+    priority !== "pending"
+    ?
+    `
+      <span class="ai-badge ${escapeHTML(priority)}">
+        ${escapeHTML(priority)}
+      </span>
+    `
+    :
+    "";
+
+
+  const attentionBadge =
+    attention
+    ?
+    `
+      <span class="ai-badge attention">
+        Attention Potential
+      </span>
+    `
+    :
+    "";
+
+
+  const reviewBadge =
+    verification
+    ?
+    `
+      <span class="ai-badge review">
+        Human Review
+      </span>
+    `
+    :
+    `
+      <span class="ai-badge">
+        Review Flag Clear
+      </span>
+    `;
+
+
+  const reasoningHTML =
+    reasoning
+    ?
+    `
+
+      <div class="ai-reasoning">
+
+        <strong>
+          AI reasoning
+        </strong>
+
+        ${escapeHTML(
+          reasoning
+        )}
+
+      </div>
+
+    `
+    :
+    "";
+
+
   card.innerHTML = `
 
     <div class="rank">
       ${rank}
     </div>
 
+
     <div class="news-main">
+
 
       <h4>
         ${escapeHTML(title)}
       </h4>
+
 
       <div class="news-source">
 
@@ -3220,58 +4866,83 @@ function createNewsCard(
 
       </div>
 
+
       <div class="news-description">
+
         ${escapeHTML(description)}
+
       </div>
+
+
+      <div class="ai-meta">
+
+        ${categoryBadge}
+
+        ${priorityBadge}
+
+        ${attentionBadge}
+
+        ${reviewBadge}
+
+      </div>
+
+
+      ${reasoningHTML}
+
 
       ${
         article.url
         ?
         `
-        <span class="story-open">
-          Open source ↗
-        </span>
+
+          <span class="story-open">
+
+            Open source ↗
+
+          </span>
+
         `
         :
         ""
       }
 
-    </div>
-
-    <div class="score">
-
-      <strong>
-        ${score}
-      </strong>
-
-      <span>
-        forge score
-      </span>
 
     </div>
+
+
+    ${scoreHTML}
 
   `;
 
 
   /*
-    Open original article.
+    Clicking the story opens
+    the original publisher.
   */
 
   card.addEventListener(
     "click",
-    () => {
+    event => {
+
+      /*
+        Ignore accidental text-selection
+        style interactions.
+      */
 
       if(
-        article.url
+        !article.url
       ){
 
-        window.open(
-          article.url,
-          "_blank",
-          "noopener,noreferrer"
-        );
+        return;
 
       }
+
+
+      window.open(
+        article.url,
+        "_blank",
+        "noopener,noreferrer"
+      );
 
     }
   );
@@ -3282,9 +4953,95 @@ function createNewsCard(
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
+   RENDER NEWS
+   ========================================================= */
+
+function renderNews(){
+
+  const list =
+    $("#newsList");
+
+  if(!list){
+    return;
+  }
+
+
+  if(
+    !state.articles.length
+  ){
+
+    renderEmpty();
+
+    return;
+
+  }
+
+
+  const visible =
+    getFilteredArticles();
+
+
+  if(
+    !visible.length
+  ){
+
+    list.innerHTML = `
+
+      <div class="empty-card">
+
+        <h4>
+          No matching stories
+        </h4>
+
+        <p>
+
+          Gemini classified the current stories,
+          but none match the selected category.
+
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    "";
+
+
+  visible
+    .slice(
+      0,
+      20
+    )
+    .forEach(
+      (article,index) => {
+
+        const card =
+          createNewsCard(
+            article,
+            index
+          );
+
+
+        list.appendChild(
+          card
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
    UPDATE METRICS
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function updateMetrics(){
 
@@ -3293,15 +5050,27 @@ function updateMetrics(){
 
 
   const highPotential =
+    state.aiAnalyzed
+    ?
     state.articles
       .filter(
-        (article,index) =>
-          calculateTrendScore(
-            article,
-            index
-          ) >= 85
+        article => {
+
+          const score =
+            getAIScore(
+              article
+            );
+
+          return (
+            score !== null &&
+            score >= 80
+          );
+
+        }
       )
-      .length;
+      .length
+    :
+    0;
 
 
   $("#stories")
@@ -3317,190 +5086,229 @@ function updateMetrics(){
   $("#storiesChange")
     .textContent =
     total
-      ?
-      "LIVE · NewsAPI"
-      :
-      "No stories returned";
+    ?
+    "LIVE · NewsAPI"
+    :
+    "No stories returned";
 
 
   $("#potentialChange")
     .textContent =
-    highPotential
+    state.aiAnalyzed
+    ?
+    (
+      highPotential
       ?
-      `${highPotential} high-score stories`
+      `${highPotential} AI high-score stories`
       :
-      "Awaiting signals";
-
+      "No high-potential signals"
+    )
+    :
+    "AI scoring unavailable";
 
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
+   AI SUMMARY
+   ========================================================= */
+
+function updateAISummary(){
+
+  $("#aiAnalyzed")
+    .textContent =
+    state.aiStats.analyzed;
+
+
+  $("#aiHigh")
+    .textContent =
+    state.aiStats.highPotential;
+
+
+  $("#aiCritical")
+    .textContent =
+    state.aiStats.critical;
+
+
+  $("#aiReview")
+    .textContent =
+    state.aiStats.verificationRequired;
+
+
+  $("#aiModel")
+    .textContent =
+    state.aiAnalyzed
+    ?
+    (
+      "GEMINI · " +
+      (
+        state.aiModel ||
+        "ONLINE"
+      )
+    )
+    :
+    "GEMINI · WAITING";
+
+}
+
+
+/* =========================================================
    CATEGORY INTELLIGENCE
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function updateCategoryIntelligence(){
 
-  const categories = {
+  const categories = [
 
-    Politics:[
-      "government",
-      "minister",
-      "election",
-      "politics",
-      "parliament",
-      "court",
-      "policy",
-      "president"
-    ],
+    "Politics",
+    "Technology",
+    "Business",
+    "Sports",
+    "Science",
+    "World"
 
-    Technology:[
-      "technology",
-      "tech",
-      "ai",
-      "artificial intelligence",
-      "software",
-      "google",
-      "microsoft",
-      "apple"
-    ],
-
-    Business:[
-      "business",
-      "market",
-      "economy",
-      "stock",
-      "company",
-      "startup",
-      "finance",
-      "bank"
-    ],
-
-    Sports:[
-      "cricket",
-      "football",
-      "sports",
-      "match",
-      "player",
-      "ipl",
-      "tennis"
-    ],
-
-    Science:[
-      "science",
-      "space",
-      "isro",
-      "nasa",
-      "research",
-      "scientist",
-      "satellite"
-    ],
-
-    World:[
-      "world",
-      "usa",
-      "china",
-      "russia",
-      "ukraine",
-      "international",
-      "global"
-    ]
-
-  };
+  ];
 
 
-  const scores = {};
+  const counts = {};
 
 
-  Object.keys(categories)
+  categories.forEach(
+    category => {
+
+      counts[category] =
+        [];
+
+    }
+  );
+
+
+  state.articles
     .forEach(
-      category => {
-        scores[category] = 0;
+      article => {
+
+        const category =
+          normalizeCategory(
+            article
+          );
+
+
+        if(
+          counts[category]
+        ){
+
+          const score =
+            getAIScore(
+              article
+            );
+
+
+          if(
+            score !== null
+          ){
+
+            counts[category]
+              .push(
+                score
+              );
+
+          }
+
+        }
+
       }
     );
 
 
-  state.articles
-    .forEach(article => {
+  categories.forEach(
+    category => {
 
-      const text = (
-
-        (article.title || "") +
-        " " +
-        (article.description || "")
-
-      ).toLowerCase();
-
-
-      Object.entries(
-        categories
-      ).forEach(
-        ([category,words]) => {
-
-          words.forEach(
-            word => {
-
-              if(
-                text.includes(word)
-              ){
-
-                scores[category]++;
-
-              }
-
-            }
-          );
-
-        }
-      );
-
-    });
-
-
-  const max =
-    Math.max(
-      1,
-      ...Object.values(scores)
-    );
-
-
-  Object.keys(scores)
-    .forEach(category => {
-
-      const normalized =
-        Math.round(
-          50 +
-          (
-            scores[category] /
-            max
-          ) * 49
-        );
-
-
-      const key =
-        category;
+      const values =
+        counts[category];
 
 
       const scoreElement =
-        document.getElementById(
-          "cat" + key
+        $(
+          "#cat" +
+          category
         );
 
 
       const barElement =
-        document.getElementById(
-          "bar" + key
+        $(
+          "#bar" +
+          category
+        );
+
+
+      const subElement =
+        $(
+          "#sub" +
+          category
+        );
+
+
+      if(
+        !values.length
+      ){
+
+        if(scoreElement){
+
+          scoreElement.textContent =
+            state.articles.length
+            ?
+            "--"
+            :
+            "--";
+
+        }
+
+
+        if(barElement){
+
+          barElement.style.width =
+            "0%";
+
+        }
+
+
+        if(subElement){
+
+          subElement.textContent =
+            "No classified stories";
+
+        }
+
+
+        return;
+
+      }
+
+
+      const average =
+        Math.round(
+          values.reduce(
+            (
+              total,
+              value
+            ) =>
+              total + value,
+            0
+          ) /
+          values.length
+        );
+
+
+      const max =
+        Math.max(
+          ...values
         );
 
 
       if(scoreElement){
 
         scoreElement.textContent =
-          state.articles.length
-            ?
-            normalized
-            :
-            "--";
+          average;
 
       }
 
@@ -3508,27 +5316,33 @@ function updateCategoryIntelligence(){
       if(barElement){
 
         barElement.style.width =
-          state.articles.length
-            ?
-            normalized + "%"
-            :
-            "0%";
+          average + "%";
 
       }
 
-    });
+
+      if(subElement){
+
+        subElement.textContent =
+          `${values.length} stories · peak ${max}`;
+
+      }
+
+    }
+  );
 
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    SYSTEM STATUS
-   --------------------------------------------------------- */
+   ========================================================= */
 
 function updateSystemOnline(){
 
   const dot =
     $("#statusDot");
+
 
   const text =
     $("#systemStatus");
@@ -3540,29 +5354,52 @@ function updateSystemOnline(){
       "error"
     );
 
+    if(
+      state.aiAnalyzed
+    ){
+
+      dot.classList.add(
+        "ai"
+      );
+
+    }
+
   }
 
 
   if(text){
 
     text.textContent =
-      "SYSTEM ONLINE";
+      state.aiAnalyzed
+      ?
+      "NEWS + AI ONLINE"
+      :
+      "NEWS ENGINE ONLINE";
 
   }
 
 }
 
 
+/* =========================================================
+   SYSTEM ERROR
+   ========================================================= */
+
 function setSystemError(){
 
   const dot =
     $("#statusDot");
+
 
   const text =
     $("#systemStatus");
 
 
   if(dot){
+
+    dot.classList.remove(
+      "ai"
+    );
 
     dot.classList.add(
       "error"
@@ -3581,41 +5418,47 @@ function setSystemError(){
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    CATEGORY SELECTION
-   --------------------------------------------------------- */
+   ========================================================= */
 
-function selectCategory(category){
+function selectCategory(
+  category
+){
 
   state.category =
     category;
 
 
   $$(".category-btn")
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-        "active",
-        button.dataset.category ===
-        category
-      );
+        button.classList.toggle(
+          "active",
+          button.dataset.category ===
+          category
+        );
 
-    });
+      }
+    );
 
 
   addLog(
-    "Discovery filter changed: " +
+    "Intelligence filter changed: " +
     category.toUpperCase(),
     "ok"
   );
 
 
   /*
-    If we already have stories,
-    re-render immediately.
+    Local filtering.
 
-    No API call needed for
-    local filtering.
+    No API call is necessary because
+    the AI classifications already
+    exist in state. This also avoids
+    spending unnecessary NewsAPI/Gemini
+    requests.
   */
 
   if(
@@ -3624,260 +5467,25 @@ function selectCategory(category){
 
     renderNews();
 
-  }
-
-
-  /*
-    If category is selected and
-    there are no articles yet,
-    fetch from backend with the
-    actual NewsAPI category.
-  */
-
-  else if(
-    category !== "all"
-  ){
-
-    fetchNews();
-
-  }
-
-}
-
-
-/* ---------------------------------------------------------
-   PIPELINE
-   --------------------------------------------------------- */
-
-async function runPipeline(){
-
-  if(state.loading){
+  }else{
 
     showToast(
-      "News discovery is already running."
+      "Discover stories first."
     );
 
-    return;
-
   }
-
-
-  const status =
-    $("#pipelineStatus");
-
-
-  const steps = [
-
-    "s1",
-    "s2",
-    "s3",
-    "s4",
-    "s5"
-
-  ];
-
-
-  if(status){
-
-    status.textContent =
-      "RUNNING";
-
-  }
-
-
-  addLog(
-    "NEWSFORGE AI pipeline initialized",
-    "ok"
-  );
-
-
-  /*
-    Step 1
-  */
-
-  setStep(
-    "s1",
-    "RUNNING",
-    true
-  );
-
-
-  addLog(
-    "Discovery engine scanning available stories",
-    "ok"
-  );
-
-
-  if(
-    !state.articles.length
-  ){
-
-    await fetchNews();
-
-  }
-
-
-  await wait(900);
-
-
-  setStep(
-    "s1",
-    "COMPLETE",
-    false
-  );
-
-
-  /*
-    Step 2
-  */
-
-  setStep(
-    "s2",
-    "RUNNING",
-    true
-  );
-
-
-  addLog(
-    "Research stage analyzing story context",
-    "ok"
-  );
-
-
-  await wait(900);
-
-
-  setStep(
-    "s2",
-    "COMPLETE",
-    false
-  );
-
-
-  /*
-    Step 3
-  */
-
-  setStep(
-    "s3",
-    "RUNNING",
-    true
-  );
-
-
-  addLog(
-    "Verification stage comparing available information",
-    "ok"
-  );
-
-
-  await wait(900);
-
-
-  setStep(
-    "s3",
-    "COMPLETE",
-    false
-  );
-
-
-  /*
-    Step 4
-  */
-
-  setStep(
-    "s4",
-    "RUNNING",
-    true
-  );
-
-
-  addLog(
-    "Content engine preparing platform-ready package",
-    "ok"
-  );
-
-
-  await wait(900);
-
-
-  setStep(
-    "s4",
-    "COMPLETE",
-    false
-  );
-
-
-  /*
-    Step 5
-  */
-
-  setStep(
-    "s5",
-    "RUNNING",
-    true
-  );
-
-
-  addLog(
-    "Publishing engine prepared",
-    "ok"
-  );
-
-
-  await wait(900);
-
-
-  setStep(
-    "s5",
-    "AWAITING APPROVAL",
-    false
-  );
-
-
-  if(status){
-
-    status.textContent =
-      "AWAITING APPROVAL";
-
-  }
-
-
-  state.contentGenerated += 1;
-
-
-  $("#contentGenerated")
-    .textContent =
-    state.contentGenerated;
-
-
-  addLog(
-    "Content package generated",
-    "ok"
-  );
-
-
-  addLog(
-    "Publishing paused: human approval required",
-    "warn"
-  );
-
-
-  showToast(
-    "Pipeline complete · approval required"
-  );
 
 }
 
 
-/* ---------------------------------------------------------
-   PIPELINE STEP HELPER
-   --------------------------------------------------------- */
+/* =========================================================
+   SET PIPELINE STEP
+   ========================================================= */
 
 function setStep(
   id,
-  text,
-  active
+  status,
+  mode="normal"
 ){
 
   const element =
@@ -3886,119 +5494,13 @@ function setStep(
     );
 
 
-  if(!element) return;
+  if(!element){
+    return;
+  }
 
 
   element.textContent =
-    text;
+    status;
 
 
-  element.classList.toggle(
-    "live",
-    active
-  );
-
-}
-
-
-/* ---------------------------------------------------------
-   WAIT
-   --------------------------------------------------------- */
-
-function wait(milliseconds){
-
-  return new Promise(
-    resolve =>
-      setTimeout(
-        resolve,
-        milliseconds
-      )
-  );
-
-}
-
-
-/* ---------------------------------------------------------
-   BUTTON EVENTS
-   --------------------------------------------------------- */
-
-$("#discoverBtn")
-  .addEventListener(
-    "click",
-    fetchNews
-  );
-
-
-$("#refreshBtn")
-  .addEventListener(
-    "click",
-    fetchNews
-  );
-
-
-$("#pipelineBtn")
-  .addEventListener(
-    "click",
-    runPipeline
-  );
-
-
-/* ---------------------------------------------------------
-   CATEGORY BUTTON EVENTS
-   --------------------------------------------------------- */
-
-$$(".category-btn")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        selectCategory(
-          button.dataset.category
-        );
-
-      }
-    );
-
-  });
-
-
-/* ---------------------------------------------------------
-   STARTUP
-   --------------------------------------------------------- */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    addLog(
-      "NEWSFORGE initialized",
-      "ok"
-    );
-
-
-    addLog(
-      "Frontend intelligence interface ready",
-      "ok"
-    );
-
-
-    addLog(
-      "Backend news endpoint configured",
-      "ok"
-    );
-
-
-    addLog(
-      "Waiting for discovery command",
-      "ok"
-    );
-
-  }
-);
-
-</script>
-
-</body>
-</html>
+ 
