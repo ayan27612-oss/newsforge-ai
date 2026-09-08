@@ -3346,7 +3346,7 @@
 
           <div class="modal-field full">
             <div class="modal-field-label">Selected Story</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchSelectedStory">
               Russian ambassador challenges pressure tactics over energy
               trade with India
             </div>
@@ -3354,35 +3354,35 @@
 
           <div class="modal-field">
             <div class="modal-field-label">Trend Score</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchTrendScore">
               86 / 100
             </div>
           </div>
 
           <div class="modal-field">
             <div class="modal-field-label">Priority</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchPriority">
               HIGH
             </div>
           </div>
 
           <div class="modal-field">
             <div class="modal-field-label">Category</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchCategory">
               Politics / Geopolitics
             </div>
           </div>
 
           <div class="modal-field">
             <div class="modal-field-label">Verification Status</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchVerification">
               HUMAN REVIEW REQUIRED
             </div>
           </div>
 
           <div class="modal-field full">
             <div class="modal-field-label">AI Signal</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchSignal">
               High editorial attention potential due to the intersection of
               India, international diplomacy and energy trade. Claims should
               be checked against the original reporting and additional
@@ -3392,7 +3392,7 @@
 
           <div class="modal-field full">
             <div class="modal-field-label">Research Engine</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchEngine">
               Source retrieval → claim extraction → cross-source comparison
               → confidence assessment → editorial recommendation.
             </div>
@@ -3400,14 +3400,14 @@
 
           <div class="modal-field">
             <div class="modal-field-label">Original Source</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchSource">
               Business Standard
             </div>
           </div>
 
           <div class="modal-field">
             <div class="modal-field-label">Research State</div>
-            <div class="modal-field-value">
+            <div class="modal-field-value" id="researchState">
               READY
             </div>
           </div>
@@ -3477,7 +3477,8 @@
         activeFilter: "all",
         researchOpen: false,
         newsDetailOpen: false,
-        sidebarOpen: false
+        sidebarOpen: false,
+        selectedStory: null
       }
     };
 
@@ -3842,6 +3843,7 @@
       if (!newsDetailModal || !story) return;
 
       const normalized = normalizeStory(story, 0);
+      NEWSFORGE.state.selectedStory = normalized;
 
       $("#newsDetailTitle").textContent = normalized.title;
       $("#newsDetailSource").innerHTML = `
@@ -4081,7 +4083,65 @@
 
     const researchModal = $("#researchModal");
 
+    function updateResearchModal(story) {
+      if (!story) return;
+
+      const normalized = normalizeStory(story, 0);
+
+      $("#researchSelectedStory").textContent =
+        normalized.title || "Untitled story";
+
+      $("#researchTrendScore").textContent =
+        normalized.trendScore !== null
+          ? `${normalized.trendScore} / 100`
+          : "NOT AVAILABLE";
+
+      $("#researchPriority").textContent =
+        String(normalized.priority || "MEDIUM").toUpperCase();
+
+      $("#researchCategory").textContent =
+        String(normalized.category || "GENERAL")
+          .replace(/\b\w/g, (char) => char.toUpperCase());
+
+      $("#researchVerification").textContent =
+        normalized.humanVerificationRequired === true
+          ? "HUMAN REVIEW REQUIRED"
+          : normalized.humanVerificationRequired === false
+            ? "NO HUMAN REVIEW FLAG"
+            : "REVIEW STATUS UNKNOWN";
+
+      $("#researchSignal").textContent =
+        normalized.reasoning ||
+        normalized.verificationReason ||
+        "Research will evaluate the source, claims and available corroboration.";
+
+      $("#researchEngine").textContent =
+        "Source retrieval → claim extraction → cross-source comparison → confidence assessment → editorial recommendation.";
+
+      $("#researchSource").textContent =
+        normalized.source || "UNKNOWN SOURCE";
+
+      $("#researchState").textContent =
+        "READY";
+    }
+
     function openResearchModal() {
+      const selectedStory =
+        NEWSFORGE.state.selectedStory ||
+        currentStories[0] ||
+        null;
+
+      if (!selectedStory) {
+        showToast(
+          "Research Engine",
+          "Select a discovered story before running AI research."
+        );
+        return;
+      }
+
+      NEWSFORGE.state.selectedStory = normalizeStory(selectedStory, 0);
+      updateResearchModal(NEWSFORGE.state.selectedStory);
+
       researchModal.classList.add("open");
       NEWSFORGE.state.researchOpen = true;
       document.body.style.overflow = "hidden";
@@ -4294,12 +4354,11 @@
 
         try {
 
-          /*
-            The research endpoint will receive the selected story
-            once the dynamic story renderer is connected.
+          const story = NEWSFORGE.state.selectedStory;
 
-            For now we only test the endpoint contract safely.
-          */
+          if (!story) {
+            throw new Error("No story is selected for research.");
+          }
 
           const response = await fetch(
             NEWSFORGE.api.research,
@@ -4310,30 +4369,75 @@
                 "Accept": "application/json"
               },
               body: JSON.stringify({
-                mode: "prepare",
+                story,
                 source: "newsforge-ui"
               })
             }
           );
 
+          const data = await response.json().catch(() => ({}));
+
           if (!response.ok) {
             throw new Error(
+              data?.error ||
+              data?.message ||
               `Research request returned ${response.status}`
             );
           }
 
+          const research =
+            data?.research ||
+            data?.result ||
+            data;
+
+          $("#researchState").textContent = "COMPLETE";
+
+          if (research?.executiveSummary) {
+            $("#researchSignal").textContent =
+              research.executiveSummary;
+          }
+
+          const confidence =
+            research?.factCheckConfidence ??
+            research?.confidence;
+
+          const recommendation =
+            research?.recommendation ||
+            research?.editorialRecommendation;
+
+          const verificationPriority =
+            research?.verificationPriority;
+
+          const researchSummary = [
+            confidence !== undefined
+              ? `Fact-check confidence: ${confidence}%`
+              : null,
+            verificationPriority
+              ? `Verification priority: ${String(verificationPriority).toUpperCase()}`
+              : null,
+            recommendation
+              ? `Recommendation: ${String(recommendation).toUpperCase()}`
+              : null
+          ].filter(Boolean).join(" • ");
+
+          if (researchSummary) {
+            $("#researchEngine").textContent = researchSummary;
+          }
+
           showToast(
-            "Research Engine",
-            "Research request accepted by the intelligence layer."
+            "Research Complete",
+            "The selected story was sent to the AI research and verification layer."
           );
 
         } catch (error) {
 
           console.error("NEWSFORGE research error:", error);
 
+          $("#researchState").textContent = "FAILED";
+
           showToast(
             "Research Engine",
-            "Research endpoint is not connected yet. The workspace is ready for it."
+            error?.message || "Unable to complete AI research."
           );
 
         } finally {
