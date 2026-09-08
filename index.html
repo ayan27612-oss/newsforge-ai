@@ -3426,10 +3426,97 @@
           RUN AI RESEARCH
         </button>
 
+        <button class="btn btn-lime" id="runContent" type="button" hidden>
+          GENERATE CONTENT
+        </button>
+
       </div>
 
     </div>
 
+  </div>
+
+  <!-- ============================================================
+       CONTENT GENERATION MODAL
+       ============================================================ -->
+
+  <div class="modal-backdrop" id="contentModal">
+    <div class="modal news-detail-modal" role="dialog" aria-modal="true">
+
+      <div class="modal-head">
+        <div>
+          <div class="modal-kicker">CONTENT ENGINE / NEWSFORGE AI</div>
+          <div class="modal-title">AI Content Generation Workspace</div>
+        </div>
+        <button class="modal-close" id="closeContent" type="button">×</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">Generation State</div>
+          <div class="modal-field">
+            <div class="modal-field-label">Status</div>
+            <div class="modal-field-value" id="contentState">READY</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">Article</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentArticle">No generated article yet.</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">Instagram</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentInstagram">No Instagram content yet.</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">X / Twitter</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentX">No X content yet.</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">Facebook</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentFacebook">No Facebook content yet.</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">LinkedIn</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentLinkedIn">No LinkedIn content yet.</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">YouTube</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentYouTube">No YouTube content yet.</div>
+          </div>
+        </div>
+
+        <div class="news-detail-section">
+          <div class="news-detail-section-title">Editorial Metadata</div>
+          <div class="modal-field">
+            <div class="modal-field-value" id="contentMetadata">No content metadata yet.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer news-detail-footer">
+        <button class="btn btn-secondary" id="closeContent2" type="button">CLOSE</button>
+      </div>
+
+    </div>
   </div>
 
   <!-- ============================================================
@@ -3478,7 +3565,9 @@
         researchOpen: false,
         newsDetailOpen: false,
         sidebarOpen: false,
-        selectedStory: null
+        selectedStory: null,
+        researchResult: null,
+        contentResult: null
       }
     };
 
@@ -4193,8 +4282,219 @@
         NEWSFORGE.state.researchOpen
       ) {
         closeResearchModal();
+        return;
       }
 
+      if (
+        event.key === "Escape" &&
+        contentModal?.classList.contains("open")
+      ) {
+        closeContentModal();
+      }
+
+    });
+
+    /* ============================================================
+       CONTENT GENERATION
+       ------------------------------------------------------------
+       Sends the selected story together with completed AI research
+       to the content engine. Publication remains a separate stage.
+       ============================================================ */
+
+    const contentModal = $("#contentModal");
+
+    function formatGeneratedContent(value) {
+      if (value === null || value === undefined || value === "") {
+        return "Not available.";
+      }
+
+      if (typeof value === "string") {
+        return value;
+      }
+
+      if (Array.isArray(value)) {
+        return value.map((item) => {
+          if (typeof item === "string") return item;
+          return JSON.stringify(item, null, 2);
+        }).join("\n\n");
+      }
+
+      return JSON.stringify(value, null, 2);
+    }
+
+    function updateContentModal(content) {
+      const article =
+        content?.article ??
+        content?.fullArticle ??
+        content?.articleContent;
+
+      const instagram =
+        content?.instagram ??
+        content?.instagramPost ??
+        content?.instagramCaption;
+
+      const x =
+        content?.x ??
+        content?.twitter ??
+        content?.xPost ??
+        content?.twitterPost;
+
+      const facebook =
+        content?.facebook ??
+        content?.facebookPost;
+
+      const linkedIn =
+        content?.linkedin ??
+        content?.linkedIn ??
+        content?.linkedinPost;
+
+      const youtube =
+        content?.youtube ??
+        content?.youtubeScript ??
+        content?.youtubeContent;
+
+      const metadata =
+        content?.metadata ??
+        content?.contentMetadata ??
+        {
+          editorialAngle: content?.editorialAngle,
+          hashtags: content?.hashtags,
+          headline: content?.headline,
+          humanApprovalRequired: content?.humanApprovalRequired,
+          publicationAllowed: content?.publicationAllowed
+        };
+
+      $("#contentArticle").textContent = formatGeneratedContent(article);
+      $("#contentInstagram").textContent = formatGeneratedContent(instagram);
+      $("#contentX").textContent = formatGeneratedContent(x);
+      $("#contentFacebook").textContent = formatGeneratedContent(facebook);
+      $("#contentLinkedIn").textContent = formatGeneratedContent(linkedIn);
+      $("#contentYouTube").textContent = formatGeneratedContent(youtube);
+      $("#contentMetadata").textContent = formatGeneratedContent(metadata);
+    }
+
+    function openContentModal() {
+      if (!NEWSFORGE.state.selectedStory || !NEWSFORGE.state.researchResult) {
+        showToast(
+          "Content Engine",
+          "Complete AI research before generating content."
+        );
+        return;
+      }
+
+      updateContentModal(NEWSFORGE.state.contentResult || {});
+      contentModal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeContentModal() {
+      contentModal.classList.remove("open");
+
+      if (
+        !NEWSFORGE.state.newsDetailOpen &&
+        !NEWSFORGE.state.researchOpen
+      ) {
+        document.body.style.overflow = "";
+      }
+    }
+
+    $("#closeContent")?.addEventListener("click", closeContentModal);
+    $("#closeContent2")?.addEventListener("click", closeContentModal);
+
+    contentModal?.addEventListener("click", (event) => {
+      if (event.target === contentModal) {
+        closeContentModal();
+      }
+    });
+
+    $("#runContent")?.addEventListener("click", async () => {
+      const button = $("#runContent");
+      const original = button.innerHTML;
+
+      button.disabled = true;
+      button.innerHTML = `
+        <span>◌</span>
+        GENERATING...
+      `;
+
+      $("#contentState").textContent = "GENERATING";
+
+      try {
+        const story = NEWSFORGE.state.selectedStory;
+        const research = NEWSFORGE.state.researchResult;
+
+        if (!story || !research) {
+          throw new Error(
+            "A selected story and completed research are required."
+          );
+        }
+
+        const response = await fetch(
+          NEWSFORGE.api.content,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({
+              story,
+              research,
+              options: {
+                source: "newsforge-ui"
+              }
+            })
+          }
+        );
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            data?.error ||
+            data?.message ||
+            `Content request returned ${response.status}`
+          );
+        }
+
+        const content =
+          data?.content ||
+          data?.result ||
+          data;
+
+        NEWSFORGE.state.contentResult = content;
+        updateContentModal(content);
+
+        $("#contentState").textContent =
+          content?.humanApprovalRequired === true
+            ? "COMPLETE / HUMAN APPROVAL REQUIRED"
+            : "COMPLETE";
+
+        contentModal.classList.add("open");
+
+        showToast(
+          "Content Generation Complete",
+          "AI-generated editorial and platform content is ready for human review."
+        );
+
+      } catch (error) {
+
+        console.error("NEWSFORGE content generation error:", error);
+
+        $("#contentState").textContent = "FAILED";
+
+        showToast(
+          "Content Engine",
+          error?.message ||
+          "Unable to generate content."
+        );
+
+      } finally {
+
+        button.disabled = false;
+        button.innerHTML = original;
+
+      }
     });
 
     /* ============================================================
@@ -4390,7 +4690,11 @@
             data?.result ||
             data;
 
+          NEWSFORGE.state.researchResult = research;
+          NEWSFORGE.state.contentResult = null;
+
           $("#researchState").textContent = "COMPLETE";
+          $("#runContent").hidden = false;
 
           if (research?.executiveSummary) {
             $("#researchSignal").textContent =
@@ -4434,6 +4738,7 @@
           console.error("NEWSFORGE research error:", error);
 
           $("#researchState").textContent = "FAILED";
+          $("#runContent").hidden = true;
 
           showToast(
             "Research Engine",
