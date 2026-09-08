@@ -3889,13 +3889,7 @@
         sourceLink.target = "_blank";
         sourceLink.rel = "noopener noreferrer";
         sourceLink.hidden = false;
-        sourceLink.onclick = (event) => {
-          event.preventDefault();
-          const url = sourceLink.href;
-          if (url && url !== window.location.href) {
-            window.open(url, "_blank", "noopener,noreferrer");
-          }
-        };
+        sourceLink.onclick = null;
       } else {
         sourceUrl.textContent = "No source URL is available.";
         sourceLink.hidden = true;
