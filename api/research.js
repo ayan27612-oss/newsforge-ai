@@ -1,2460 +1,1022 @@
-/**
- * NEWSFORGE AI
- * ------------------------------------------------------------
- * News Discovery + AI Intelligence Engine
- * ------------------------------------------------------------
- *
- * File:
- *   /api/news.js
- *
- * Environment variables required:
- *   NEWS_API_KEY
- *   GEMINI_API_KEY
- *
- * Runtime:
- *   Vercel Serverless Functions / Node.js
- *
- * Responsibilities:
- *   1. Fetch current news from NewsAPI
- *   2. Normalize incoming stories
- *   3. Remove duplicate stories
- *   4. Send stories to Gemini
- *   5. Generate structured intelligence
- *   6. Calculate / validate editorial signals
- *   7. Return frontend-ready JSON
- *
- * IMPORTANT:
- *   This module does NOT publish anything.
- *   It only discovers and analyzes news.
- *
- * ------------------------------------------------------------
- */
+// NEWSFORGE AI
+// Research & Verification Engine
+// api/research.js
 
-"use strict";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+const GEMINI_URL =
+  "https://generativelanguage.googleapis.com/v1beta/interactions";
 
-/* ============================================================
-   CONFIGURATION
-   ============================================================ */
+/* -------------------------------------------------------
+   BASIC HELPERS
+------------------------------------------------------- */
 
-const CONFIG = {
-  NEWS_API_URL: "https://newsapi.org/v2/everything",
-
-  GEMINI_API_URL:
-    "https://generativelanguage.googleapis.com/v1beta/interactions",
-
-  GEMINI_MODEL: "gemini-3.6-flash",
-
-  DEFAULT_PAGE_SIZE: 20,
-  MAX_PAGE_SIZE: 50,
-
-  NEWS_LANGUAGE: "en",
-  NEWS_SORT_BY: "publishedAt",
-
-  REQUEST_TIMEOUT_MS: 25000,
-  GEMINI_TIMEOUT_MS: 45000,
-
-  MAX_ARTICLE_TEXT: 4500,
-  MAX_DESCRIPTION_LENGTH: 1800,
-  MAX_TITLE_LENGTH: 500,
-
-  CACHE_CONTROL:
-    "s-maxage=300, stale-while-revalidate=600",
-
-  CORS_ORIGIN: "*"
-};
-
-
-/* ============================================================
-   CATEGORY DEFINITIONS
-   ============================================================ */
-
-const CATEGORY_KEYWORDS = {
-  politics: [
-    "government",
-    "minister",
-    "prime minister",
-    "president",
-    "election",
-    "parliament",
-    "lok sabha",
-    "rajya sabha",
-    "political",
-    "politics",
-    "policy",
-    "cabinet",
-    "bjp",
-    "congress",
-    "party",
-    "vote",
-    "voting",
-    "chief minister",
-    "mps",
-    "mla"
-  ],
-
-  business: [
-    "company",
-    "business",
-    "startup",
-    "corporate",
-    "revenue",
-    "profit",
-    "loss",
-    "investment",
-    "investor",
-    "market",
-    "stock",
-    "stocks",
-    "share",
-    "shares",
-    "ipo",
-    "acquisition",
-    "merger",
-    "funding",
-    "valuation",
-    "economy",
-    "economic"
-  ],
-
-  finance: [
-    "bank",
-    "banking",
-    "rbi",
-    "interest rate",
-    "inflation",
-    "rupee",
-    "dollar",
-    "currency",
-    "forex",
-    "bond",
-    "tax",
-    "gst",
-    "loan",
-    "credit",
-    "financial",
-    "finance"
-  ],
-
-  technology: [
-    "ai",
-    "artificial intelligence",
-    "technology",
-    "tech",
-    "software",
-    "hardware",
-    "chip",
-    "semiconductor",
-    "robot",
-    "robotics",
-    "cyber",
-    "cybersecurity",
-    "google",
-    "microsoft",
-    "apple",
-    "meta",
-    "openai",
-    "nvidia",
-    "cloud",
-    "data center"
-  ],
-
-  science: [
-    "science",
-    "scientist",
-    "research",
-    "space",
-    "nasa",
-    "isro",
-    "rocket",
-    "satellite",
-    "astronomy",
-    "physics",
-    "biology",
-    "climate",
-    "discovery"
-  ],
-
-  health: [
-    "health",
-    "healthcare",
-    "hospital",
-    "doctor",
-    "medical",
-    "medicine",
-    "disease",
-    "virus",
-    "vaccine",
-    "treatment",
-    "drug",
-    "cancer",
-    "clinical"
-  ],
-
-  sports: [
-    "cricket",
-    "football",
-    "soccer",
-    "tennis",
-    "hockey",
-    "olympics",
-    "sports",
-    "match",
-    "tournament",
-    "player",
-    "team",
-    "league",
-    "ipl",
-    "fifa"
-  ],
-
-  world: [
-    "international",
-    "global",
-    "united states",
-    "america",
-    "china",
-    "russia",
-    "ukraine",
-    "europe",
-    "middle east",
-    "israel",
-    "iran",
-    "united nations",
-    "foreign",
-    "war",
-    "conflict"
-  ],
-
-  entertainment: [
-    "movie",
-    "film",
-    "actor",
-    "actress",
-    "bollywood",
-    "hollywood",
-    "music",
-    "celebrity",
-    "netflix",
-    "series",
-    "television",
-    "streaming"
-  ],
-
-  lifestyle: [
-    "lifestyle",
-    "travel",
-    "food",
-    "fashion",
-    "culture",
-    "festival",
-    "education",
-    "career",
-    "jobs",
-    "consumer"
-  ]
-};
-
-
-/* ============================================================
-   HTTP HELPERS
-   ============================================================ */
-
-/**
- * Creates a standard JSON response.
- */
-function sendJson(res, statusCode, payload) {
-  res.status(statusCode);
-
-  res.setHeader(
-    "Content-Type",
-    "application/json; charset=utf-8"
-  );
-
-  res.setHeader(
-    "Cache-Control",
-    CONFIG.CACHE_CONTROL
-  );
-
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    CONFIG.CORS_ORIGIN
-  );
-
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, OPTIONS"
-  );
-
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type"
-  );
-
-  return res.json(payload);
+function cleanText(value, max = 5000) {
+  if (value === null || value === undefined) return "";
+  return String(value).replace(/\s+/g, " ").trim().slice(0, max);
 }
 
-
-/**
- * Creates a consistent error payload.
- */
-function sendError(
-  res,
-  statusCode,
-  code,
-  message,
-  details = null
-) {
-  return sendJson(res, statusCode, {
-    success: false,
-
-    error: {
-      code,
-      message,
-      details
-    },
-
-    timestamp: new Date().toISOString()
-  });
+function safeArray(value) {
+  return Array.isArray(value) ? value : [];
 }
 
+function clamp(value, min = 0, max = 100) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, Math.min(max, n));
+}
 
-/**
- * Fetch with timeout.
- */
-async function fetchWithTimeout(
-  url,
-  options = {},
-  timeoutMs = CONFIG.REQUEST_TIMEOUT_MS
-) {
-  const controller = new AbortController();
+function normalizeConfidence(value) {
+  const n = clamp(value, 0, 100);
 
-  const timeout = setTimeout(() => {
-    controller.abort();
-  }, timeoutMs);
+  if (n >= 85) return "HIGH";
+  if (n >= 65) return "MEDIUM";
+  return "LOW";
+}
+
+function normalizeStatus(value) {
+  const allowed = [
+    "VERIFIED",
+    "PARTIALLY_VERIFIED",
+    "UNVERIFIED",
+    "CONFLICTING",
+    "RESEARCH_FAILED"
+  ];
+
+  const status = cleanText(value, 50).toUpperCase();
+
+  return allowed.includes(status) ? status : "UNVERIFIED";
+}
+
+function normalizeRiskLevel(value) {
+  const allowed = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+  const level = cleanText(value, 30).toUpperCase();
+
+  return allowed.includes(level) ? level : "MEDIUM";
+}
+
+function uniqueStrings(items) {
+  const seen = new Set();
+
+  return safeArray(items)
+    .map(item => cleanText(item, 2000))
+    .filter(item => {
+      if (!item) return false;
+
+      const key = item.toLowerCase();
+
+      if (seen.has(key)) return false;
+
+      seen.add(key);
+      return true;
+    });
+}
+
+function uniqueSources(items) {
+  const seen = new Set();
+
+  return safeArray(items)
+    .map(source => {
+      if (!source || typeof source !== "object") return null;
+
+      return {
+        title: cleanText(source.title, 300),
+        url: cleanText(source.url, 2000),
+        publisher: cleanText(source.publisher, 200),
+        date: cleanText(source.date, 100)
+      };
+    })
+    .filter(source => {
+      if (!source) return false;
+
+      const key =
+        source.url ||
+        `${source.publisher}:${source.title}`.toLowerCase();
+
+      if (seen.has(key)) return false;
+
+      seen.add(key);
+
+      return Boolean(source.title || source.url || source.publisher);
+    });
+}
+
+/* -------------------------------------------------------
+   HTTP
+------------------------------------------------------- */
+
+async function fetchJson(url, options = {}) {
+  const response = await fetch(url, options);
+
+  const text = await response.text();
+
+  let data;
 
   try {
-    return await fetch(url, {
-      ...options,
-      signal: controller.signal
-    });
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
-
-/* ============================================================
-   GENERAL UTILITY FUNCTIONS
-   ============================================================ */
-
-/**
- * Safely convert any value to a string.
- */
-function safeString(value, fallback = "") {
-  if (value === null || value === undefined) {
-    return fallback;
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = {
+      raw: text
+    };
   }
 
-  return String(value).trim();
-}
+  if (!response.ok) {
+    const error = new Error(
+      data?.error?.message ||
+      data?.message ||
+      `HTTP ${response.status}`
+    );
 
+    error.status = response.status;
+    error.response = data;
 
-/**
- * Clamp a numeric value between min and max.
- */
-function clamp(value, min = 0, max = 100) {
-  const number = Number(value);
-
-  if (!Number.isFinite(number)) {
-    return min;
+    throw error;
   }
 
-  return Math.min(
-    max,
-    Math.max(min, number)
-  );
+  return data;
 }
 
+/* -------------------------------------------------------
+   ARTICLE NORMALIZATION
+------------------------------------------------------- */
 
-/**
- * Convert an unknown value to an integer score.
- */
-function score(value, fallback = 0) {
-  const number = Number(value);
-
-  if (!Number.isFinite(number)) {
-    return fallback;
-  }
-
-  return Math.round(
-    clamp(number, 0, 100)
-  );
-}
-
-
-/**
- * Normalize text.
- */
-function normalizeText(value) {
-  return safeString(value)
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-
-/**
- * Create a normalized key for duplicate detection.
- */
-function normalizeKey(value) {
-  return normalizeText(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-
-/**
- * Create a simple deterministic hash.
- *
- * This is not cryptography.
- * It is only used for internal deduplication.
- */
-function simpleHash(input) {
-  const text = safeString(input);
-
-  let hash = 0;
-
-  for (let i = 0; i < text.length; i++) {
-    hash =
-      (hash << 5) -
-      hash +
-      text.charCodeAt(i);
-
-    hash |= 0;
-  }
-
-  return Math.abs(hash).toString(36);
-}
-
-
-/**
- * Parse a date safely.
- */
-function safeDate(value) {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
+function normalizeArticle(article) {
+  if (!article || typeof article !== "object") {
     return null;
   }
 
-  return date;
+  return {
+    source:
+      typeof article.source === "object"
+        ? {
+            id: cleanText(article.source?.id, 200),
+            name: cleanText(article.source?.name, 300)
+          }
+        : {
+            name: cleanText(article.source, 300)
+          },
+
+    author: cleanText(article.author, 500),
+
+    title: cleanText(article.title, 1000),
+
+    description: cleanText(article.description, 3000),
+
+    content: cleanText(article.content, 8000),
+
+    url: cleanText(article.url, 3000),
+
+    image: cleanText(
+      article.image ||
+      article.urlToImage ||
+      article.imageUrl,
+      3000
+    ),
+
+    publishedAt: cleanText(
+      article.publishedAt ||
+      article.published_at ||
+      article.date,
+      200
+    )
+  };
 }
 
+/* -------------------------------------------------------
+   GEMINI RESPONSE EXTRACTION
+------------------------------------------------------- */
 
-/**
- * Convert date to ISO.
- */
-function toISODate(value) {
-  const date = safeDate(value);
+function collectTextFromObject(value, output = []) {
+  if (!value) return output;
 
-  if (!date) {
-    return null;
+  if (typeof value === "string") {
+    output.push(value);
+    return output;
   }
 
-  return date.toISOString();
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      collectTextFromObject(item, output);
+    }
+
+    return output;
+  }
+
+  if (typeof value === "object") {
+    if (typeof value.text === "string") {
+      output.push(value.text);
+    }
+
+    for (const key of Object.keys(value)) {
+      if (
+        key === "text" ||
+        key === "thought" ||
+        key === "thought_signature"
+      ) {
+        continue;
+      }
+
+      collectTextFromObject(value[key], output);
+    }
+  }
+
+  return output;
 }
 
+function extractGeminiText(data) {
+  const chunks = [];
 
-/* ============================================================
-   CATEGORY DETECTION
-   ============================================================ */
+  if (Array.isArray(data?.steps)) {
+    for (const step of data.steps) {
+      if (step?.type === "model_output") {
+        collectTextFromObject(step.content, chunks);
+      }
+    }
+  }
 
-/**
- * Detect category locally.
- *
- * Gemini remains the primary intelligence layer.
- * This function acts as a fallback and consistency check.
- */
-function detectCategoryLocally(article) {
+  if (Array.isArray(data?.outputs)) {
+    for (const output of data.outputs) {
+      collectTextFromObject(output, chunks);
+    }
+  }
+
+  if (typeof data?.text === "string") {
+    chunks.push(data.text);
+  }
+
+  if (typeof data?.output_text === "string") {
+    chunks.push(data.output_text);
+  }
+
+  if (typeof data?.response?.text === "string") {
+    chunks.push(data.response.text);
+  }
+
+  return chunks
+    .join("\n")
+    .replace(/```json/gi, "")
+    .replace(/```/g, "")
+    .trim();
+}
+
+/* -------------------------------------------------------
+   JSON EXTRACTION
+------------------------------------------------------- */
+
+function extractJson(text) {
+  if (!text) {
+    throw new Error("Gemini returned an empty response.");
+  }
+
+  const cleaned = text
+    .replace(/```json/gi, "")
+    .replace(/```/g, "")
+    .trim();
+
+  try {
+    return JSON.parse(cleaned);
+  } catch {}
+
+  const firstObject = cleaned.indexOf("{");
+  const lastObject = cleaned.lastIndexOf("}");
+
+  if (firstObject !== -1 && lastObject > firstObject) {
+    const candidate = cleaned.slice(
+      firstObject,
+      lastObject + 1
+    );
+
+    try {
+      return JSON.parse(candidate);
+    } catch {}
+  }
+
+  const firstArray = cleaned.indexOf("[");
+  const lastArray = cleaned.lastIndexOf("]");
+
+  if (firstArray !== -1 && lastArray > firstArray) {
+    const candidate = cleaned.slice(
+      firstArray,
+      lastArray + 1
+    );
+
+    try {
+      return JSON.parse(candidate);
+    } catch {}
+  }
+
+  throw new Error("Gemini returned invalid JSON.");
+}
+
+/* -------------------------------------------------------
+   URL EXTRACTION
+------------------------------------------------------- */
+
+function extractUrls(value, urls = []) {
+  if (!value) return urls;
+
+  if (typeof value === "string") {
+    const matches = value.match(
+      /https?:\/\/[^\s"'<>]+/gi
+    ) || [];
+
+    for (const url of matches) {
+      urls.push(url.replace(/[),.;]+$/, ""));
+    }
+
+    return urls;
+  }
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      extractUrls(item, urls);
+    }
+
+    return urls;
+  }
+
+  if (typeof value === "object") {
+    for (const key of Object.keys(value)) {
+      extractUrls(value[key], urls);
+    }
+  }
+
+  return urls;
+}
+
+function normalizeExtractedUrls(data) {
+  return [...new Set(
+    extractUrls(data)
+      .filter(url => /^https?:\/\//i.test(url))
+      .slice(0, 30)
+  )];
+}
+
+/* -------------------------------------------------------
+   SAFETY RULES
+------------------------------------------------------- */
+
+function editorialSafety(article) {
   const text = [
     article.title,
     article.description,
-    article.content,
-    article.source?.name
+    article.content
   ]
     .filter(Boolean)
     .join(" ")
     .toLowerCase();
 
-  const scores = {};
+  const flags = [];
 
-  for (const [category, keywords] of Object.entries(
-    CATEGORY_KEYWORDS
-  )) {
-    let points = 0;
-
-    for (const keyword of keywords) {
-      if (text.includes(keyword)) {
-        points += 1;
-      }
-    }
-
-    scores[category] = points;
-  }
-
-  let winner = "general";
-  let highest = 0;
-
-  for (const [category, points] of Object.entries(scores)) {
-    if (points > highest) {
-      highest = points;
-      winner = category;
-    }
-  }
-
-  return winner;
-}
-
-
-/* ============================================================
-   ARTICLE NORMALIZATION
-   ============================================================ */
-
-/**
- * Normalize a NewsAPI article into NEWSFORGE format.
- */
-function normalizeArticle(article, index = 0) {
-  const sourceName =
-    safeString(article?.source?.name) ||
-    "Unknown Source";
-
-  const sourceId =
-    safeString(article?.source?.id);
-
-  const title =
-    normalizeText(article?.title) ||
-    "Untitled story";
-
-  const description =
-    normalizeText(article?.description);
-
-  const content =
-    normalizeText(article?.content);
-
-  const url =
-    safeString(article?.url);
-
-  const image =
-    safeString(article?.urlToImage);
-
-  const publishedAt =
-    toISODate(article?.publishedAt);
-
-  const author =
-    normalizeText(article?.author);
-
-  const localCategory =
-    detectCategoryLocally({
-      title,
-      description,
-      content,
-      source: {
-        name: sourceName
-      }
-    });
-
-  const identityBase = [
-    normalizeKey(title),
-    normalizeKey(sourceName)
-  ].join("|");
-
-  return {
-    id:
-      `story-${simpleHash(identityBase)}-${index}`,
-
-    source: {
-      id: sourceId || null,
-      name: sourceName
+  const rules = [
+    {
+      pattern: /\b(death|dead|died|dies|killed|murder|suicide)\b/i,
+      flag: "Potential death or fatality claim"
     },
 
-    author: author || null,
+    {
+      pattern: /\b(terror|terrorist|bomb|blast|explosion)\b/i,
+      flag: "Potential terrorism or attack claim"
+    },
 
-    title:
-      title.slice(
-        0,
-        CONFIG.MAX_TITLE_LENGTH
-      ),
+    {
+      pattern: /\b(rape|sexual assault|molestation)\b/i,
+      flag: "Sensitive sexual-crime claim"
+    },
 
-    description:
-      description.slice(
-        0,
-        CONFIG.MAX_DESCRIPTION_LENGTH
-      ),
+    {
+      pattern: /\b(communal|riot|religious violence)\b/i,
+      flag: "Potential communal or civil-unrest claim"
+    },
 
-    content:
-      content.slice(
-        0,
-        CONFIG.MAX_ARTICLE_TEXT
-      ),
+    {
+      pattern: /\b(election|poll|vote|voting|ballot)\b/i,
+      flag: "Election-related claim"
+    },
 
-    url: url || null,
+    {
+      pattern: /\b(minister|prime minister|president|politician|government)\b/i,
+      flag: "Political or government-related claim"
+    },
 
-    image: image || null,
+    {
+      pattern: /\b(cancer|covid|vaccine|medical|disease|drug)\b/i,
+      flag: "Medical or health-related claim"
+    },
 
-    publishedAt,
+    {
+      pattern: /\b(accused|alleged|allegation|charges|fraud|scam)\b/i,
+      flag: "Allegation or accusation"
+    },
 
-    category: localCategory,
-
-    ai: null,
-
-    metadata: {
-      discoveryIndex: index,
-      normalizedAt: new Date().toISOString()
+    {
+      pattern: /\b(earthquake|flood|cyclone|disaster|emergency)\b/i,
+      flag: "Potential disaster or emergency"
     }
-  };
-}
+  ];
 
-
-/* ============================================================
-   DUPLICATE FILTERING
-   ============================================================ */
-
-/**
- * Remove duplicate articles.
- *
- * We compare:
- *   - exact URL
- *   - normalized title
- *   - normalized title + source
- */
-function deduplicateArticles(articles) {
-  const seenUrls = new Set();
-  const seenTitles = new Set();
-  const seenIdentity = new Set();
-
-  const unique = [];
-
-  for (const article of articles) {
-    const url =
-      normalizeKey(article.url);
-
-    const title =
-      normalizeKey(article.title);
-
-    const identity =
-      `${title}|${normalizeKey(
-        article.source?.name
-      )}`;
-
-    if (url && seenUrls.has(url)) {
-      continue;
+  for (const rule of rules) {
+    if (rule.pattern.test(text)) {
+      flags.push(rule.flag);
     }
-
-    if (title && seenTitles.has(title)) {
-      continue;
-    }
-
-    if (seenIdentity.has(identity)) {
-      continue;
-    }
-
-    if (url) {
-      seenUrls.add(url);
-    }
-
-    if (title) {
-      seenTitles.add(title);
-    }
-
-    seenIdentity.add(identity);
-
-    unique.push(article);
-  }
-
-  return unique;
-}
-
-
-/* ============================================================
-   NEWSAPI QUERY
-   ============================================================ */
-
-/**
- * Build the default India-focused search query.
- *
- * The query intentionally includes several major domains
- * because NEWSFORGE is designed as a broad intelligence layer,
- * not merely a politics dashboard.
- */
-function buildNewsQuery(customQuery = "") {
-  const supplied =
-    normalizeText(customQuery);
-
-  if (supplied) {
-    return supplied;
-  }
-
-  return [
-    "India",
-    "Indian government",
-    "Indian economy",
-    "Indian business",
-    "Indian markets",
-    "India technology",
-    "India finance",
-    "India startup",
-    "India policy",
-    "India geopolitics"
-  ].join(" OR ");
-}
-
-
-/**
- * Fetch articles from NewsAPI.
- */
-async function fetchNewsFromNewsAPI({
-  pageSize,
-  page = 1,
-  query = ""
-}) {
-  const apiKey =
-    process.env.NEWS_API_KEY;
-
-  if (!apiKey) {
-    throw new Error(
-      "NEWS_API_KEY is not configured in Vercel environment variables."
-    );
-  }
-
-  const finalPageSize =
-    Math.min(
-      CONFIG.MAX_PAGE_SIZE,
-      Math.max(
-        1,
-        Number(pageSize) ||
-          CONFIG.DEFAULT_PAGE_SIZE
-      )
-    );
-
-  const finalPage =
-    Math.max(
-      1,
-      Number(page) || 1
-    );
-
-  const finalQuery =
-    buildNewsQuery(query);
-
-  const params =
-    new URLSearchParams();
-
-  params.set(
-    "q",
-    finalQuery
-  );
-
-  params.set(
-    "language",
-    CONFIG.NEWS_LANGUAGE
-  );
-
-  params.set(
-    "sortBy",
-    CONFIG.NEWS_SORT_BY
-  );
-
-  params.set(
-    "pageSize",
-    String(finalPageSize)
-  );
-
-  params.set(
-    "page",
-    String(finalPage)
-  );
-
-  params.set(
-    "apiKey",
-    apiKey
-  );
-
-  const url =
-    `${CONFIG.NEWS_API_URL}?${params.toString()}`;
-
-  let response;
-
-  try {
-    response =
-      await fetchWithTimeout(
-        url,
-        {
-          method: "GET",
-          headers: {
-            Accept:
-              "application/json"
-          }
-        },
-        CONFIG.REQUEST_TIMEOUT_MS
-      );
-  } catch (error) {
-    if (
-      error?.name ===
-      "AbortError"
-    ) {
-      throw new Error(
-        "NewsAPI request timed out."
-      );
-    }
-
-    throw new Error(
-      `NewsAPI network request failed: ${
-        error?.message ||
-        "Unknown network error"
-      }`
-    );
-  }
-
-  let data;
-
-  try {
-    data = await response.json();
-  } catch {
-    throw new Error(
-      `NewsAPI returned an invalid JSON response. HTTP ${response.status}.`
-    );
-  }
-
-  if (!response.ok) {
-    throw new Error(
-      data?.message ||
-      `NewsAPI request failed with HTTP ${response.status}.`
-    );
-  }
-
-  if (
-    data?.status &&
-    data.status !== "ok"
-  ) {
-    throw new Error(
-      data?.message ||
-      "NewsAPI returned an unsuccessful response."
-    );
   }
 
   return {
-    articles:
-      Array.isArray(data?.articles)
-        ? data.articles
-        : [],
-
-    totalResults:
-      Number(data?.totalResults) || 0
+    humanReviewRequired: flags.length > 0,
+    flags: [...new Set(flags)]
   };
 }
 
+/* -------------------------------------------------------
+   RESEARCH PROMPT
+------------------------------------------------------- */
 
-/* ============================================================
-   GEMINI PROMPT
-   ============================================================ */
-
-/**
- * Build the AI intelligence prompt.
- */
-function buildGeminiPrompt(articles) {
-  const serialized =
-    articles.map((article, index) => {
-      return {
-        index,
-
-        source:
-          article.source?.name ||
-          "Unknown",
-
-        author:
-          article.author ||
-          null,
-
-        title:
-          article.title,
-
-        description:
-          article.description,
-
-        content:
-          article.content,
-
-        publishedAt:
-          article.publishedAt,
-
-        url:
-          article.url
-      };
-    });
-
+function buildResearchPrompt(article, safety) {
   return `
-You are the intelligence engine of NEWSFORGE AI.
+You are NEWSFORGE AI's research and verification engine.
 
-NEWSFORGE is a professional news discovery and editorial
-intelligence platform focused primarily on India while
-monitoring globally relevant developments.
-
-Your job is NOT to invent facts.
-
-You are analyzing the supplied news stories and must return
-structured editorial intelligence.
+Your job is to investigate a news story before it is allowed to become social-media content.
 
 IMPORTANT EDITORIAL RULES:
 
-1. Never invent information.
-2. Never assume an allegation is proven.
-3. Never state a death, arrest, crime, disaster, political
-   allegation, medical claim, financial claim or major event
-   as confirmed unless the supplied information supports it.
-4. If a story requires additional verification, set
-   humanVerificationRequired to true.
-5. Breaking news should normally require human verification.
-6. Politics, elections, communal issues, deaths, disasters,
-   allegations, medical claims and market-sensitive stories
-   should receive additional caution.
-7. Trend score is NOT a truth score.
-8. Attention potential is NOT a credibility score.
-9. A story can be highly interesting while still requiring
-   verification.
-10. Keep reasoning concise but useful for an editor.
-11. Use only information present in the supplied articles.
-12. Do not fabricate sources.
-13. Do not fabricate quotes.
-14. Do not fabricate numbers.
-15. Do not fabricate events.
-16. If information is insufficient, explicitly say so.
+1. Do not assume the supplied article is true.
+2. Treat the supplied article as an initial lead, not established fact.
+3. Use current web information.
+4. Cross-check important claims against multiple independent sources.
+5. Prefer primary sources, official government sources, official statements,
+   reputable news organizations, public records, and direct documentation.
+6. Distinguish confirmed facts from allegations, predictions, opinions,
+   speculation and unverified reports.
+7. Never manufacture sources or URLs.
+8. If evidence conflicts, explicitly say so.
+9. Deaths, disasters, crime, politics, elections, communal issues,
+   medical claims and allegations require heightened caution.
+10. Do not recommend automatic publication when material uncertainty remains.
+11. If the story cannot be adequately verified, mark it UNVERIFIED.
+12. If reliable sources directly disagree, mark it CONFLICTING.
+13. Confidence must reflect evidence quality, not how confidently the
+    original article was written.
 
-SCORING:
+ORIGINAL STORY:
 
-trendScore:
-0-100 estimate of how likely the story is currently
-important, timely or widely interesting.
+Title:
+${article.title}
 
-audienceRelevance:
-0-100 relevance to an Indian/general digital audience.
+Description:
+${article.description}
 
-attentionPotential:
-0-100 likelihood of attracting attention.
+Article content:
+${article.content}
 
-confidence:
-0-100 confidence in the classification based ONLY on the
-supplied article information.
+Publisher:
+${article.source?.name || "Unknown"}
 
-PRIORITY:
+Author:
+${article.author || "Unknown"}
 
-critical:
-Potentially immediate/high-impact development.
+Published:
+${article.publishedAt || "Unknown"}
 
-high:
-Important and potentially significant.
+Original URL:
+${article.url || "Unavailable"}
 
-medium:
-Worth monitoring or publishing depending on editorial value.
+EDITORIAL SAFETY FLAGS:
 
-low:
-Lower urgency.
+${safety.flags.length
+  ? safety.flags.map(flag => `- ${flag}`).join("\n")
+  : "- No automatic high-risk keyword flag detected."}
 
-CATEGORIES:
+RESEARCH TASK:
 
-politics
-business
-finance
-technology
-science
-health
-sports
-world
-entertainment
-lifestyle
-general
-
-VERIFICATION:
-
-humanVerificationRequired should be true when:
-- facts appear incomplete,
-- story is breaking,
-- claims are allegations,
-- source information is insufficient,
-- story could materially affect people,
-- story concerns deaths/disasters/crime,
-- story concerns elections or politics,
-- story contains potentially market-moving information,
-- medical/scientific claims need confirmation.
+A. Identify the main factual claims.
+B. Search the current web for corroborating evidence.
+C. Look for contradictory evidence.
+D. Determine what is actually established.
+E. Identify important missing information.
+F. Evaluate source quality.
+G. Determine whether this story is suitable for content generation.
+H. Recommend whether a human editor must review it.
+I. Provide useful source URLs discovered during research.
+J. Never invent evidence.
 
 Return ONLY valid JSON matching the requested schema.
-
-INPUT ARTICLES:
-
-${JSON.stringify(serialized, null, 2)}
 `;
 }
 
+/* -------------------------------------------------------
+   GEMINI RESEARCH
+------------------------------------------------------- */
 
-/* ============================================================
-   GEMINI SCHEMA
-   ============================================================ */
+async function runGeminiResearch(article, safety) {
+  if (!GEMINI_API_KEY) {
+    throw new Error(
+      "GEMINI_API_KEY is not configured in Vercel environment variables."
+    );
+  }
 
-function getGeminiSchema() {
-  return {
+  const responseSchema = {
     type: "object",
 
     properties: {
-      stories: {
-        type: "array",
+      research_status: {
+        type: "string",
+        enum: [
+          "VERIFIED",
+          "PARTIALLY_VERIFIED",
+          "UNVERIFIED",
+          "CONFLICTING"
+        ]
+      },
 
+      confidence: {
+        type: "number"
+      },
+
+      executive_summary: {
+        type: "string"
+      },
+
+      cross_check_summary: {
+        type: "string"
+      },
+
+      key_claims: {
+        type: "array",
+        items: {
+          type: "string"
+        }
+      },
+
+      supporting_evidence: {
+        type: "array",
+        items: {
+          type: "string"
+        }
+      },
+
+      conflicting_evidence: {
+        type: "array",
+        items: {
+          type: "string"
+        }
+      },
+
+      risk_flags: {
+        type: "array",
         items: {
           type: "object",
-
           properties: {
-            index: {
-              type: "integer"
+            level: {
+              type: "string",
+              enum: [
+                "LOW",
+                "MEDIUM",
+                "HIGH",
+                "CRITICAL"
+              ]
             },
 
-            trendScore: {
-              type: "integer"
-            },
-
-            category: {
-              type: "string"
-            },
-
-            priority: {
-              type: "string"
-            },
-
-            audienceRelevance: {
-              type: "integer"
-            },
-
-            attentionPotential: {
-              type: "integer"
-            },
-
-            confidence: {
-              type: "integer"
-            },
-
-            humanVerificationRequired: {
-              type: "boolean"
-            },
-
-            verificationReason: {
-              type: "string"
-            },
-
-            reasoning: {
-              type: "string"
-            },
-
-            editorialAngle: {
+            reason: {
               type: "string"
             }
           },
 
           required: [
-            "index",
-            "trendScore",
-            "category",
-            "priority",
-            "audienceRelevance",
-            "attentionPotential",
-            "confidence",
-            "humanVerificationRequired",
-            "verificationReason",
-            "reasoning",
-            "editorialAngle"
+            "level",
+            "reason"
+          ]
+        }
+      },
+
+      recommendation: {
+        type: "string"
+      },
+
+      sources: {
+        type: "array",
+        items: {
+          type: "object",
+
+          properties: {
+            title: {
+              type: "string"
+            },
+
+            url: {
+              type: "string"
+            },
+
+            publisher: {
+              type: "string"
+            },
+
+            date: {
+              type: "string"
+            }
+          },
+
+          required: [
+            "title",
+            "url",
+            "publisher",
+            "date"
           ]
         }
       }
     },
 
     required: [
-      "stories"
+      "research_status",
+      "confidence",
+      "executive_summary",
+      "cross_check_summary",
+      "key_claims",
+      "supporting_evidence",
+      "conflicting_evidence",
+      "risk_flags",
+      "recommendation",
+      "sources"
     ]
   };
-}
 
+  const payload = {
+    model: MODEL,
 
-/* ============================================================
-   GEMINI RESPONSE EXTRACTION
-   ============================================================ */
+    input: buildResearchPrompt(article, safety),
 
-/**
- * Extract text from Gemini Interactions API response.
- *
- * Gemini Interactions responses can contain multiple steps.
- * We search backwards for model output text because that is
- * the most useful final representation.
- */
-function extractGeminiText(response) {
-  if (!response) {
-    return "";
-  }
+    tools: [
+      {
+        type: "google_search"
+      },
 
-  const candidates = [];
-
-  if (
-    Array.isArray(
-      response.steps
-    )
-  ) {
-    for (
-      let i = response.steps.length - 1;
-      i >= 0;
-      i--
-    ) {
-      const step =
-        response.steps[i];
-
-      if (
-        Array.isArray(step?.content)
-      ) {
-        for (
-          let j = step.content.length - 1;
-          j >= 0;
-          j--
-        ) {
-          const content =
-            step.content[j];
-
-          if (
-            typeof content?.text ===
-            "string"
-          ) {
-            candidates.push(
-              content.text
-            );
-          }
-        }
+      {
+        type: "url_context"
       }
-    }
-  }
-
-  if (
-    typeof response.output_text ===
-    "string"
-  ) {
-    candidates.push(
-      response.output_text
-    );
-  }
-
-  if (
-    typeof response.text ===
-    "string"
-  ) {
-    candidates.push(
-      response.text
-    );
-  }
-
-  if (
-    Array.isArray(
-      response.outputs
-    )
-  ) {
-    for (
-      let i = response.outputs.length - 1;
-      i >= 0;
-      i--
-    ) {
-      const output =
-        response.outputs[i];
-
-      if (
-        typeof output?.text ===
-        "string"
-      ) {
-        candidates.push(
-          output.text
-        );
-      }
-
-      if (
-        Array.isArray(
-          output?.content
-        )
-      ) {
-        for (
-          const content of output.content
-        ) {
-          if (
-            typeof content?.text ===
-            "string"
-          ) {
-            candidates.push(
-              content.text
-            );
-          }
-        }
-      }
-    }
-  }
-
-  return (
-    candidates
-      .map(normalizeText)
-      .filter(Boolean)
-      .sort(
-        (a, b) =>
-          b.length - a.length
-      )[0] ||
-    ""
-  );
-}
-
-
-/**
- * Remove accidental markdown fences from AI output.
- */
-function cleanJsonText(text) {
-  let cleaned =
-    safeString(text);
-
-  cleaned =
-    cleaned.replace(
-      /^```json\s*/i,
-      ""
-    );
-
-  cleaned =
-    cleaned.replace(
-      /^```\s*/i,
-      ""
-    );
-
-  cleaned =
-    cleaned.replace(
-      /\s*```$/i,
-      ""
-    );
-
-  return cleaned.trim();
-}
-
-
-/**
- * Parse Gemini JSON safely.
- */
-function parseGeminiJson(text) {
-  const cleaned =
-    cleanJsonText(text);
-
-  if (!cleaned) {
-    throw new Error(
-      "Gemini returned an empty response."
-    );
-  }
-
-  try {
-    return JSON.parse(cleaned);
-  } catch {
-    /*
-     * Sometimes a model may surround valid JSON with
-     * additional text despite structured-output instructions.
-     * Try extracting the first JSON object.
-     */
-
-    const firstBrace =
-      cleaned.indexOf("{");
-
-    const lastBrace =
-      cleaned.lastIndexOf("}");
-
-    if (
-      firstBrace >= 0 &&
-      lastBrace > firstBrace
-    ) {
-      const candidate =
-        cleaned.slice(
-          firstBrace,
-          lastBrace + 1
-        );
-
-      try {
-        return JSON.parse(candidate);
-      } catch {
-        // Continue to final error.
-      }
-    }
-
-    throw new Error(
-      "Gemini returned malformed JSON."
-    );
-  }
-}
-
-
-/* ============================================================
-   GEMINI ANALYSIS
-   ============================================================ */
-
-/**
- * Analyze articles with Gemini.
- */
-async function analyzeWithGemini(
-  articles
-) {
-  const apiKey =
-    process.env.GEMINI_API_KEY;
-
-  if (!apiKey) {
-    throw new Error(
-      "GEMINI_API_KEY is not configured in Vercel environment variables."
-    );
-  }
-
-  if (!articles.length) {
-    return {
-      stories: []
-    };
-  }
-
-  const prompt =
-    buildGeminiPrompt(
-      articles
-    );
-
-  const body = {
-    model:
-      CONFIG.GEMINI_MODEL,
-
-    input: prompt,
+    ],
 
     response_format: {
       type: "text",
-
-      mime_type:
-        "application/json",
-
-      schema:
-        getGeminiSchema()
+      mime_type: "application/json",
+      schema: responseSchema
     }
   };
 
-  let response;
+  const data = await fetchJson(GEMINI_URL, {
+    method: "POST",
 
-  try {
-    response =
-      await fetchWithTimeout(
-        CONFIG.GEMINI_API_URL,
-        {
-          method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": GEMINI_API_KEY
+    },
 
-          headers: {
-            "Content-Type":
-              "application/json",
+    body: JSON.stringify(payload)
+  });
 
-            "x-goog-api-key":
-              apiKey,
-
-            Accept:
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(body)
-        },
-        CONFIG.GEMINI_TIMEOUT_MS
-      );
-  } catch (error) {
-    if (
-      error?.name ===
-      "AbortError"
-    ) {
-      throw new Error(
-        "Gemini request timed out."
-      );
-    }
-
-    throw new Error(
-      `Gemini network request failed: ${
-        error?.message ||
-        "Unknown network error"
-      }`
-    );
-  }
-
-  let data;
-
-  try {
-    data =
-      await response.json();
-  } catch {
-    throw new Error(
-      `Gemini returned invalid JSON. HTTP ${response.status}.`
-    );
-  }
-
-  if (!response.ok) {
-    const providerMessage =
-      data?.error?.message ||
-      data?.message ||
-      `HTTP ${response.status}`;
-
-    throw new Error(
-      `Gemini API error: ${providerMessage}`
-    );
-  }
-
-  const text =
-    extractGeminiText(data);
+  const text = extractGeminiText(data);
 
   if (!text) {
     throw new Error(
-      "Gemini completed the request but returned no model output."
+      "Gemini research completed without returning model text."
     );
   }
 
-  const parsed =
-    parseGeminiJson(text);
-
-  if (
-    !parsed ||
-    !Array.isArray(
-      parsed.stories
-    )
-  ) {
-    throw new Error(
-      "Gemini response did not contain a valid stories array."
-    );
-  }
-
-  return parsed;
-}
-
-
-/* ============================================================
-   AI DATA NORMALIZATION
-   ============================================================ */
-
-/**
- * Normalize one AI result.
- */
-function normalizeAIResult(
-  ai,
-  article
-) {
-  const category =
-    safeString(
-      ai?.category
-    ).toLowerCase();
-
-  const allowedCategories =
-    new Set([
-      "politics",
-      "business",
-      "finance",
-      "technology",
-      "science",
-      "health",
-      "sports",
-      "world",
-      "entertainment",
-      "lifestyle",
-      "general"
-    ]);
-
-  const finalCategory =
-    allowedCategories.has(
-      category
-    )
-      ? category
-      : (
-          article.category ||
-          "general"
-        );
-
-  const priority =
-    safeString(
-      ai?.priority
-    ).toLowerCase();
-
-  const allowedPriorities =
-    new Set([
-      "critical",
-      "high",
-      "medium",
-      "low"
-    ]);
-
-  const finalPriority =
-    allowedPriorities.has(
-      priority
-    )
-      ? priority
-      : "medium";
-
-  const verification =
-    Boolean(
-      ai?.humanVerificationRequired
-    );
+  const parsed = extractJson(text);
 
   return {
-    trendScore:
-      score(
-        ai?.trendScore,
-        50
-      ),
-
-    category:
-      finalCategory,
-
-    priority:
-      finalPriority,
-
-    audienceRelevance:
-      score(
-        ai?.audienceRelevance,
-        50
-      ),
-
-    attentionPotential:
-      score(
-        ai?.attentionPotential,
-        50
-      ),
-
-    confidence:
-      score(
-        ai?.confidence,
-        40
-      ),
-
-    humanVerificationRequired:
-      verification,
-
-    verificationReason:
-      normalizeText(
-        ai?.verificationReason
-      ) ||
-      (
-        verification
-          ? "Additional human verification is recommended."
-          : "No additional verification flag was generated."
-      ),
-
-    reasoning:
-      normalizeText(
-        ai?.reasoning
-      ) ||
-      "No AI reasoning was returned.",
-
-    editorialAngle:
-      normalizeText(
-        ai?.editorialAngle
-      ) ||
-      "Monitor story development."
+    parsed,
+    rawResponse: data
   };
 }
 
+/* -------------------------------------------------------
+   NORMALIZE RESEARCH
+------------------------------------------------------- */
 
-/**
- * Apply AI results to articles.
- */
-function attachAIResults(
-  articles,
-  analysis
-) {
-  const aiStories =
-    Array.isArray(
-      analysis?.stories
-    )
-      ? analysis.stories
-      : [];
+function normalizeResearch(parsed, article, safety, rawResponse) {
+  const sourceList = uniqueSources(parsed?.sources);
 
-  const aiByIndex =
-    new Map();
+  const extractedUrls = normalizeExtractedUrls(
+    rawResponse
+  );
 
-  for (
-    const result of aiStories
-  ) {
-    const index =
-      Number(result?.index);
-
-    if (
-      Number.isInteger(index)
-    ) {
-      aiByIndex.set(
-        index,
-        result
-      );
+  for (const url of extractedUrls) {
+    if (!sourceList.some(source => source.url === url)) {
+      sourceList.push({
+        title: "Web source",
+        url,
+        publisher: "",
+        date: ""
+      });
     }
   }
 
-  return articles.map(
-    (article, index) => {
-      const ai =
-        aiByIndex.get(index);
+  const confidenceNumber = clamp(
+    parsed?.confidence,
+    0,
+    100
+  );
 
-      if (!ai) {
+  const riskFlags = safeArray(parsed?.risk_flags)
+    .map(flag => {
+      if (typeof flag === "string") {
         return {
-          ...article,
-
-          ai: {
-            trendScore: 35,
-
-            category:
-              article.category ||
-              "general",
-
-            priority: "medium",
-
-            audienceRelevance: 35,
-
-            attentionPotential: 35,
-
-            confidence: 20,
-
-            humanVerificationRequired:
-              true,
-
-            verificationReason:
-              "AI analysis was unavailable for this story. Manual review is required.",
-
-            reasoning:
-              "The intelligence engine did not return an analysis for this story.",
-
-            editorialAngle:
-              "Manual editorial review required.",
-
-            analyzed:
-              false
-          }
+          level: "MEDIUM",
+          reason: cleanText(flag, 1000)
         };
       }
 
       return {
-        ...article,
-
-        category:
-          normalizeAIResult(
-            ai,
-            article
-          ).category,
-
-        ai: {
-          ...normalizeAIResult(
-            ai,
-            article
-          ),
-
-          analyzed:
-            true
-        }
+        level: normalizeRiskLevel(flag?.level),
+        reason: cleanText(flag?.reason, 1000)
       };
+    })
+    .filter(flag => flag.reason);
+
+  for (const flag of safety.flags) {
+    riskFlags.push({
+      level: "HIGH",
+      reason: flag
+    });
+  }
+
+  const dedupedRiskFlags = [];
+
+  const seenRisks = new Set();
+
+  for (const flag of riskFlags) {
+    const key =
+      `${flag.level}:${flag.reason}`.toLowerCase();
+
+    if (!seenRisks.has(key)) {
+      seenRisks.add(key);
+      dedupedRiskFlags.push(flag);
     }
-  );
-}
+  }
 
-
-/* ============================================================
-   EDITORIAL SAFETY NORMALIZATION
-   ============================================================ */
-
-/**
- * Force human verification for certain categories / signals.
- *
- * This is deliberately conservative.
- */
-function applyEditorialSafety(
-  articles
-) {
-  const sensitiveCategories =
-    new Set([
-      "politics",
-      "health"
-    ]);
-
-  return articles.map(
-    article => {
-      const ai =
-        article.ai || {};
-
-      let requiresReview =
-        Boolean(
-          ai.humanVerificationRequired
-        );
-
-      let reason =
-        ai.verificationReason ||
-        "";
-
-      if (
-        sensitiveCategories.has(
-          ai.category
-        ) &&
-        ai.confidence < 70
-      ) {
-        requiresReview = true;
-
-        reason =
-          "Sensitive category with limited AI confidence. Human verification is required.";
-      }
-
-      if (
-        ai.priority === "critical"
-      ) {
-        requiresReview = true;
-
-        reason =
-          "Critical-priority story requires human editorial approval before publication.";
-      }
-
-      if (
-        ai.trendScore >= 90 &&
-        ai.confidence < 75
-      ) {
-        requiresReview = true;
-
-        reason =
-          "High-trend story with insufficient confidence requires verification.";
-      }
-
-      return {
-        ...article,
-
-        ai: {
-          ...ai,
-
-          humanVerificationRequired:
-            requiresReview,
-
-          verificationReason:
-            reason ||
-            (
-              requiresReview
-                ? "Human verification required."
-                : "No mandatory verification flag."
-            )
-        }
-      };
-    }
-  );
-}
-
-
-/* ============================================================
-   SORTING
-   ============================================================ */
-
-/**
- * Sort stories by editorial importance.
- *
- * Primary:
- *   trend score
- *
- * Secondary:
- *   attention potential
- *
- * Tertiary:
- *   publication date
- */
-function sortByImportance(
-  articles
-) {
-  return [...articles].sort(
-    (a, b) => {
-      const aTrend =
-        Number(
-          a.ai?.trendScore
-        ) || 0;
-
-      const bTrend =
-        Number(
-          b.ai?.trendScore
-        ) || 0;
-
-      if (
-        bTrend !== aTrend
-      ) {
-        return (
-          bTrend - aTrend
-        );
-      }
-
-      const aAttention =
-        Number(
-          a.ai?.attentionPotential
-        ) || 0;
-
-      const bAttention =
-        Number(
-          b.ai?.attentionPotential
-        ) || 0;
-
-      if (
-        bAttention !==
-        aAttention
-      ) {
-        return (
-          bAttention -
-          aAttention
-        );
-      }
-
-      const aDate =
-        safeDate(
-          a.publishedAt
-        )?.getTime() || 0;
-
-      const bDate =
-        safeDate(
-          b.publishedAt
-        )?.getTime() || 0;
-
-      return (
-        bDate - aDate
-      );
-    }
-  );
-}
-
-
-/* ============================================================
-   INTELLIGENCE SUMMARY
-   ============================================================ */
-
-/**
- * Build dashboard-level intelligence metrics.
- */
-function buildIntelligenceSummary(
-  articles
-) {
-  const analyzed =
-    articles.filter(
-      article =>
-        article.ai?.analyzed
+  const requiresHumanReview =
+    safety.humanReviewRequired ||
+    confidenceNumber < 85 ||
+    parsed?.research_status === "UNVERIFIED" ||
+    parsed?.research_status === "CONFLICTING" ||
+    parsed?.research_status === "PARTIALLY_VERIFIED" ||
+    dedupedRiskFlags.some(
+      flag =>
+        flag.level === "HIGH" ||
+        flag.level === "CRITICAL"
     );
 
-  const highPotential =
-    articles.filter(
-      article =>
-        Number(
-          article.ai?.trendScore
-        ) >= 75
-    );
+  return {
+    research_status: normalizeStatus(
+      parsed?.research_status
+    ),
 
-  const criticalStories =
-    articles.filter(
-      article =>
-        article.ai?.priority ===
-        "critical"
-    );
+    confidence: confidenceNumber,
 
-  const verificationRequired =
-    articles.filter(
-      article =>
-        article.ai?.humanVerificationRequired
-    );
+    confidence_label:
+      normalizeConfidence(confidenceNumber),
 
-  const averageTrend =
-    analyzed.length
-      ? Math.round(
-          analyzed.reduce(
-            (sum, article) =>
-              sum +
-              (
-                Number(
-                  article.ai?.trendScore
-                ) || 0
-              ),
-            0
-          ) /
-          analyzed.length
-        )
-      : 0;
+    executive_summary:
+      cleanText(
+        parsed?.executive_summary,
+        5000
+      ) ||
+      "No executive summary was returned.",
 
-  const categories = {};
+    cross_check_summary:
+      cleanText(
+        parsed?.cross_check_summary,
+        5000
+      ) ||
+      "No cross-check summary was returned.",
 
-  for (
-    const article of articles
-  ) {
-    const category =
-      article.ai?.category ||
-      article.category ||
-      "general";
+    key_claims:
+      uniqueStrings(parsed?.key_claims),
 
-    categories[category] =
+    supporting_evidence:
+      uniqueStrings(
+        parsed?.supporting_evidence
+      ),
+
+    conflicting_evidence:
+      uniqueStrings(
+        parsed?.conflicting_evidence
+      ),
+
+    risk_flags:
+      dedupedRiskFlags,
+
+    recommendation:
+      cleanText(
+        parsed?.recommendation,
+        4000
+      ) ||
+      "Human verification is recommended before publication.",
+
+    sources:
+      sourceList.slice(0, 30),
+
+    human_verification_required:
+      requiresHumanReview,
+
+    content_generation_allowed:
+      !requiresHumanReview &&
+      confidenceNumber >= 85 &&
       (
-        categories[category] ||
-        0
-      ) + 1;
-  }
+        parsed?.research_status === "VERIFIED"
+      ),
 
-  return {
-    totalStories:
-      articles.length,
-
-    analyzedStories:
-      analyzed.length,
-
-    highPotential:
-      highPotential.length,
-
-    criticalStories:
-      criticalStories.length,
-
-    verificationRequired:
-      verificationRequired.length,
-
-    averageTrendScore:
-      averageTrend,
-
-    categories
+    article: {
+      title: article.title,
+      url: article.url,
+      source: article.source?.name || "",
+      publishedAt: article.publishedAt || ""
+    }
   };
 }
 
+/* -------------------------------------------------------
+   FAILURE RESPONSE
+------------------------------------------------------- */
 
-/* ============================================================
-   REQUEST PARAMETER PARSING
-   ============================================================ */
-
-/**
- * Parse incoming query parameters.
- */
-function parseQueryParams(req) {
-  const query =
-    req?.query || {};
-
-  const pageSize =
-    Number(
-      query.pageSize
-    ) ||
-    CONFIG.DEFAULT_PAGE_SIZE;
-
-  const page =
-    Number(
-      query.page
-    ) || 1;
-
-  const customQuery =
-    safeString(
-      query.q ||
-      query.query
-    );
+function failureResponse(error, article) {
+  const message =
+    error?.message ||
+    "Unknown research engine error.";
 
   return {
-    pageSize:
-      Math.min(
-        CONFIG.MAX_PAGE_SIZE,
-        Math.max(
-          1,
-          pageSize
-        )
-      ),
+    success: false,
 
-    page:
-      Math.max(
-        1,
-        page
-      ),
+    research: {
+      research_status: "RESEARCH_FAILED",
 
-    query:
-      customQuery
+      confidence: 0,
+
+      confidence_label: "LOW",
+
+      executive_summary:
+        "The research engine could not complete verification.",
+
+      cross_check_summary:
+        "No verification result is available because the research request failed.",
+
+      key_claims: [],
+
+      supporting_evidence: [],
+
+      conflicting_evidence: [],
+
+      risk_flags: [
+        {
+          level: "HIGH",
+          reason:
+            "Research engine failure. Do not treat the original story as verified."
+        }
+      ],
+
+      recommendation:
+        "Do not publish automatically. Retry the research request or perform manual verification.",
+
+      sources: [],
+
+      human_verification_required: true,
+
+      content_generation_allowed: false,
+
+      article: {
+        title: article?.title || "",
+        url: article?.url || "",
+        source: article?.source?.name || "",
+        publishedAt: article?.publishedAt || ""
+      }
+    },
+
+    error: {
+      type: "research_engine_error",
+      message,
+      details:
+        error?.response || null
+    }
   };
 }
 
-
-/* ============================================================
+/* -------------------------------------------------------
    MAIN HANDLER
-   ============================================================ */
+------------------------------------------------------- */
 
-export default async function handler(
-  req,
-  res
-) {
-  const requestStarted =
-    Date.now();
-
-  /* ----------------------------------------------------------
-     CORS / OPTIONS
-     ---------------------------------------------------------- */
-
-  if (
-    req.method ===
-    "OPTIONS"
-  ) {
-    res.status(204);
-
-    res.setHeader(
-      "Access-Control-Allow-Origin",
-      CONFIG.CORS_ORIGIN
-    );
-
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, OPTIONS"
-    );
-
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type"
-    );
-
-    return res.end();
-  }
-
-
-  /* ----------------------------------------------------------
-     METHOD CHECK
-     ---------------------------------------------------------- */
-
-  if (
-    req.method !== "GET"
-  ) {
-    return sendError(
-      res,
-      405,
-      "METHOD_NOT_ALLOWED",
-      "Only GET requests are supported by the news discovery endpoint."
-    );
-  }
-
-
-  /* ----------------------------------------------------------
-     ENVIRONMENT CHECK
-     ---------------------------------------------------------- */
-
-  const missingKeys = [];
-
-  if (
-    !process.env.NEWS_API_KEY
-  ) {
-    missingKeys.push(
-      "NEWS_API_KEY"
-    );
-  }
-
-  if (
-    !process.env.GEMINI_API_KEY
-  ) {
-    missingKeys.push(
-      "GEMINI_API_KEY"
-    );
-  }
-
-  if (
-    missingKeys.length
-  ) {
-    return sendError(
-      res,
-      500,
-      "CONFIGURATION_ERROR",
-      "NEWSFORGE backend is missing required environment variables.",
-      {
-        missing:
-          missingKeys
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      success: false,
+      error: {
+        type: "method_not_allowed",
+        message: "Use POST /api/research"
       }
-    );
+    });
   }
-
-
-  /* ----------------------------------------------------------
-     PARSE QUERY
-     ---------------------------------------------------------- */
-
-  const {
-    pageSize,
-    page,
-    query
-  } =
-    parseQueryParams(req);
-
-
-  /* ----------------------------------------------------------
-     DISCOVERY
-     ---------------------------------------------------------- */
-
-  let rawNews;
 
   try {
-    rawNews =
-      await fetchNewsFromNewsAPI({
-        pageSize,
-        page,
-        query
+    const body = req.body || {};
+
+    const article = normalizeArticle(
+      body.article
+    );
+
+    if (!article) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          type: "invalid_article",
+          message:
+            "A valid article object is required."
+        }
       });
-  } catch (error) {
-    console.error(
-      "[NEWSFORGE][NEWSAPI]",
-      error
-    );
+    }
 
-    return sendError(
-      res,
-      502,
-      "NEWS_PROVIDER_ERROR",
-      "Unable to retrieve news from the external news provider.",
-      {
-        message:
-          error?.message ||
-          "Unknown NewsAPI error."
-      }
-    );
-  }
-
-
-  /* ----------------------------------------------------------
-     NORMALIZE
-     ---------------------------------------------------------- */
-
-  let articles =
-    rawNews.articles.map(
-      (article, index) =>
-        normalizeArticle(
-          article,
-          index
-        )
-    );
-
-
-  /* ----------------------------------------------------------
-     DEDUPLICATE
-     ---------------------------------------------------------- */
-
-  articles =
-    deduplicateArticles(
-      articles
-    );
-
-
-  /* ----------------------------------------------------------
-     EMPTY RESULT
-     ---------------------------------------------------------- */
-
-  if (!articles.length) {
-    return sendJson(
-      res,
-      200,
-      {
-        success: true,
-
-        stories: [],
-
-        articles: [],
-
-        totalResults:
-          rawNews.totalResults,
-
-        ai: {
-          enabled: true,
-
-          provider:
-            "Google Gemini",
-
-          model:
-            CONFIG.GEMINI_MODEL,
-
-          analyzed: 0,
-
-          analyzedStories: 0,
-
-          highPotential: 0,
-
-          criticalStories: 0,
-
-          verificationRequired: 0
-        },
-
-        intelligence:
-          buildIntelligenceSummary(
-            []
-          ),
-
-        meta: {
-          query:
-            buildNewsQuery(
-              query
-            ),
-
-          page,
-
-          pageSize,
-
-          fetched:
-            rawNews.articles.length,
-
-          unique:
-            0,
-
-          durationMs:
-            Date.now() -
-            requestStarted,
-
-          generatedAt:
-            new Date().toISOString()
+    if (!article.title && !article.url) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          type: "missing_article_data",
+          message:
+            "The article must contain at least a title or URL."
         }
-      }
-    );
-  }
+      });
+    }
 
+    const safety = editorialSafety(article);
 
-  /* ----------------------------------------------------------
-     AI ANALYSIS
-     ---------------------------------------------------------- */
-
-  let aiAnalysis;
-
-  try {
-    aiAnalysis =
-      await analyzeWithGemini(
-        articles
-      );
-  } catch (error) {
-    console.error(
-      "[NEWSFORGE][GEMINI]",
-      error
-    );
-
-    /*
-     * IMPORTANT:
-     *
-     * We do NOT destroy the entire news response when Gemini
-     * fails.
-     *
-     * The dashboard still receives the discovered stories,
-     * but every story is explicitly marked as requiring
-     * human review.
-     */
-
-    articles =
-      articles.map(
-        article => ({
-          ...article,
-
-          ai: {
-            trendScore: 0,
-
-            category:
-              article.category ||
-              "general",
-
-            priority:
-              "medium",
-
-            audienceRelevance:
-              0,
-
-            attentionPotential:
-              0,
-
-            confidence:
-              0,
-
-            humanVerificationRequired:
-              true,
-
-            verificationReason:
-              "AI intelligence analysis failed. Manual editorial review is required.",
-
-            reasoning:
-              "The news provider returned the story, but the AI analysis layer was unavailable.",
-
-            editorialAngle:
-              "Do not automatically publish. Review the original source manually.",
-
-            analyzed:
-              false
-          }
-        })
+    const result =
+      await runGeminiResearch(
+        article,
+        safety
       );
 
-    return sendJson(
-      res,
-      200,
-      {
-        success: true,
+    const research =
+      normalizeResearch(
+        result.parsed,
+        article,
+        safety,
+        result.rawResponse
+      );
 
-        stories:
-          articles,
-
-        articles:
-          articles,
-
-        totalResults:
-          rawNews.totalResults,
-
-        ai: {
-          enabled: true,
-
-          provider:
-            "Google Gemini",
-
-          model:
-            CONFIG.GEMINI_MODEL,
-
-          analyzed: 0,
-
-          analyzedStories: 0,
-
-          highPotential: 0,
-
-          criticalStories: 0,
-
-          verificationRequired:
-            articles.length,
-
-          failed: true,
-
-          error:
-            "AI analysis unavailable."
-        },
-
-        intelligence:
-          buildIntelligenceSummary(
-            articles
-          ),
-
-        meta: {
-          query:
-            buildNewsQuery(
-              query
-            ),
-
-          page,
-
-          pageSize,
-
-          fetched:
-            rawNews.articles.length,
-
-          unique:
-            articles.length,
-
-          durationMs:
-            Date.now() -
-            requestStarted,
-
-          generatedAt:
-            new Date().toISOString()
-        }
-      }
-    );
-  }
-
-
-  /* ----------------------------------------------------------
-     ATTACH AI RESULTS
-     ---------------------------------------------------------- */
-
-  articles =
-    attachAIResults(
-      articles,
-      aiAnalysis
-    );
-
-
-  /* ----------------------------------------------------------
-     EDITORIAL SAFETY
-     ---------------------------------------------------------- */
-
-  articles =
-    applyEditorialSafety(
-      articles
-    );
-
-
-  /* ----------------------------------------------------------
-     SORT
-     ---------------------------------------------------------- */
-
-  articles =
-    sortByImportance(
-      articles
-    );
-
-
-  /* ----------------------------------------------------------
-     SUMMARY
-     ---------------------------------------------------------- */
-
-  const intelligence =
-    buildIntelligenceSummary(
-      articles
-    );
-
-
-  /* ----------------------------------------------------------
-     FINAL RESPONSE
-     ---------------------------------------------------------- */
-
-  return sendJson(
-    res,
-    200,
-    {
+    return res.status(200).json({
       success: true,
 
-      stories:
-        articles,
+      research,
 
-      /*
-       * Keep both names.
-       *
-       * "stories" is the canonical NEWSFORGE structure.
-       * "articles" preserves compatibility with older frontend
-       * versions.
-       */
-      articles:
-        articles,
+      // Top-level fields kept for
+      // frontend compatibility.
+      research_status:
+        research.research_status,
 
-      totalResults:
-        rawNews.totalResults,
+      confidence:
+        research.confidence,
 
-      ai: {
-        enabled: true,
+      executive_summary:
+        research.executive_summary,
 
-        provider:
-          "Google Gemini",
+      cross_check_summary:
+        research.cross_check_summary,
 
-        model:
-          CONFIG.GEMINI_MODEL,
+      key_claims:
+        research.key_claims,
 
-        analyzed:
-          intelligence.analyzedStories > 0,
+      supporting_evidence:
+        research.supporting_evidence,
 
-        analyzedStories:
-          intelligence.analyzedStories,
+      conflicting_evidence:
+        research.conflicting_evidence,
 
-        highPotential:
-          intelligence.highPotential,
+      risk_flags:
+        research.risk_flags,
 
-        criticalStories:
-          intelligence.criticalStories,
+      recommendation:
+        research.recommendation,
 
-        verificationRequired:
-          intelligence.verificationRequired
-      },
+      sources:
+        research.sources,
 
-      intelligence,
+      human_verification_required:
+        research.human_verification_required,
 
-      meta: {
-        query:
-          buildNewsQuery(
-            query
-          ),
+      content_generation_allowed:
+        research.content_generation_allowed
+    });
 
-        page,
+  } catch (error) {
+    console.error(
+      "NEWSFORGE research error:",
+      error
+    );
 
-        pageSize,
-
-        fetched:
-          rawNews.articles.length,
-
-        unique:
-          articles.length,
-
-        durationMs:
-          Date.now() -
-          requestStarted,
-
-        generatedAt:
-          new Date().toISOString()
-      }
-    }
-  );
+    // Return 200 so the frontend can display
+    // a structured research failure instead of
+    // crashing on a generic server error.
+    return res.status(200).json(
+      failureResponse(
+        error,
+        req.body?.article || {}
+      )
+    );
+  }
 }
